@@ -1,0 +1,484 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Web.Common
+@model DynamicDataGrid
+@{
+    int totalNumberOfItemsWithoutPagination = Model.TotalNumberOfItemsWithoutPagination;
+    int numberOfPages = Model.NumberOfPages.GetValueOrDefault();
+    int currentPage = Model.Page.GetValueOrDefault();
+    int pageSize = Model.PageSize;
+    int totalWidth = 0;
+    int widhtAction = 0;
+    bool isClient = User.IsInRole("Client");
+    widhtAction = 25;
+    totalWidth = widhtAction + Model.Captions.Sum(data => data.Width);
+    if(totalWidth < 915)
+    {
+        int newWidhtAction = (int)Math.Ceiling(((double)915 * (double)widhtAction) / (double)totalWidth);
+        widhtAction = newWidhtAction;
+        foreach (var caption in Model.Captions)
+        {
+            int newWidth = 0;
+            newWidth = (int)Math.Ceiling(((double)915 * (double)caption.Width) / (double)totalWidth);
+            caption.Width = newWidth;
+        }
+        totalWidth = widhtAction + Model.Captions.Sum(data => data.Width);  
+        if(totalWidth > 915)
+        {
+            totalWidth = 915;
+        }  
+    }
+    
+}
+
+
+<script type="text/javascript">
+
+    function UpdateResultsSearch(results) {
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+        $("#nextButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", currentPage + 1)';
+        var ajaxUrl = '@Url.Action("SearchOrderPaginated", "ServiceOrder")';
+            
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResultsSearch,
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: parameter
+            });
+
+        });
+
+
+        $("#endButton").click(function () {
+
+            var parameter = '@string.Format("{0}={1}", "page", numberOfPages)';
+            var ajaxUrl = '@Url.Action("SearchOrderPaginated", "ServiceOrder")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResultsSearch,
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: parameter
+            });
+
+        });
+
+
+        $("#lastButton").click(function () {
+
+            var parameter = '@string.Format("{0}={1}", "page", currentPage - 1)';
+            var ajaxUrl = '@Url.Action("SearchOrderPaginated", "ServiceOrder")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResultsSearch,
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: parameter
+            });
+
+        });
+
+
+        $("#firtsButton").click(function () {
+
+            var parameter = '@string.Format("{0}={1}", "page", 1)';
+            var ajaxUrl = '@Url.Action("SearchOrderPaginated", "ServiceOrder")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResultsSearch,
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: parameter
+            });
+
+        });
+
+
+        $("#gotoButton").click(function () {
+
+            var parameter = 'page=' + $("#pageNumber").val().toString();
+            var ajaxUrl = '@Url.Action("SearchOrderPaginated", "ServiceOrder")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResultsSearch,
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: parameter
+            });
+
+        });
+
+        function LaunchEditOrder(sol) {
+            $("#serviceOrderId").val(sol);
+            $("#viewEditServiceOrder").submit();
+        }
+
+        function LaunchReports(sol, inspectionReportName) {
+            $("#serviceOrderId").val(sol);
+            $("#viewEditServiceOrder").submit();
+        }
+
+        function ExportInspectionReports(rowid) {
+
+            $("#chooseReportExcel").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: 280,
+                width: 380,
+                modal: true
+            });
+
+            $("#errorDivRep").html("");
+            $('#chooseReportExcel').dialog('open');
+            var ajaxUrl = '@Url.Action("SearchReports", "ServiceOrder")';
+            $("#serviceOrderId").val(rowid);
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: function (results) {
+                    $("#reportList").html(results);
+                    $("#reportList").fadeIn("slow");
+                    $('#chooseReportExcel input[type="checkbox"]').ezMark();  
+                },
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: { rowId: rowid }
+            });
+        }
+
+        $("#exportButton").click(function () {
+            exportGridToExcel();
+        });
+
+        $(document).ready(function () {
+            
+            $("#tableServiceOrder").css("width", "@totalWidth");
+            $("#excelRowSpanButton").hide();
+            $("#editViewServiceOrderSpan").hide();
+            $("#publishValidateSpan").hide();
+            $("#deleteServiceOrderSpan").hide();
+        });
+
+        function chkRowChanged(isClient, firstInspectionReportClient,canPublish,canValidate) {
+            var len = $("#tableServiceOrderBody input:checked").length;
+
+            if (len == 1) {
+                $("#editViewServiceOrderSpan").show();
+                $("#deleteServiceOrderSpan").show();
+                if (isClient == "True") {
+                    if (firstInspectionReportClient == "True") {
+                        $("#excelRowSpanButton").show();
+                    }
+                }
+                else {
+                    $("#excelRowSpanButton").show();
+                    $("#tableServiceOrderBody input:checked").each(function () {
+                        var chkValue = this.value;
+                        if (canPublish == "True" && canValidate == "False") {
+                            $("#publishValidateSpan").show();
+                            $("#publishValidatebtn").prop('value', '@Resources.InspectionReports.Publish');
+                            $("#publishValidatebtn").click(function () {
+                                LaunchPublishValidateInspectionReport('@Resources.InspectionReports.PublishConfirmation', '@Resources.InspectionReports.PublishConfirmationMessage', chkValue);
+                            });
+                        }
+
+                        if (canPublish == "False" && canValidate == "True") {
+                            $("#publishValidateSpan").show();
+                            $("#publishValidatebtn").prop('value', '@Resources.InspectionReports.Validate');
+                            $("#publishValidatebtn").click(function () {
+                                LaunchPublishValidateInspectionReport('@Resources.InspectionReports.ValidateConfimation', '@Resources.InspectionReports.ValidateConfirmationMessage', chkValue);
+                            });
+                        }
+                    });
+                }
+            }
+            else if(len > 1) {
+                $("#deleteServiceOrderSpan").show();
+                $("#excelRowSpanButton").hide();
+                $("#editViewServiceOrderSpan").hide();
+                $("#publishValidateSpan").hide();
+            }
+            else {
+                $("#excelRowSpanButton").hide();
+                $("#editViewServiceOrderSpan").hide();
+                $("#publishValidateSpan").hide();
+                $("#deleteServiceOrderSpan").hide();
+            }
+        }
+
+        $("#newServiceOrder").click(function () {
+            $("#newOrderForm").submit();
+        });
+
+        $("#excelRowButton").click(function () {
+            $("#tableServiceOrderBody input:checked").each(function () {
+                ExportInspectionReports(this.value);
+            }); 
+        });
+
+        $("#editViewServiceOrderbtn").click(function () {
+            $("#tableServiceOrderBody input:checked").each(function () {
+                LaunchEditOrder(this.value);
+            });
+        });
+
+        $("#deleteServiceOrderbtn").click(function () {
+            var chkValues = '';
+            $("#tableServiceOrderBody input:checked").each(function () {
+                chkValues+= this.value+'&';
+            });
+            ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+                var ajaxUrl = '@Url.Action("DeleteSelectedServiceOrders", "ServiceOrder")';
+
+                $.ajax({
+                    global: false,
+                    url: ajaxUrl,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        window.location = '@Url.Action("Index")';
+                    },
+                    error: function () { alert('An error occurred') },
+                    data: { selectedIds: chkValues }
+                });
+            });
+        });
+
+
+        function checkHeaderChange(status) {
+            $("#tableServiceOrderBody input").each(function () {
+                this.checked = status;
+            });
+            var len = $("#tableServiceOrderBody input:checked").length;
+            if (len >= 1) {
+                $("#deleteServiceOrderSpan").show();
+                $("#editViewServiceOrderSpan").hide();
+                $("#excelRowSpanButton").hide();
+            }
+            else {
+                $("#deleteServiceOrderSpan").hide();
+                $("#editViewServiceOrderSpan").hide();
+                $("#excelRowSpanButton").hide();
+            }
+        }
+         
+</script>
+
+@if (totalWidth <= 915)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#wrapTable").css('overflow-x', 'hidden');
+        });
+    </script>
+}
+
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+        @Resources.Common.NoResults
+    </div>
+}
+else
+{
+<div class="table-legend">
+    <span class="bottom">&nbsp;</span>@Resources.Common.Results (&nbsp;<span class="count">@totalNumberOfItemsWithoutPagination</span>&nbsp;)
+</div>
+
+<div class="wrapper" id="wrapTable">
+<table id="tableServiceOrder" class="data" summary="search results">
+    <thead>
+        <tr>
+        <th width="@widhtAction">
+            <input type="checkbox" id="chkHeader" onchange="checkHeaderChange(this.checked);"/>
+        </th>
+        @foreach (var item in Model.Captions)
+        {
+            string width = "width='" + item.Width + "'";
+            <th @Html.Raw(width)>@Html.Raw(item.Caption)</th>
+        }            
+        </tr>
+    </thead>
+    <tbody id="tableServiceOrderBody">
+        @for (int i = 0; i < Model.DataRows.Count; i++)
+        {
+            string rowAlter = "ev";
+            DynamicDataRow actualDataRow = Model.DataRows[i];
+            Guid? rowIdentifier = actualDataRow.RowIdentifier;
+            string chkId = "chk"+i;
+            string strFirtsReport = (!string.IsNullOrEmpty(actualDataRow.FirstInspectionReportClient)).ToString();
+            if (i % 2 == 0)
+            {
+                rowAlter = "od";
+            }
+            <tr class="@rowAlter">
+            <td width="@widhtAction">
+                <input type="checkbox" id="@chkId" value="@rowIdentifier" onchange="chkRowChanged('@isClient.ToString()','@strFirtsReport','@actualDataRow.CanPublish.ToString()','@actualDataRow.CanValidate.ToString()');"/>
+            </td>
+
+            @for (int rowValue = 0; rowValue < Model.DataRows[i].FieldValues.Count; rowValue++)
+            {
+                var item = Model.DataRows[i].FieldValues[rowValue];
+                if (rowValue == 0)
+                {
+                    if (isClient)
+                    {
+                        <td>
+                            <a style="cursor: pointer;" onclick="LaunchReports('@rowIdentifier','@actualDataRow.FirstInspectionReportClient');" title="@Resources.Common.View">
+                               <span>@item.FieldValue</span>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a style="cursor: pointer;" onclick="LaunchReports('@rowIdentifier');" title="@Resources.Common.Edit">
+                               <span>@item.FieldValue</span>
+                            </a>
+                        </td>
+                    }
+                }
+                else
+                {
+                    <td style="white-space:pre-wrap;">@item.FieldValue</td>
+                }
+            }         
+            </tr>                    
+        }       
+    </tbody>
+</table>
+</div>
+<!-- /search results table -->
+ 
+<div class="form">
+    <div class="pages">
+
+        <div style="float:left; padding-left:17px;">
+             <span class="btn" id="spanExportButton">
+                <input type="reset" value="@Resources.Common.ExportExcelButton" id="exportButton" />
+            </span>
+        </div>
+
+        <div>
+        
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}
+<div>
+@if (User.IsInRole("Client"))
+{
+    <form action="@Url.Action("ViewServiceOrder", "ServiceOrder")" method="post" id="viewEditServiceOrder">
+        <input type="hidden" name="serviceOrderId" id="serviceOrderId" value="" />
+    </form>       
+}
+else
+{
+    <form action="@Url.Action("EditServiceOrder", "ServiceOrder")" method="post" id="viewEditServiceOrder">
+        <input type="hidden" name="serviceOrderId" id="serviceOrderId" value="" />
+    </form>
+}
+
+<form action="@Url.Action("ExportAllInspectionReportToExcel", "ServiceOrder")" method="post" id="exportInspectionReports">
+    
+</form>
+
+@if (!isClient)
+{
+    <p class="btn">
+        <span class="btn">
+            <input type="button" value="@Resources.Common.New" id="newServiceOrder" />
+        </span>
+        <span class="btn" id="editViewServiceOrderSpan" style="margin-right:10px;">
+            <input type="button" value="@Resources.Common.Edit" id="editViewServiceOrderbtn" />
+        </span>
+        <span class="btn" id="publishValidateSpan" style="margin-right:10px;">
+            <input type="button" value="" id="publishValidatebtn" />
+        </span>
+        <span class="btn" id="deleteServiceOrderSpan" style="margin-right:10px;">
+            <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deleteServiceOrderbtn" />
+        </span>
+        <span class="btn2" id="excelRowSpanButton">
+            <input type="reset" value="@Resources.ServiceOrder.GenerateServiceOrderReport" id="excelRowButton" />
+        </span>            
+     </p>
+}
+else
+{
+    <p class="btn">
+        <span class="btn" id="editViewServiceOrderSpan">
+            <input type="button" value="@Resources.Common.View" id="editViewServiceOrderbtn" />
+        </span>
+        <span class="btn2" id="excelRowSpanButton">
+            <input type="reset" value="@Resources.ServiceOrder.GenerateServiceOrderReport" id="excelRowButton" />
+        </span>            
+     </p>
+}
+
+<form action="@Url.Action("ExportExcel", "ServiceOrder")" method="post" id="exportToExcel">
+        
+</form>
+
+<form action="@Url.Action("NewServiceOrder", "ServiceOrder")" method="post" id="newOrderForm">
+        
+</form>
+
+</div>
+

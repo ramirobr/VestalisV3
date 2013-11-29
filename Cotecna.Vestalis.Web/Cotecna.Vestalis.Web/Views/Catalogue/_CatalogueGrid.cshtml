@@ -1,0 +1,370 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Entities
+@using Cotecna.Vestalis.Web.Common
+
+@model PaginatedList<CatalogueModel>
+@{
+    int totalNumberOfItemsWithoutPagination = Model.TotalCount;
+    int numberOfPages = Model.NumberOfPages;
+    int currentPage = Model.Page;
+    int pageSize = Model.PageSize;
+
+    string sortedColumn = Model.SortedColumn;
+    int nextPage = currentPage + 1;
+    int lastPage = currentPage - 1;
+
+    //This function is localized in CustomScript.js file
+    string jqueryFunction = "UpdateResultsSearch";
+    //The action to be executed, returning the ajax partial view
+    string action = "SearchCatalogueListPaginated";
+    
+}
+
+
+@Html.Partial("_ConfirmationMessage")
+<script type="text/javascript">
+
+    function UpdateResultsSearch(results) {
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+    $("#nextButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@nextPage' }
+        });
+
+    });
+
+
+    $("#endButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@numberOfPages' }
+        });
+
+    });
+
+
+    $("#lastButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@lastPage' }
+        });
+
+    });
+
+
+    $("#firtsButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+        });
+
+    });
+
+
+    $("#gotoButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: $("#pageNumber").val() }
+        });
+
+    });
+
+    function ViewCatalogueValueList(catalogId,businessAppName) {
+        $("#catalogueId").val(catalogId);
+        $("#businessAppName").val(businessAppName);
+        $("#viewCatalogueValueList").submit();
+    }
+
+    function EditCatalogueCategory(catalogId) {
+        $("#catalogueIdEdit").val(catalogId);
+        $("#editCatalogueCategory").submit();
+    }
+
+    $("#exportButton").click(function () {
+        exportGridToExcel();
+    });
+
+    $("#newButton").click(function () {
+        $("#newCategoryForm").submit();
+    });
+
+    $("#editButton").click(function () {
+        $("#tableCategoryBody input:checked").each(function () {
+            EditCatalogueCategory(this.value);
+        });
+    });
+
+    $(document).ready(function () {
+        $("#wrapTable").css('overflow-x', 'hidden');
+        $("#editButtonSpan").hide();
+        $("#deleteButtonSpan").hide();
+    });
+
+    function CheckBoxCheckChange() {
+        var len = $("#tableCategoryBody input:checked").length;
+
+        if (len == 1) {
+            $("#editButtonSpan").show();
+            $("#deleteButtonSpan").show();
+        }
+        else if (len > 1) {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").show();
+        }
+        else {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").hide();
+        }
+    }
+
+    function CheckBoxHeaderCheckChange(status) {
+        $("#tableCategoryBody input").each(function () {
+            this.checked=status;
+        });
+        var len = $("#tableCategoryBody input:checked").length;
+        if (len >= 1) {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").show();
+        }
+        else {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").hide();
+        }
+    }
+
+    $("#deleteButton").click(function () {
+        var selectedIds = '';
+        $("#tableCategoryBody input:checked").each(function () {
+            selectedIds += this.value + '&';
+        });
+        ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+            var ajaxUrl = '@Url.Action("DeleteSelectedCategories", "Catalogue")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.length == 0) {
+
+                        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: UpdateResultsSearch,
+                            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+                        });
+                    }
+                    else {
+                        
+                        var ajaxUrl = '@Url.Action("SearchCatalogueListPaginated", "Catalogue")';
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: function (data) {
+                                UpdateResultsSearch(data);
+                                $("#errorDiv").show();
+                                $("#catalogueValues").hide();
+                                $("#catalogueValuesButtons").hide();
+                                var numErrors = result.length;
+                                var titleError = "";
+                                var errors = "";
+                                if (numErrors > 1) {
+                                    titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUl'></ul>";
+                                } else {
+                                    titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+                                }
+                                $("#errorDiv").html("");
+                                $("#errorDiv").html(titleError);
+                                for (var i = 0; i < result.length; i++) {
+                                    errors += "<li>" + result[i] + "</li>";
+                                }
+                                $("#errorUl").html(errors);
+                            },
+                            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+                        });
+                    }
+                },
+                error: function () { alert('An error occurred') },
+                data: { selectedIds: selectedIds }
+            });
+        });
+    });
+</script>
+
+
+
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+        @Resources.Common.NoResults
+    </div>
+}
+else
+{
+<div class="table-legend">
+    <span class="bottom">&nbsp;</span>@Resources.Common.Results (&nbsp;<span class="count">@totalNumberOfItemsWithoutPagination</span>&nbsp;)
+</div>
+<div class="wrapper" id="wrapTable">
+    <table class="data" summary="search results">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" id="chkHeader" onchange="CheckBoxHeaderCheckChange(this.checked);"/></th>
+                <th>@Ajax.SortActionLink(Resources.Administration.CatalogueAdministrationGridColumnCatalogueName, action, "CatalogueCategoryName", Model, jqueryFunction, 1)</th>
+                <th>@Ajax.SortActionLink(Resources.Administration.CatalogueAdministrationGridColumnApplication, action, "BusinessApplicationName", Model, jqueryFunction, 1)</th>
+            </tr>
+        </thead>
+        <tbody id="tableCategoryBody">
+            @for (int i = 0; i < Model.Collection.Count; i++)
+            {
+                string rowAlter = "ev";
+                CatalogueModel actualDataRow = Model.Collection[i];
+                Guid? rowIdentifier = actualDataRow.CatalogueId;
+                string chkId = "chk" + i;
+                if (i % 2 == 0)
+                {
+                    rowAlter = "od";
+                }
+                <tr class="@rowAlter">
+                    <td width="20"><input type="checkbox" id="@chkId" value="@rowIdentifier" onchange="CheckBoxCheckChange();"/></td>
+                    <td width="200">
+                        <a style="cursor: pointer;" onclick="EditCatalogueCategory('@rowIdentifier.GetValueOrDefault()')" title="@Resources.Common.Edit">
+                            <span>@actualDataRow.CatalogueCategoryName</span>
+                        </a>
+                    </td>
+                    <td  style="white-space:pre-wrap;">@actualDataRow.BusinessApplicationName</td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+
+<div class="form">
+    <div class="pages">
+
+        <div style="float:left; padding-left:17px;">
+            <span class="btn" id="spanExportButton">
+                <input type="reset" value="@Resources.Common.ExportExcelButton" id="exportButton" />
+            </span>
+        </div>
+
+        <div>
+        
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}
+
+<p class="btn">
+    <span class="btn">
+        <input type="button" value="@Resources.Common.New" id="newButton" />
+    </span>
+    <span class="btn" id="editButtonSpan" style="margin-right:10px">
+        <input type="button" value="@Resources.Common.Edit" id="editButton" />
+    </span>
+    <span class="btn" id="deleteButtonSpan" style="margin-right:10px">
+        <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deleteButton" />
+    </span>
+</p>
+
+
+
+<form action="@Url.Action("SearchCatalogueValueList", "Catalogue")" method="post" id="viewCatalogueValueList">
+    <input type="hidden" name="catalogueId" id="catalogueId" value="" />
+    <input type="hidden" name="businessAppName" id="businessAppName" value="" />
+</form>
+
+<form action="@Url.Action("EditCatalogue", "Catalogue")" method="post" id="editCatalogueCategory">
+    <input type="hidden" name="catalogueIdEdit" id="catalogueIdEdit" value="" />
+</form>
+<form id="newCategoryForm" action="@Url.Action("NewCatalogue", "Catalogue")" method="post">
+
+</form>

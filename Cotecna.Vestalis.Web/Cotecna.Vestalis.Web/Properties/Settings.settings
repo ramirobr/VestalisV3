@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cotecna.Vestalis.Web.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PageSize" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="MaxFileUploadSizeKB" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">10240</Value>
+    </Setting>
+    <Setting Name="ExtensionDocumentAllowed" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">*.txt;*.doc;*.docx;*.xls;*.xlsx;*.ppt;*.pptx;*.pdf;</Value>
+    </Setting>
+    <Setting Name="PageSizePicture" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="ExtensionPictureAllowed" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">*.jpg;*.jpeg;*.gif;*.bmp;*.png;</Value>
+    </Setting>
+    <Setting Name="EmailSupport" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">no-reply@cotecna.ch</Value>
+    </Setting>
+    <Setting Name="NameEmailSupport" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Vestalis support team</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

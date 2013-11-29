@@ -1,0 +1,352 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Entities
+@using Cotecna.Vestalis.Web.Common
+@model PaginatedList<UserGridModel>
+@{
+    int totalNumberOfItemsWithoutPagination = Model.TotalCount;
+    int numberOfPages = Model.NumberOfPages;
+    int currentPage = Model.Page;
+    int pageSize = Model.PageSize;
+    string sortedColumn = Model.SortedColumn;
+    int nextPage = currentPage + 1;
+    int lastPage = currentPage - 1;
+    
+
+    //This function is localized in CustomScript.js file
+    string jqueryFunction = "UpdateResultsSearch";
+    //The action to be executed, returning the ajax partial view
+    string action = "SearchUsersPaginated";
+}
+@Html.Partial("_ConfirmationMessage")
+<script type="text/javascript">
+
+    function UpdateResultsSearch(results) {
+        
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+    $("#nextButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@nextPage' }
+        });
+
+    });
+
+
+    $("#endButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@numberOfPages' }
+        });
+
+    });
+
+
+    $("#lastButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@lastPage' }
+        });
+
+    });
+
+
+    $("#firtsButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+        });
+
+    });
+
+
+    $("#gotoButton").click(function () {
+
+        
+        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: $("#pageNumber").val() }
+        });
+
+    });
+
+    function EditUser(username) {
+        $("#userNameEdit").val(username);
+        $("#EditUser").submit();
+    }
+
+    $("#exportButton").click(function () {
+        exportExcelGrid();
+    });
+
+    $("#newButton").click(function () {
+        $("#newUserForm").submit();
+    });
+
+    $(document).ready(function () {
+        $("#wrapTable").css('overflow-x', 'hidden');
+        $("#editButtonSpan").hide();
+        $("#deleteButtonSpan").hide();
+    });
+
+    $("#editButton").click(function () {
+        $("#tableUsersBody input:checked").each(function () {
+            EditUser(this.value)
+        });
+    });
+
+    $("#deleteButton").click(function () {
+        var userIds = '';
+        $("#tableUsersBody input:checked").each(function () {
+            userIds += this.value + "&&&";
+        });
+
+        ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+            var ajaxUrl = '@Url.Action("DeleteSelectedUsers", "Account")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    if (result == undefined || result == '') {
+
+                        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: UpdateResultsSearch,
+                            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+                        });
+                    }
+                    else {
+
+                        var ajaxUrl = '@Url.Action("SearchUsersPaginated", "Account")';
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: function (data) {
+                                UpdateResultsSearch(data);
+                                $("#errorDiv").show();
+                                var titleError = "";
+                                var errors = "";
+                                titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+                                $("#errorDiv").html("");
+                                $("#errorDiv").html(titleError);
+                                
+                                errors = "<li>" + result + "</li>";
+                                
+                                $("#errorUl").html(errors);
+                            },
+                            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+                        });
+                    }
+                },
+                error: function () { alert('An error occurred') },
+                data: { selectedUsers: userIds }
+            });
+        });
+
+
+
+
+    });
+
+    function checkboxChanged() {
+        var len = $("#tableUsersBody input:checked").length;
+
+        if (len == 1) {
+            $("#editButtonSpan").show();
+            $("#deleteButtonSpan").show();
+        }
+        else if (len > 1) {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").show();
+        }
+        else {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").hide();
+        }
+    }
+
+    function checkboxHeaderChanged(status) {
+        $("#tableUsersBody input").each(function () {
+            this.checked = status;
+        });
+        var len = $("#tableUsersBody input:checked").length;
+        
+        if (len >= 1) {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").show();
+        }
+        else {
+            $("#editButtonSpan").hide();
+            $("#deleteButtonSpan").hide();
+        }
+    }
+</script>
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+        @Resources.Common.NoResults
+    </div>
+}
+else
+{
+<div class="table-legend">
+    <span class="bottom">&nbsp;</span>@Resources.Common.Results (&nbsp;<span class="count">@totalNumberOfItemsWithoutPagination</span>&nbsp;)
+</div>
+<div class="wrapper" id="wrapTable">
+     <table class="data" summary="search results">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" id="chkHeader" onchange="checkboxHeaderChanged(this.checked);" /></th>
+                <th>@Ajax.SortActionLink(Resources.Administration.Email, action, "Email", Model, jqueryFunction, 1)</th>
+                <th>@Ajax.SortActionLink(Resources.Administration.UserType, action, "UserType", Model, jqueryFunction, 1)</th>
+                <th>@Ajax.SortActionLink(Resources.Administration.BusinessApplication, action, "BusinessApplications", Model, jqueryFunction, 1)</th>
+            </tr>
+        </thead>
+        <tbody id="tableUsersBody">
+            @for (int i = 0; i < Model.Collection.Count; i++)
+            {
+                string rowAlter = "ev";
+                UserGridModel actualDataRow = Model.Collection[i];
+                string rowIdentifier = actualDataRow.Email;
+                string chkId = "chk" + i;
+                if (i % 2 == 0)
+                {
+                    rowAlter = "od";
+                }
+                <tr class="@rowAlter">
+                    <td width="20">
+                        <input type="checkbox" id="@chkId" value="@rowIdentifier" onchange="checkboxChanged();" />
+                    </td>
+                    <td width="200" >
+                        <a style="cursor: pointer;" onclick="EditUser('@rowIdentifier')" title="@Resources.Common.Edit">
+                            <span>@actualDataRow.Email</span>
+                        </a>
+                    </td>
+                    <td width="150" style="white-space:pre-wrap;">@actualDataRow.UserType</td>
+                    <td style="white-space:pre-wrap;">@actualDataRow.BusinessApplications</td>
+                </tr>
+            }
+        </tbody>
+     </table>
+</div>
+<div class="form">
+    <div class="pages">
+        <div style="float:left; padding-left:17px;">
+            <span class="btn" id="spanExportButton">
+                <input type="reset" value="@Resources.Common.ExportExcelButton" id="exportButton" />
+            </span>
+        </div>
+        <div>
+        
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}
+
+<p class="btn">
+    <span class="btn">
+        <input type="button" value="@Resources.Common.New" id="newButton" />
+    </span>
+    <span class="btn" id="editButtonSpan" style="margin-right:10px;">
+        <input type="button" value="@Resources.Common.Edit" id="editButton" />
+    </span>
+    <span class="btn" id="deleteButtonSpan" style="margin-right:10px;">
+        <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deleteButton" />
+    </span>       
+</p>
+
+
+<form action="@Url.Action("EditUser", "Account")" method="post" id="EditUser">
+    <input type="hidden" name="userNameEdit" id="userNameEdit" value="" />
+</form>
+<form id="newUserForm" action="@Url.Action("NewUser", "Account")" method="post">
+
+</form>

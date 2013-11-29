@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Inspección de cacao" CaptionTitle="Inspección de cacao" CaptionBreadcrumbs="Inspecciones de cacao">
+  <Sections>
+    <Section Caption="Inspección de cacao">
+      <FormElements>
+        <Element Identifier ="Quantity" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Destination" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="true" />
+        <Element Identifier ="SamplingDate" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="AnalysisDate" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="SamplesInpector" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="CounterSample" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="InspectionType" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="true" />
+        <Element Identifier ="ProductQuality" IsDataGridVisible="false" IsFilterVisible ="true" IsVisibleClient="true" />
+        <Element Identifier ="OtherServices" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Observations" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Signatures" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+      </FormElements>
+    </Section>
+    <Section Caption="Calificación del corte">
+      <FormElements>
+        <Element Identifier ="BuenaFermentacion" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="LigeramenteFermentados" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="GranoVioleta" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="GranoPizarroso" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Mohos" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="DanosInsectos" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Vulnerado" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="ContenidoCacaoTrinitario" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+      </FormElements>
+    </Section>
+    <Section Caption="Porcentaje de defectos">
+      <FormElements>
+        <Element Identifier ="Multiples" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Partidos" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="PlanoGranza" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="ImpurezasCacao" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="MateriaExtrania" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+      </FormElements>
+    </Section>
+    <Section Caption="Porcentaje de defectos">
+      <FormElements>
+        <Element Identifier ="PesoPepas" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="PepasGramos" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Humedad" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

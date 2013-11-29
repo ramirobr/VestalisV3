@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form >
+  <Sections>
+    <Section Caption="General">
+      <FormElements>
+        <Element Identifier="Client" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="false" />
+        <Element Identifier="Reference" IsOrderIdentifier ="true" IsDataGridVisible="true" IsFilterVisible ="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier="Product"  />
+        <Element Identifier="OrderDate" IsDataGridVisible="true" IsFilterVisible ="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier="InspectionPlace" IsDataGridVisible="true"/>
+        <Element Identifier="TimeInspection"/>
+        <Element Identifier="QuantityPerBox"/>
+        <Element Identifier="BoxValue"/>
+        <Element Identifier="FOBValue"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

@@ -1,0 +1,39 @@
+﻿@using Cotecna.Vestalis.Core;
+    @{
+        List<BusinessApplicationByUser> businessAplicationsByUser = Session["BusinessAplicationsByUser"] as List<BusinessApplicationByUser>;
+        if(businessAplicationsByUser.Count > 0)
+        {
+            <label class="selectLabel">@Resources.Common.BusinessAppLabel</label>
+            string businessId = Session["BusinessAplicationId"] != null ? (Session["BusinessAplicationId"]).ToString() : "";
+            if (businessAplicationsByUser != null)
+            {
+                List<SelectListItem> itemSource = businessAplicationsByUser.Select(data => new SelectListItem
+                {
+                    Text = data.Name,
+                    Value = data.Id.ToString(),
+                    Selected = data.Id.ToString() == businessId ? true : false
+                }).ToList();
+                @Html.DropDownList("businessApplicationList", itemSource);
+            }
+        }
+    } 
+
+@*<div class="btn-icon grey" id="changeBusinessAppButton">
+                        <a class="overlay transparent0" href="javascript:selectBusinessApplication();" onclick="return true;">
+                            <img src="@Url.Content("~/Images/btn-arrow.png")" alt="" height="12" width="7" />
+                        </a>
+                        <div class="left"></div>
+                        <div class="middle">
+                            <a href="javascript:selectBusinessApplication();" onclick="return true;">
+                                <img src="@Url.Content("~/Images/btn-arrow.png")" alt="" height="12" width="7" />
+                            </a>
+                        </div>
+                        <div class="right"></div>
+                    </div>
+*@
+
+@*<div class="btn-icon grey"><a onclick="return true;" href="javascript:selectSite();" class="overlay transparent0"><img width="7" height="12" alt="" src="http://cotecna.com/Images/ui/btn-arrow.png"/></a>
+<div class="left"></div>
+<div class="middle"><a onclick="return true;" href="javascript:selectSite();"><img width="7" height="12" alt="" src="http://cotecna.com/Images/ui/btn-arrow.png"/></a></div>
+<div class="right"></div>
+</div>*@

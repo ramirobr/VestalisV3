@@ -1,0 +1,201 @@
+﻿@using Cotecna.Vestalis.Web.Common
+@using Cotecna.Vestalis.Core;
+@model Cotecna.Vestalis.Core.DocumentModel
+
+@{
+    ViewBag.Title = "Vestalis";
+}
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>    
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+}
+
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection") 
+
+}
+@Html.Partial("_ConfirmationMessage")
+
+@{
+    string orderNumber = Model.OrderIdentifier == null || String.IsNullOrEmpty(Model.OrderIdentifier.FieldValue)
+                                     ? Resources.Common.ServiceOrderUndefined
+                                     : Model.OrderIdentifier.FieldValue;
+
+    string serviceOrderNumber = string.Format(Model.CaptionBreadcrumbsPrincipal + " {0}", orderNumber);
+    string documentTitle = string.Format(Resources.Document.DocumentTitle, orderNumber);
+}
+
+<script type="text/javascript">
+
+    function CuteWebUI_AjaxUploader_OnPostback() {
+        document.uploadForm.submit();
+    }   
+
+    function doStart() {
+        if ($("#documentId").val() == '@Guid.Empty')
+        {
+            var uploadobj = document.getElementById('myuploader');
+            if (uploadobj.getqueuecount() > 0) {
+                uploadobj.startupload();
+            }
+            else {
+                alert("Please browse files for upload");
+            }
+        }
+        else {
+            var description = $("#description").val();
+            $("#documentIdDescription").val(description);
+            $("#saveDocument").submit();        
+        }
+    }
+
+    $(document).ready(function () {
+        $("#liServicerOrderMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@Model.PrincipalFormName");
+         $("#cancelButton").click(function () {
+             window.location = '@Url.Action("Index")';
+         });
+         $("#deleteButton").click(function () {
+             DeleteDocument('@Model.Document.DocumentId');
+         });
+     });
+
+     function DeleteDocument(documentId) {
+         ShowMessage("@Resources.Document.DeleteDocumentMessage", "@Resources.Common.DeleteConfirmation", function () {
+             var ajaxUrl = '@Url.Action("DeleteDocument", "Document")';
+
+             $.ajax({
+                 url: ajaxUrl,
+                 type: 'POST',
+                 success: function () {
+                     window.location = '@Url.Action("Index")';
+                 },
+                 error: function () { alert('An error occurred') },
+                 data: { documentId: documentId }
+             });
+         });
+     }
+    
+</script>
+
+@section leftmenu {
+@Html.Partial("_LeftMenuOrder", Model.Links)
+}
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    
+    <ul>
+        <li>@Html.ActionLink(Model.CaptionTitlePrincipal, "Index", "ServiceOrder") &gt;</li>
+        @if (User.IsInRole("Client"))
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "ViewServiceOrder", "ServiceOrder") &gt;</li>
+        }
+        else
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "EditServiceOrder", "ServiceOrder") &gt;</li>
+        }
+
+        <li>@Html.ActionLink(documentTitle, "Index", "Document") &gt;</li>
+        @if (Model.ScreenOpenMode == ScreenOpenMode.Add)
+        {
+        <li class="last">@Resources.Document.NewDocumentTitle</li>
+        }
+         @if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+         {
+             <li class="last">@Resources.Document.EditDocumentTitle</li>
+         }
+    </ul>
+    
+    <div class="cap-right">
+    </div>
+</div>
+
+@if (Model.ScreenOpenMode == ScreenOpenMode.Add)
+{
+        <h1>@Resources.Document.NewDocumentTitle</h1>
+}
+@if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+{
+    <h1>@Resources.Document.EditDocumentTitle</h1>
+}
+
+@Html.Partial("_InspectionReportHeader", Model.ServiceOrderHeader)
+@if (Model.ScreenOpenMode == ScreenOpenMode.Add)
+{
+<p>@Resources.Document.DocumentInstructionAdd</p>
+}
+@if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+{
+    <p>@Resources.Document.DocumentInstructionEdit</p>
+}
+<div class="form product">
+       @using (Html.BeginForm("Upload", "Document", FormMethod.Post, new { enctype = "multipart/form-data", name = "uploadForm" }))
+       {
+           var val = Model.Document.DocumentDescription;
+           var valId = Model.Document.DocumentId;
+        <ol>
+                @if (valId != Guid.Empty)
+                {
+                    <li>
+                        <label>                    
+                            <span class="name">@Resources.Document.DocumentDescription</span>
+                            <input id="description" type="text" class="txt" name="description" value="@val" />
+                            <input id="documentId" type="hidden" class="txt" name="documentId" value="@valId" />
+                        </label>
+                    </li> 
+                }
+                else
+                {
+                    <input id="documentId" type="hidden" class="txt" name="documentId" value="@valId" />
+                }
+                @if (valId == Guid.Empty)
+                {
+                <li>
+                    <label>
+                        <span class="name">@Resources.Document.DocumentLocation</span>
+                            <table style="width:80px;border: none;">
+                            <tbody>
+                            <tr>
+                            <td style="padding-left:0px;background-color:#F6F5F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#F6F5F4',EndColorStr='#F6F5F4');     -ms-filter: 'progid:DXImageTransform.Microsoft.gradient(startColorStr='#F6F5F4',EndColorStr='#F6F5F4')';     zoom: 1; ">       
+                            @Html.AntiForgeryToken() 
+                            @Html.Raw(ViewData["uploaderhtml"].ToString())
+                            <a id="uploadbutton" style="cursor:pointer;float:left"  class="btn">
+                                                <span style="cursor:pointer;" class="btn" >@Resources.Document.DocumentBrowse</span>                                                
+                            </a>
+                            </td>
+                            </tr>
+                            </tbody></table>
+                    </label>
+                </li>                    
+                }
+         </ol>
+       }        
+     </div>
+     <p class ="btn">         
+        <span class="btn" style="margin-right: 10px;">
+            <input type="submit" value="@Resources.Common.Save" onclick="doStart();return false;" />
+        </span>
+        @if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+        {
+        <span class="btn" style="margin-right: 10px;">
+            <input type="button" value="@Resources.Common.Delete" id="deleteButton" />
+        </span>
+        }
+        <span class="btn2">
+            <input type="reset" value="@Resources.Common.Cancel" id="cancelButton" />
+        </span>
+    </p>     
+    <div class="form">
+        @Html.LocalValidationSummary()
+    </div>
+
+<form action="@Url.Action("SaveDocument", "Document")" method="post" id="saveDocument">
+        <input type="hidden" name="documentIdEdit" id="documentIdEdit" value="@Model.Document.DocumentId" />
+        <input type="hidden" name="documentIdDescription" id="documentIdDescription" value="" />
+</form>

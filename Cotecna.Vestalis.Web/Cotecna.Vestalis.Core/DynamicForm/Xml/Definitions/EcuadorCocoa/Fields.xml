@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Fields>
+  <CatalogueField FieldName="Client" Mandatory="true" CatalogueName="Client" EditorType="DropDownList" Caption="Client" IsLikeSearch="true" Width="100" ExcelColumnWidth="27"/>
+  <SingleTextLineField FieldName="FileNumber" Mandatory="true" Caption="Número" MaxLength="12" Width="200" ExcelColumnWidth="20" IsLikeSearch="true" />
+  <SingleTextLineField FieldName="RequestedBy" Caption="Solicitado por" MaxLength="50" Width="200" ExcelColumnWidth="30" IsLikeSearch="true"/>
+  <SingleTextLineField FieldName="Exporter" Mandatory="true" Caption="Exportador" MaxLength="200" Width="200" ExcelColumnWidth="30"/>
+  <DatepickerField FieldName="InspectionDate"  Caption="Fecha de inspección planificada" ShortCaption="Fecha de inspección" StartDateFilter="today-30" EndDateFilter="today+30" Width="135" ExcelColumnWidth="28" />
+  <TimeField FieldName="InspectionTime"  Caption="Hora de inspección planificada" Width="150" ShortCaption="Hora de inspección" ExcelColumnWidth="28"/>
+  <SingleTextLineField FieldName="InspectionPlace" Mandatory="true" Caption="Lugar de la inspección" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="Reference" Mandatory="true" Caption="Referencia" MaxLength="100" Width="200" />
+  <SingleTextLineField FieldName="Quality" Mandatory="true" Caption="Calidad" MaxLength="100" Width="200" />
+  <DatepickerField FieldName="ShipmentDate" Caption="Fecha de envío" StartDateFilter="today-30" EndDateFilter="today" Width="135" />
+  <SingleTextLineField FieldName="Vessel" Mandatory="true" Caption="Vapor" MaxLength="100" Width="200" />
+  <SingleTextLineField FieldName="ShippingAgency" Caption="Agencia naviera" MaxLength="100" Width="200" />
+  <CatalogueField FieldName="PortOfLoading" Mandatory="true" CatalogueName="Puerto de carga" EditorType="DropDownList" Caption="Puerto de carga" Width="150"/>
+  <CatalogueField FieldName="DestinationCountry" CatalogueName="País de destino" EditorType="DropDownList" Caption="País de destino" Width="150"/>
+  <CatalogueField FieldName="PortOfDestination" Mandatory="true" CatalogueName="Puerto de destino" EditorType="DropDownList" Caption="Puerto de destino" Width="150"/>
+  <DecimalField FieldName="FobValueToBeExported"  Caption ="Valor FOB" NumDigits="2" MinValue="0.00" MinValueSpecified="0.00" MaxValue="999999999.99" MaxValueSpecified="999999999.99" />
+  <SingleTextLineField FieldName="InvoiceNumber"  Caption="Número de factura" MaxLength="40" Width="150" />
+  <CatalogueField FieldName="Inspector" CatalogueName="Inspector" EditorType="DropDownList" Caption="Inspector" Width="150" ExcelColumnWidth="30"/>
+  <SingleTextLineField FieldName="Buyer" Mandatory="true" Caption="Comprador" MaxLength="20" Width="120" ExcelColumnWidth="20" />
+  <SingleTextLineField FieldName="ExporterReport" Caption="Exportador" MaxLength="200" Width="200" ExcelColumnWidth="30"/>
+  <SingleTextLineField FieldName="Lot" Mandatory="true" Caption="Lote" MaxLength="30" Width="120" ExcelColumnWidth="15"/>
+  <SingleTextLineField FieldName="QualityReport" Caption="Calidad" MaxLength="100" Width="200" />
+  <IntegerField FieldName="Quantity" Mandatory="true" MinValue="0" MaxValue="2147483647" Caption="Cantidad" CaptionGrid="Cantidad" Width="100" ExcelColumnWidth="19"/>"
+  <SingleTextLineField FieldName="Destination" Caption="Destino" MaxLength="150" Width="180" ExcelColumnWidth="30" IsLikeSearch="true"/>
+  <DatepickerField FieldName="SamplingDate" Caption="Fecha de muestreo" StartDateFilter="today-30" EndDateFilter="today" Width="135" ExcelColumnWidth="19" />
+  <DatepickerField FieldName="AnalysisDate" Caption="Fecha de análisis" StartDateFilter="today-30" EndDateFilter="today" Width="135" ExcelColumnWidth="19" />
+  <BooleanField FieldName="SamplesInpector" Caption="Muestras del inspector" Width="100" ExcelColumnWidth="26"/>
+  <BooleanField FieldName="CounterSample" Caption="Contra muestra" Width="100" ExcelColumnWidth="26"/>
+  <CatalogueField FieldName="InspectionType"  CatalogueName="Tipo de inspección" EditorType="DropDownList" Caption="Tipo de inspección" Width="150"/>
+  <CatalogueField FieldName="ProductQuality" Mandatory="true"  CatalogueName="Calidad del producto" EditorType="DropDownList" Caption="Calidad del producto" Width="150"/>
+  <CatalogueField FieldName="OtherServices" CatalogueName="Otros servicios" EditorType="DropDownList" Caption="Otros servicios" Width="150" ExcelColumnWidth="30"/>
+  <MultipleTextLineField FieldName="Observations" Caption="Observaciones" MaxLength="2000" ExcelColumnWidth="46" />
+  <SingleTextLineField FieldName="Signatures" Caption="Firma" MaxLength="100" Width="200" />
+  <SingleTextLineField FieldName="Consignee" Caption="Consignatario" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="BuenaFermentacion" Caption="Buena fermentación" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="LigeramenteFermentados" Caption="Ligeramente fermentado" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="GranoVioleta" Caption="Grano violeta" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="GranoPizarroso" Caption="Grano pizarroso" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="Mohos" Caption="Mohos" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="DanosInsectos" Caption="Daños por insectos" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="Vulnerado" Caption="Vulnerado" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="ContenidoCacaoTrinitario" Caption="Contenido de cacao tipo trinitario (CCN-51)" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="Multiples" Caption="Múltiples" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="Partidos" Caption="Partidos" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="PlanoGranza" Caption="Plano - granza" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="ImpurezasCacao" Caption="Impurezas de cacao" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="MateriaExtrania" Caption="Materia extraña" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="PesoPepas" Caption="Peso de 100 pepas" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="PepasGramos" Caption="# de pepas en 100 gramos" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+  <SingleTextLineField FieldName="Humedad" Caption="Humedad" MaxLength="200" Width="200" ExcelColumnWidth="35"/>
+</Fields>

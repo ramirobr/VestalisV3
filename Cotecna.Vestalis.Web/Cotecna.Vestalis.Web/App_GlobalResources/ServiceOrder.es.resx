@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeginDateValue" xml:space="preserve">
+    <value>La fecha de inicio debe tener un valor</value>
+  </data>
+  <data name="ComboBoxUserDefaultOption" xml:space="preserve">
+    <value>Seleccione un usuario</value>
+  </data>
+  <data name="DateRule" xml:space="preserve">
+    <value>La fecha de inicio debe ser menor a la fecha de fin</value>
+  </data>
+  <data name="DeleteServiceOrder" xml:space="preserve">
+    <value>¿Está seguro que desea borrar la orden de servicio?</value>
+  </data>
+  <data name="DigitsValidationMessage" xml:space="preserve">
+    <value>Por favor escriba solo dígitos</value>
+  </data>
+  <data name="EditServiceOrder" xml:space="preserve">
+    <value>Editar orden de servicio</value>
+  </data>
+  <data name="EndDateValue" xml:space="preserve">
+    <value>Fecha de fin debe tener un valor</value>
+  </data>
+  <data name="ErrorFieldDateIncorrect" xml:space="preserve">
+    <value>El campo {0} tiene un formato incorrecto. El formato correcto es dd/mm/aaaa</value>
+  </data>
+  <data name="ErrorFieldDateRuleEndDate" xml:space="preserve">
+    <value>El campo {0} es mayor que {1}</value>
+  </data>
+  <data name="ErrorFieldDateRuleStartDate" xml:space="preserve">
+    <value>El campo {0} es menor que {1}</value>
+  </data>
+  <data name="ErrorFieldNumericIncorrect" xml:space="preserve">
+    <value>El campo {0} no es un número válido.</value>
+  </data>
+  <data name="ErrorFieldRegularExpression" xml:space="preserve">
+    <value>El campo {0} no coincide con el patrón {1}</value>
+  </data>
+  <data name="ErrorFieldRequired" xml:space="preserve">
+    <value>El campo {0} es requerido</value>
+  </data>
+  <data name="ErrorFieldTextMaxLength" xml:space="preserve">
+    <value>El campo {0} excede el número máximo de caracteres</value>
+  </data>
+  <data name="ErrorFieldTextMaxValue" xml:space="preserve">
+    <value>El campo {0} es mayor que {1}</value>
+  </data>
+  <data name="ErrorFieldTextMinLength" xml:space="preserve">
+    <value>El campo {0} es menor que el número mínimo de caracteres</value>
+  </data>
+  <data name="ErrorFieldTextMinValue" xml:space="preserve">
+    <value>El campo {0} es menor que {1}</value>
+  </data>
+  <data name="ErrorFieldTextNumDigit" xml:space="preserve">
+    <value>El campo {0} tiene un número incorrecto de dígitos</value>
+  </data>
+  <data name="GenerateReportMessage" xml:space="preserve">
+    <value>Por favor, elija al menos una opción para generar el informe.</value>
+  </data>
+  <data name="GenerateServiceOrderReport" xml:space="preserve">
+    <value>Generar reporte de las órdenes de servicio</value>
+  </data>
+  <data name="InspectionReportsChooseInstruction" xml:space="preserve">
+    <value>Elija uno o más informes para exportar a excel</value>
+  </data>
+  <data name="InspectionReportsChooseTitle" xml:space="preserve">
+    <value>Reportes de inspección</value>
+  </data>
+  <data name="InstructionGeneral" xml:space="preserve">
+    <value>Complete el siguiente formulario para solicitar una inspección, * indica los campos obligatorios.</value>
+  </data>
+  <data name="MandatoryFieldValidationMessage" xml:space="preserve">
+    <value>Campo obligatorio. Por favor, introduzca un valor</value>
+  </data>
+  <data name="MaxValueValidationMessage" xml:space="preserve">
+    <value>Por favor, escriba un valor inferior a {0}</value>
+  </data>
+  <data name="MinLengthValidationMessage" xml:space="preserve">
+    <value>Por favor, al menos {0} caracteres son necesarios</value>
+  </data>
+  <data name="MinValueValidationMessage" xml:space="preserve">
+    <value>Por favor, escriba un valor mayor que {0}</value>
+  </data>
+  <data name="NewServiceOrder" xml:space="preserve">
+    <value>Nueva orden de servicio</value>
+  </data>
+  <data name="NumbersValidationMessage" xml:space="preserve">
+    <value>Por favor escriba solo dígitos</value>
+  </data>
+  <data name="RegularExpressionErrorMessage" xml:space="preserve">
+    <value>Por favor, especifique una entrada correcta</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="SelectionNotValidMessage" xml:space="preserve">
+    <value>Por favor seleccione un valor válido</value>
+  </data>
+  <data name="ServiceOrderListSearchSection" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="ServiceOrderListTitle" xml:space="preserve">
+    <value>Servicio Lista de Pedidos</value>
+  </data>
+  <data name="ServiceOrderListTitleLegend" xml:space="preserve">
+    <value>Introduzca sus criterios de búsqueda:</value>
+  </data>
+  <data name="ServiceOrderMenu" xml:space="preserve">
+    <value>Orden de servicio</value>
+  </data>
+  <data name="ServiceOrderNumber" xml:space="preserve">
+    <value>Orden de servicio {0}</value>
+  </data>
+  <data name="ServiceOrderTitle" xml:space="preserve">
+    <value>Ordenes de Servicio</value>
+  </data>
+  <data name="SummatoryRule" xml:space="preserve">
+    <value>La suma de los valores es diferente del valor esperado</value>
+  </data>
+  <data name="TimeValidadtionMessage" xml:space="preserve">
+    <value>Por favor, especifique la hora correcta 24h</value>
+  </data>
+  <data name="ViewServiceOrder" xml:space="preserve">
+    <value>Ver orden de servicio</value>
+  </data>
+</root>

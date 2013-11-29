@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Fields>
+  <CatalogueField FieldName="Status" CatalogueName="Status" EditorType="DropDownList" Caption="Status" Mandatory="true" Width="130"/>
+  <CatalogueField FieldName="Client" CatalogueName="Client" EditorType="DropDownList" Caption="Client" Mandatory="true" Width="150"/>
+  <SingleTextLineField FieldName="CertificateNumber" Caption="Certificate No" MaxLength="60" Mandatory="true" IsLikeSearch="true" Width="160"/>
+  <DatepickerField FieldName="OrderDate" Mandatory="true" StartDate="01/01/2012" EndDate="today" Caption="Issuance date" StartDateFilter="today-8" EndDateFilter="today" Width="135" />
+</Fields>

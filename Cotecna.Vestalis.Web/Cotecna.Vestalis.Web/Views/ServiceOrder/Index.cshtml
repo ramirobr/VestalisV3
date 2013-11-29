@@ -1,0 +1,552 @@
+﻿@using Cotecna.Vestalis.Core
+@model DynamicDataGrid
+@{
+    ViewBag.Title = "Vestalis";
+    int totalNumberOfItemsWithoutPagination = Model.TotalNumberOfItemsWithoutPagination;
+    int numberOfPages = Model.NumberOfPages.GetValueOrDefault();
+    int currentPage = Model.Page.GetValueOrDefault();
+    bool isClient = User.IsInRole("Client");
+}
+
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for radios and checks*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+}
+
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection") 
+}
+@Html.Partial("_ConfirmationMessage")
+
+@{
+    string dataSent = "";
+    string fieldsWithLike = "";
+
+ foreach (var filter in Model.Filters)
+ {
+     var htmlIdentifierValue = filter.FieldName;
+
+     if (Model.Filters.Last() == filter)
+     {
+         if (filter.FieldType == FieldType.Datepicker)
+         {
+             htmlIdentifierValue = htmlIdentifierValue + "to";
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val(),", htmlIdentifierValue, htmlIdentifierValue);
+             htmlIdentifierValue = filter.FieldName + "from";
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val()", htmlIdentifierValue, htmlIdentifierValue);
+         }
+         else
+         {
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val()", htmlIdentifierValue, htmlIdentifierValue);
+         }
+     }
+     else
+     {
+         if (filter.FieldType == FieldType.Datepicker)
+         {
+             htmlIdentifierValue = htmlIdentifierValue + "to";
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val(),", htmlIdentifierValue, htmlIdentifierValue);
+             htmlIdentifierValue = filter.FieldName + "from";
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val(),", htmlIdentifierValue, htmlIdentifierValue);
+         }
+         else
+         {
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val(),", htmlIdentifierValue, htmlIdentifierValue);
+         }
+     }
+
+ }
+
+ foreach (var filter in Model.Filters.Where(data => data.IsLikeSearch))
+ {
+     if (Model.Filters.Where(data => data.IsLikeSearch).Last() == filter)
+     {
+        fieldsWithLike += string.Format("IsLike{0}:true",filter.FieldName);
+     }
+     else
+     {
+         fieldsWithLike += string.Format("IsLike{0}:true,", filter.FieldName);
+     }
+ }
+
+ if (!string.IsNullOrEmpty(fieldsWithLike))
+ {
+     dataSent = dataSent + "," + fieldsWithLike;
+ }
+ 
+ }
+
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    <ul>
+        <li class="last">@Model.CaptionBreadcrumbs</li>
+    </ul>
+    <div class="cap-right">
+    </div>
+</div>
+<script type="text/javascript">
+
+    function UpdateResults(results) {
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+    $(function () {
+
+        $("#chooseReportExcel").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 280,
+            width: 380,
+            modal: true
+        });
+
+        
+        $("#Content").width(915);  
+        $("#searchButton").click(function () {
+            var ajaxUrl = '@Url.Action("SearchOrder", "ServiceOrder")';
+            
+            $.ajax({
+                global: false,
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResults,
+                error: function () { alert('An error occurred') },
+                data:{@Html.Raw(dataSent)}
+            });
+
+        });
+
+        $("#resetButton").click(function () {
+            window.location = '@Url.Action("Index")';
+        });
+
+        
+
+        $("#cancelExportButton").click(function () {
+            $('#chooseReportExcel').dialog('close');
+            $("#errorDivRep").html("");
+        });
+
+        $("#exportInspecButton").click(function () {
+            var data = '';
+            $("#reportList input:checked").each(function () {
+                //fill the array with the values
+                data += $(this).val() + ';';
+            });
+            
+            var ajaxUrl = '@Url.Action("ExecuteSearchAllInspectionReportsExport", "ServiceOrder")';
+            var rowid = $("#serviceOrderId").val();
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'JSON',
+                success: DownloadReports ,
+                error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                data: { rowId: rowid, selectedReports: data }
+            });
+
+
+        });
+
+    }); 
+    
+    function exportGridToExcel() {
+
+            var ajaxUrl = '@Url.Action("ExecuteSeachServiceOrders", "ServiceOrder")';
+            
+            $.ajax({
+                global: false,
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response){
+                    if(response) {
+                        $("#exportToExcel").submit();
+                    }
+                    else {
+                        $("#formError").submit();
+                    }
+                },
+                error: function () { $("#formError").submit(); },
+                data:{@Html.Raw(dataSent)}
+            });
+
+        }
+
+
+    function DownloadReports(results) {
+        if(results == "" || results == undefined)
+        {
+            $('#chooseReportExcel').dialog('close');
+
+            var ajaxUrl = '@Url.Action("GenerateExcelAllInspectionReports", "ServiceOrder")';
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function(response){
+                    if(response) {
+                        $("#exportInspectionReports").submit();
+                    }
+                    else {
+                        $("#formError").submit();
+                    }        
+                } ,
+                error: function () { $("#formError").submit(); }
+            });
+            
+        }
+        else{
+
+            $("#chooseReportExcel").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: 345,
+                width: 380,
+                modal: true
+            });
+
+            var titleError = "";
+            var error = "";
+            titleError = "<h5>There is 1 error</h5> <ul id ='errorUlRep'></ul>";
+            $("#errorDivRep").html("");
+            $("#errorDivRep").html(titleError);
+            error += "<li>"+results+"</li>";
+            $("#errorUlRep").html(error);
+        }
+    }
+
+
+    function LaunchPublishValidateInspectionReport(title,message,rowid){
+        ShowMessage(message,title, function () {
+            var ajaxUrl = '@Url.Action("ValidatePublishInspectionReports", "ServiceOrder")';
+            $.ajax({
+                global: false,
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResults,
+                error: function () { alert('An error occurred') },
+                data:{serviceOrderId: rowid, @Html.Raw(dataSent)}
+            });           
+        });     
+    }
+        
+    
+    $("document").ready(function () 
+    {
+        var ajaxUrl = '@Url.Action("SearchOrder", "ServiceOrder")';
+        $.ajax({
+            global: false,
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResults,
+            error: function () { alert('An error occurred') },
+            data:{@Html.Raw(dataSent)}
+        });
+
+        $("#liServicerOrderMenu").prop("class", "first current");
+        $("#serviceOrderLink").html("@Model.FormName");
+    });
+           
+
+</script>
+<h1>@Model.CaptionTitle</h1>
+<p>@Resources.ServiceOrder.ServiceOrderListTitleLegend</p>
+
+
+
+<div class="form"> 
+    <div class="legend">        
+        <span>&nbsp;</span>
+        @Resources.ServiceOrder.ServiceOrderListSearchSection
+    </div>
+    <ol>
+    @for (int i = 0; i < Model.Filters.Count; i++)
+    {
+        Field filter = Model.Filters[i];
+        var htmlIdentifier = filter.FieldName;
+        string caption = string.IsNullOrEmpty(filter.ShortCaption) ? filter.Caption : filter.ShortCaption;
+
+        if (filter.FieldType == FieldType.Datepicker)
+        {
+            FieldsDatepickerField dateField = filter as FieldsDatepickerField;
+            var htmlIdentifierFrom = htmlIdentifier + "from";
+            var htmlIdentifierTo = htmlIdentifier + "to";
+
+            string captionFrom = caption + " " + Resources.Common.From;
+            string captionTo = caption + " " + Resources.Common.To;
+               
+                <li class="datehalf">
+                <label>
+                    <span class="name">@captionFrom</span>
+
+                    <script>
+                        $(function () {
+                            $("#@htmlIdentifierFrom").datepicker({
+                                showOn: "button",
+                                buttonImage: '@Url.Content("~/Images/date.png")',
+                                buttonImageOnly: true,
+                                dateFormat: "dd/mm/yy",
+                                firstDay: 1
+                            });
+                        });
+                </script>
+                @{
+            DateTime dateFrom;
+            string dateFromValue = string.Empty;
+            if (!string.IsNullOrEmpty(dateField.StartDateFilter))
+            {
+                if (dateField.StartDateFilter.Contains("today"))
+                {
+                    if (dateField.StartDateFilter.Contains("-"))
+                    {
+                        string[] startDateFilterValues = dateField.StartDateFilter.Split('-');
+                        dateFrom = DateTime.Now.AddDays((int.Parse(startDateFilterValues[1]) * -1));
+                        dateFromValue = string.Format("{0:dd/MM/yyyy}", dateFrom);    
+                                <input id="@htmlIdentifierFrom" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateFromValue" disabled="disabled"/>
+                    }
+                    else if (dateField.StartDateFilter.Contains("+"))
+                    {
+                        string[] startDateFilterValues = dateField.StartDateFilter.Split('+');
+                        dateFrom = DateTime.Now.AddDays(int.Parse(startDateFilterValues[1]));
+                        dateFromValue = string.Format("{0:dd/MM/yyyy}", dateFrom);    
+                                <input id="@htmlIdentifierFrom" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateFromValue" disabled="disabled"/>
+                    }
+                    else
+                    {
+                        dateFromValue = string.Format("{0:dd/MM/yyyy}", DateTime.Now);    
+                                <input id="@htmlIdentifierFrom" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateFromValue" disabled="disabled"/>
+                    }
+                }
+                else
+                {    
+                            <input id="@htmlIdentifierFrom" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateField.StartDateFilter" disabled="disabled"/>
+                }
+            }
+            else
+            {
+                        <input id="@htmlIdentifierFrom" type="text" class="txt" name="@htmlIdentifierFrom" disabled="disabled"/>
+            }
+                }
+                </label>
+            </li>
+        
+        <li class="datehalf">
+                <label style= "position:relative;left:75px;">
+                    <span class="name">@captionTo</span>
+                    <script>
+                        $(function () {
+                            $("#@htmlIdentifierTo").datepicker({
+                                showOn: "button",
+                                buttonImage: '@Url.Content("~/Images/date.png")',
+                                buttonImageOnly: true,
+                                dateFormat: "dd/mm/yy",
+                                firstDay: 1
+                            });
+                        });
+                </script>
+                @{
+                    
+            DateTime dateTo;
+            string dateToValue = string.Empty;
+            if (!string.IsNullOrEmpty(dateField.EndDateFilter))
+            {
+                if (dateField.EndDateFilter.Contains("today"))
+                {
+                    if (dateField.EndDateFilter.Contains("-"))
+                    {
+                        string[] endDateFilterValues = dateField.EndDateFilter.Split('-');
+                        dateFrom = DateTime.Now.AddDays((int.Parse(endDateFilterValues[1]) * -1));
+                        dateFromValue = string.Format("{0:dd/MM/yyyy}", dateFrom);    
+                                <input id="@htmlIdentifierTo" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateFromValue" disabled="disabled"/>
+                    }
+                    else if (dateField.EndDateFilter.Contains("+"))
+                    {
+                        string[] endDateFilterValues = dateField.EndDateFilter.Split('+');
+                        dateFrom = DateTime.Now.AddDays(int.Parse(endDateFilterValues[1]));
+                        dateFromValue = string.Format("{0:dd/MM/yyyy}", dateFrom);    
+                                <input id="@htmlIdentifierTo" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateFromValue" disabled="disabled"/>
+                    }
+                    else
+                    {
+                        dateToValue = string.Format("{0:dd/MM/yyyy}", DateTime.Now);
+                                <input id="@htmlIdentifierTo" type="text" class="txt" name="@htmlIdentifierTo" value="@dateToValue" disabled="disabled"/>
+                    }
+                }
+                else
+                {    
+                            <input id="@htmlIdentifierTo" type="text" class="txt" name="@htmlIdentifierFrom" value="@dateField.EndDateFilter" disabled="disabled"/>
+                }
+            }
+            else
+            {
+                        <input id="@htmlIdentifierTo" type="text" class="txt" name="@htmlIdentifierFrom" disabled="disabled"/>
+            }
+                }
+                </label>
+            </li>
+        }
+        else
+        {
+            <li >
+                <label>
+                    <span class="name">@caption</span>
+
+            @switch (filter.FieldType)
+            {
+                case FieldType.Catalogue:
+                    FieldsCatalogueField catalogueField = filter as FieldsCatalogueField;
+                    if (catalogueField.IsLikeSearch)
+                    {
+                        <input id="@htmlIdentifier" name="@htmlIdentifier" type="text" class="txt"/>
+                    }
+                    else
+                    {
+                        switch (catalogueField.EditorType)
+                        {
+                            case FieldsCatalogueFieldEditorType.DropDownList:
+                                @Html.DropDownList(filter.FieldName, catalogueField.ItemsSource, Resources.Common.SelectOneOption)
+                           break;
+                            case FieldsCatalogueFieldEditorType.List:
+                                @Html.ListBox(filter.FieldName, catalogueField.ItemsSource)
+                           break;
+                            case FieldsCatalogueFieldEditorType.Radios:
+                           foreach (var item in catalogueField.ItemsSource)
+                           {                                    
+                                    @Html.RadioButton(filter.FieldName, item.Value, item.Selected)
+                                    <span>@item.Text</span> 
+                                    <text>&nbsp&nbsp&nbsp</text>
+                           }
+                           break;
+                            default:
+                           break;
+                        }
+                    }
+
+
+
+                    break;
+
+                case FieldType.SingleTextLine:
+                      <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier"/>
+                                                                           break;
+
+                case FieldType.MultipleTextLine:
+                    FieldsMultipleTextLineField multiTextField = filter as FieldsMultipleTextLineField;
+                    <textarea id="@htmlIdentifier" rows="4" cols="50" name="@htmlIdentifier"></textarea>
+                                                                       break;
+
+                case FieldType.Boolean:
+                    <input id="@htmlIdentifier" type="checkbox" class="txt" name="@htmlIdentifier" checked="checked" />
+                                                                             break;
+
+                case FieldType.Time:
+                                                                             FieldsTimeField timeField = filter as FieldsTimeField;
+                    <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier"/>
+                                                                         break;
+
+                case FieldType.Integer:
+                    <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier"/>
+                                                                         break;
+
+                case FieldType.Decimal:
+                    <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier"/>
+                                                                         break;
+
+                case FieldType.RegularExpressionText:
+                    <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier"/>
+                                                                         break;
+
+                case FieldType.User:
+                                                                         FieldsUserField userField = filter as FieldsUserField;
+                    @Html.DropDownList(filter.FieldName, userField.ItemsSource, "Select One User")
+               break;
+
+                case FieldType.Datepicker:
+               FieldsDatepickerField dateField = filter as FieldsDatepickerField;
+                    
+                    <script>
+                $(function () {
+                    $("#@htmlIdentifier").datepicker({
+                        showOn: "button",
+                        buttonImage: '@Url.Content("~/Images/date.png")',
+                        buttonImageOnly: true,                         
+                        dateFormat: "dd/mm/yy",
+                        firstDay: 1
+                     });
+                });
+                </script>
+                <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier"/>
+                                                                     break;
+                default:
+                                                                     break;
+            }
+
+                </label>
+            </li>
+        }
+    }
+             
+    </ol>
+    </div>
+<p class="btn">
+    <span class="btn">
+        <input type="submit" value="@Resources.Common.Search" id="searchButton" />
+    </span>
+    <span class="btn2">
+        <input type="reset" value="@Resources.Common.Reset" id="resetButton" />
+    </span>
+</p>
+
+<div class="gridArea">
+    @Html.Partial("_ServiceOrderGrid", Model)
+</div>
+
+
+<div id="chooseReportExcel" title="">
+    <div id="Content" style="width:350px; margin-left: 0;">
+        <div class="form" id="formExcel">
+            <div class="legend">
+                @Resources.ServiceOrder.InspectionReportsChooseTitle
+            </div> 
+            <p style="margin-bottom:0px;">@Resources.ServiceOrder.InspectionReportsChooseInstruction</p>
+            <ol style="height:120px;">
+                <div id="reportList">
+                    @Html.Partial("_ReportList", new List<string>())
+                </div>
+            </ol>
+            <p class="btn">
+                <span class="btn">
+                    <input type="submit" value="@Resources.Common.ExportExcelButton" id="exportInspecButton" />
+                </span>
+                <span class="btn2">
+                    <input type="reset" value="@Resources.Common.Cancel" id="cancelExportButton" />
+            </span>
+            </p>
+        </div>
+        <div class="form">
+            <div class="error" id="errorDivRep">
+            
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="serviceOrderId" name="serviceOrderId" value="" />
+</div>

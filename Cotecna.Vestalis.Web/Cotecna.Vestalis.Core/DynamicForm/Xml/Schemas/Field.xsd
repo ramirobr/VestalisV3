@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Field">
+    <!--<xs:sequence>
+      <xs:element name="Captions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Caption">
+              <xs:complexType>
+                <xs:attribute name="Language" type="xs:string" use="required" />
+                <xs:attribute name="Value" type="xs:string" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>-->
+    <xs:attribute name="Caption" type="xs:string" use="required" />
+    <xs:attribute name="FieldName" type="xs:string" use="required" />
+    <xs:attribute name="Mandatory" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="CaptionGrid" type="xs:string" use="optional" />
+    <xs:attribute name="ShortCaption" type="xs:string" use="optional" />
+    <xs:attribute name="IsLikeSearch" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="Width" type="xs:integer" use="optional" />
+    <xs:attribute name="ExcelColumnWidth" type="xs:integer" use="optional" />
+  </xs:complexType> 
+  
+  <xs:element name="Fields">
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:choice>
+          <xs:element name="CatalogueField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="EditorType" use="required" >
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:enumeration value="DropDownList"/>
+                        <xs:enumeration value="List"/>
+                        <xs:enumeration value="Radios"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="CatalogueName" type="xs:string" use="required" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="SingleTextLineField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="MinLength" type="xs:integer" />
+                  <xs:attribute name="MaxLength" type="xs:integer" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="MultipleTextLineField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="MinLength" type="xs:integer" />
+                  <xs:attribute name="MaxLength" type="xs:integer" />
+                  <xs:attribute name="CatalogueName" type="xs:string" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="BooleanField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="DatepickerField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="StartDate" type="xs:string" />
+                  <xs:attribute name="EndDate" type="xs:string" />
+                  <xs:attribute name="StartDateFilter" type="xs:string" />
+                  <xs:attribute name="EndDateFilter" type="xs:string" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="TimeField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="IntegerField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="MinValue" type="xs:integer" use="optional" />
+                  <xs:attribute name="MaxValue" type="xs:integer" use="optional" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="DecimalField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="NumDigits" type="xs:integer"  />
+                  <xs:attribute name="MinValue" type="xs:decimal" />
+                  <xs:attribute name="MaxValue" type="xs:decimal" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="RegularExpressionTextField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="Expression" type="xs:string" use="required" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="UserField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="Role" type="xs:string" use="optional" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="AutoCompleteTextField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                  <xs:attribute name="ItemSourceCondition" type="xs:string" use="required" />
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="PictureField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="StatusField" >
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="Field">
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

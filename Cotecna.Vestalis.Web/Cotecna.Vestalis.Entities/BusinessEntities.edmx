@@ -1,0 +1,1758 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VESTALISModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="VESTALISModelStoreContainer">
+          <EntitySet Name="ApprovalItem" EntityType="VESTALISModel.Store.ApprovalItem" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_Membership" EntityType="VESTALISModel.Store.aspnet_Membership" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_Profile" EntityType="VESTALISModel.Store.aspnet_Profile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_Roles" EntityType="VESTALISModel.Store.aspnet_Roles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_Users" EntityType="VESTALISModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_UsersInRoles" EntityType="VESTALISModel.Store.aspnet_UsersInRoles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="BusinessApplication" EntityType="VESTALISModel.Store.BusinessApplication" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Catalogue" EntityType="VESTALISModel.Store.Catalogue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CatalogueValue" EntityType="VESTALISModel.Store.CatalogueValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Country" EntityType="VESTALISModel.Store.Country" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Document" EntityType="VESTALISModel.Store.Document" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FormDefinition" EntityType="VESTALISModel.Store.FormDefinition" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FormValue" EntityType="VESTALISModel.Store.FormValue" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="InspectionReport" EntityType="VESTALISModel.Store.InspectionReport" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="InspectionReportItem" EntityType="VESTALISModel.Store.InspectionReportItem" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Picture" EntityType="VESTALISModel.Store.Picture" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ServiceOrder" EntityType="VESTALISModel.Store.ServiceOrder" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ValidationRole" EntityType="VESTALISModel.Store.ValidationRole" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="VestalisUserApplication" EntityType="VESTALISModel.Store.VestalisUserApplication" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK__aspnet_Me__UserI__778AC167" Association="VESTALISModel.Store.FK__aspnet_Me__UserI__778AC167">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+          </AssociationSet>
+          <AssociationSet Name="FK__aspnet_Pr__UserI__2DE6D218" Association="VESTALISModel.Store.FK__aspnet_Pr__UserI__2DE6D218">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_Profile" EntitySet="aspnet_Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__aspnet_Us__RoleI__40058253" Association="VESTALISModel.Store.FK__aspnet_Us__RoleI__40058253">
+            <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
+            <End Role="aspnet_UsersInRoles" EntitySet="aspnet_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__aspnet_Us__UserI__3F115E1A" Association="VESTALISModel.Store.FK__aspnet_Us__UserI__3F115E1A">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_UsersInRoles" EntitySet="aspnet_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalItem_InspectionReportItem" Association="VESTALISModel.Store.FK_ApprovalItem_InspectionReportItem">
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItem" />
+            <End Role="ApprovalItem" EntitySet="ApprovalItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BusinessApplication_Country" Association="VESTALISModel.Store.FK_BusinessApplication_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="BusinessApplication" EntitySet="BusinessApplication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Catalogue_BusinessApplication" Association="VESTALISModel.Store.FK_Catalogue_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplication" />
+            <End Role="Catalogue" EntitySet="Catalogue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatalogueValue_Catalogue" Association="VESTALISModel.Store.FK_CatalogueValue_Catalogue">
+            <End Role="Catalogue" EntitySet="Catalogue" />
+            <End Role="CatalogueValue" EntitySet="CatalogueValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_ServiceOrder" Association="VESTALISModel.Store.FK_Document_ServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrder" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormDefinition_BusinessApplication" Association="VESTALISModel.Store.FK_FormDefinition_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplication" />
+            <End Role="FormDefinition" EntitySet="FormDefinition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormDefinition_CatalogueValue" Association="VESTALISModel.Store.FK_FormDefinition_CatalogueValue">
+            <End Role="CatalogueValue" EntitySet="CatalogueValue" />
+            <End Role="FormDefinition" EntitySet="FormDefinition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormValue_CatalogueValue" Association="VESTALISModel.Store.FK_FormValue_CatalogueValue">
+            <End Role="CatalogueValue" EntitySet="CatalogueValue" />
+            <End Role="FormValue" EntitySet="FormValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormValue_InspectionReportItem" Association="VESTALISModel.Store.FK_FormValue_InspectionReportItem">
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItem" />
+            <End Role="FormValue" EntitySet="FormValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormValueServiceOrder" Association="VESTALISModel.Store.FK_FormValueServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrder" />
+            <End Role="FormValue" EntitySet="FormValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InspectionReport_ServiceOrder" Association="VESTALISModel.Store.FK_InspectionReport_ServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrder" />
+            <End Role="InspectionReport" EntitySet="InspectionReport" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InspectionReportItem_InspectionReport" Association="VESTALISModel.Store.FK_InspectionReportItem_InspectionReport">
+            <End Role="InspectionReport" EntitySet="InspectionReport" />
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Picture_InspectionReportItem" Association="VESTALISModel.Store.FK_Picture_InspectionReportItem">
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItem" />
+            <End Role="Picture" EntitySet="Picture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PictureServiceOrder" Association="VESTALISModel.Store.FK_PictureServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrder" />
+            <End Role="Picture" EntitySet="Picture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_BusinessApplication" Association="VESTALISModel.Store.FK_Role_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplication" />
+            <End Role="ValidationRole" EntitySet="ValidationRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceOrder_BusinessApplication" Association="VESTALISModel.Store.FK_ServiceOrder_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplication" />
+            <End Role="ServiceOrder" EntitySet="ServiceOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VestalisUserApplication_BusinessApplication" Association="VESTALISModel.Store.FK_VestalisUserApplication_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplication" />
+            <End Role="VestalisUserApplication" EntitySet="VestalisUserApplication" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ApprovalItem">
+          <Key>
+            <PropertyRef Name="ApprovalItemId" />
+          </Key>
+          <Property Name="ApprovalItemId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="InspectionReportItemId" Type="uniqueidentifier" />
+          <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="ApprovalLevel" Type="int" Nullable="false" />
+          <Property Name="CanPublish" Type="bit" />
+          <Property Name="IsReadOnly" Type="bit" />
+          <Property Name="ApprovalStatus" Type="int" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="aspnet_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false"  />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="PasswordFormat" Type="int" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="MobilePIN" Type="nvarchar" MaxLength="16" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="LoweredEmail" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordQuestion" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordAnswer" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLockoutDate" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAttemptCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordAttemptWindowStart" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptWindowStart" Type="datetime" Nullable="false" />
+          <Property Name="Comment" Type="ntext" />
+        </EntityType>
+        <EntityType Name="aspnet_Profile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PropertyNames" Type="ntext" Nullable="false" />
+          <Property Name="PropertyValuesString" Type="ntext" Nullable="false" />
+          <Property Name="PropertyValuesBinary" Type="image" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="aspnet_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="LoweredRoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="aspnet_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="LoweredUserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="MobileAlias" Type="nvarchar" MaxLength="16" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="aspnet_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BusinessApplication">
+          <Key>
+            <PropertyRef Name="BusinessApplicationId" />
+          </Key>
+          <Property Name="BusinessApplicationId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="CountryId" Type="uniqueidentifier" />
+          <Property Name="BusinessApplicationName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="XmlFieldDefinition" Type="nvarchar(max)" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Prefix" Type="char" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="Catalogue">
+          <Key>
+            <PropertyRef Name="CatalogueId" />
+          </Key>
+          <Property Name="CatalogueId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="BusinessApplicationId" Type="uniqueidentifier" />
+          <Property Name="CatalogueCategoryName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CatalogueValue">
+          <Key>
+            <PropertyRef Name="CatalogueValueId" />
+          </Key>
+          <Property Name="CatalogueValueId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="CatalogueId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CatalogueValueData" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="CatalogueValueDescription" Type="nvarchar" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="CountryCode" Type="nvarchar" Nullable="false" MaxLength="2" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="256" />
+          <Property Name="DefaultLanguage" Type="nvarchar" Nullable="false" MaxLength="2" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="ServiceOrderId" Type="uniqueidentifier" />
+          <Property Name="DocumentDescription" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DocumentFile" Type="varbinary(max)" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DocumentName" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="FormDefinition">
+          <Key>
+            <PropertyRef Name="FormDefinitionId" />
+          </Key>
+          <Property Name="FormDefinitionId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="BusinessApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FormTypeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="XmlFormDefinition" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsClientVisible" Type="bit" Nullable="false" />
+          <Property Name="FormName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="FormOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormValue">
+          <Key>
+            <PropertyRef Name="FormValueId" />
+          </Key>
+          <Property Name="FormValueId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="ServiceOrderId" Type="uniqueidentifier" />
+          <Property Name="InspectionReportItemId" Type="uniqueidentifier" />
+          <Property Name="FieldName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="FieldType" Type="int" Nullable="false" />
+          <Property Name="CatalogueValueId" Type="uniqueidentifier" />
+          <Property Name="TextValue" Type="nvarchar(max)" />
+          <Property Name="CheckValue" Type="bit" />
+          <Property Name="DateValue" Type="datetime" />
+          <Property Name="IntegerValue" Type="int" />
+          <Property Name="DecimalValue" Type="decimal" Scale="5" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="CreationBy" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="30" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InspectionReport">
+          <Key>
+            <PropertyRef Name="InspectionReportId" />
+          </Key>
+          <Property Name="InspectionReportId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="ServiceOrderId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="XmlFormDefinitionInstance" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsClientVisible" Type="bit" Nullable="false" />
+          <Property Name="StatusCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="FormName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="FormOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InspectionReportItem">
+          <Key>
+            <PropertyRef Name="InspectionReportItemId" />
+          </Key>
+          <Property Name="InspectionReportItemId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="InspectionReportId" Type="uniqueidentifier" />
+          <Property Name="CurrentCompletedLevel" Type="int" />
+          <Property Name="StatusCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="PublicationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Picture">
+          <Key>
+            <PropertyRef Name="PictureId" />
+          </Key>
+          <Property Name="PictureId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="ServiceOrderId" Type="uniqueidentifier" />
+          <Property Name="InspectionReportItemId" Type="uniqueidentifier" />
+          <Property Name="PictureFile" Type="varbinary(max)" Nullable="false" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="PictureFileThumbnail" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="ServiceOrder">
+          <Key>
+            <PropertyRef Name="ServiceOrderId" />
+          </Key>
+          <Property Name="ServiceOrderId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="BusinessApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StatusCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="XmlFormDefinitionInstance" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ValidationRole">
+          <Key>
+            <PropertyRef Name="ValidationRoleId" />
+          </Key>
+          <Property Name="ValidationRoleId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="BusinessApplicationId" Type="uniqueidentifier" />
+          <Property Name="CanPublish" Type="bit" />
+          <Property Name="IsReadOnly" Type="bit" />
+          <Property Name="RoleLevel" Type="int" Nullable="false" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VestalisUserApplication">
+          <Key>
+            <PropertyRef Name="VestalisUserApplicationId" />
+          </Key>
+          <Property Name="VestalisUserApplicationId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity"/>
+          <Property Name="BusinessApplicationId" Type="uniqueidentifier" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="CreationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ModificationBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="ModificationDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="ClientId" Type="uniqueidentifier" />
+        </EntityType>
+        <Association Name="FK__aspnet_Me__UserI__778AC167">
+          <End Role="aspnet_Users" Type="VESTALISModel.Store.aspnet_Users" Multiplicity="1" />
+          <End Role="aspnet_Membership" Type="VESTALISModel.Store.aspnet_Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__aspnet_Pr__UserI__2DE6D218">
+          <End Role="aspnet_Users" Type="VESTALISModel.Store.aspnet_Users" Multiplicity="1" />
+          <End Role="aspnet_Profile" Type="VESTALISModel.Store.aspnet_Profile" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_Profile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__aspnet_Us__RoleI__40058253">
+          <End Role="aspnet_Roles" Type="VESTALISModel.Store.aspnet_Roles" Multiplicity="1" />
+          <End Role="aspnet_UsersInRoles" Type="VESTALISModel.Store.aspnet_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="aspnet_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__aspnet_Us__UserI__3F115E1A">
+          <End Role="aspnet_Users" Type="VESTALISModel.Store.aspnet_Users" Multiplicity="1" />
+          <End Role="aspnet_UsersInRoles" Type="VESTALISModel.Store.aspnet_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalItem_InspectionReportItem">
+          <End Role="InspectionReportItem" Type="VESTALISModel.Store.InspectionReportItem" Multiplicity="0..1" />
+          <End Role="ApprovalItem" Type="VESTALISModel.Store.ApprovalItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Principal>
+            <Dependent Role="ApprovalItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BusinessApplication_Country">
+          <End Role="Country" Type="VESTALISModel.Store.Country" Multiplicity="0..1" />
+          <End Role="BusinessApplication" Type="VESTALISModel.Store.BusinessApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="BusinessApplication">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Catalogue_BusinessApplication">
+          <End Role="BusinessApplication" Type="VESTALISModel.Store.BusinessApplication" Multiplicity="0..1" />
+          <End Role="Catalogue" Type="VESTALISModel.Store.Catalogue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="Catalogue">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatalogueValue_Catalogue">
+          <End Role="Catalogue" Type="VESTALISModel.Store.Catalogue" Multiplicity="1" />
+          <End Role="CatalogueValue" Type="VESTALISModel.Store.CatalogueValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogue">
+              <PropertyRef Name="CatalogueId" />
+            </Principal>
+            <Dependent Role="CatalogueValue">
+              <PropertyRef Name="CatalogueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_ServiceOrder">
+          <End Role="ServiceOrder" Type="VESTALISModel.Store.ServiceOrder" Multiplicity="0..1" />
+          <End Role="Document" Type="VESTALISModel.Store.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormDefinition_BusinessApplication">
+          <End Role="BusinessApplication" Type="VESTALISModel.Store.BusinessApplication" Multiplicity="1" />
+          <End Role="FormDefinition" Type="VESTALISModel.Store.FormDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="FormDefinition">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormDefinition_CatalogueValue">
+          <End Role="CatalogueValue" Type="VESTALISModel.Store.CatalogueValue" Multiplicity="1" />
+          <End Role="FormDefinition" Type="VESTALISModel.Store.FormDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogueValue">
+              <PropertyRef Name="CatalogueValueId" />
+            </Principal>
+            <Dependent Role="FormDefinition">
+              <PropertyRef Name="FormTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormValue_CatalogueValue">
+          <End Role="CatalogueValue" Type="VESTALISModel.Store.CatalogueValue" Multiplicity="0..1" />
+          <End Role="FormValue" Type="VESTALISModel.Store.FormValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogueValue">
+              <PropertyRef Name="CatalogueValueId" />
+            </Principal>
+            <Dependent Role="FormValue">
+              <PropertyRef Name="CatalogueValueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormValue_InspectionReportItem">
+          <End Role="InspectionReportItem" Type="VESTALISModel.Store.InspectionReportItem" Multiplicity="0..1" />
+          <End Role="FormValue" Type="VESTALISModel.Store.FormValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Principal>
+            <Dependent Role="FormValue">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormValueServiceOrder">
+          <End Role="ServiceOrder" Type="VESTALISModel.Store.ServiceOrder" Multiplicity="0..1" />
+          <End Role="FormValue" Type="VESTALISModel.Store.FormValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="FormValue">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InspectionReport_ServiceOrder">
+          <End Role="ServiceOrder" Type="VESTALISModel.Store.ServiceOrder" Multiplicity="1" />
+          <End Role="InspectionReport" Type="VESTALISModel.Store.InspectionReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="InspectionReport">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InspectionReportItem_InspectionReport">
+          <End Role="InspectionReport" Type="VESTALISModel.Store.InspectionReport" Multiplicity="0..1" />
+          <End Role="InspectionReportItem" Type="VESTALISModel.Store.InspectionReportItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReport">
+              <PropertyRef Name="InspectionReportId" />
+            </Principal>
+            <Dependent Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Picture_InspectionReportItem">
+          <End Role="InspectionReportItem" Type="VESTALISModel.Store.InspectionReportItem" Multiplicity="0..1" />
+          <End Role="Picture" Type="VESTALISModel.Store.Picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Principal>
+            <Dependent Role="Picture">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PictureServiceOrder">
+          <End Role="ServiceOrder" Type="VESTALISModel.Store.ServiceOrder" Multiplicity="0..1" />
+          <End Role="Picture" Type="VESTALISModel.Store.Picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="Picture">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_BusinessApplication">
+          <End Role="BusinessApplication" Type="VESTALISModel.Store.BusinessApplication" Multiplicity="0..1" />
+          <End Role="ValidationRole" Type="VESTALISModel.Store.ValidationRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="ValidationRole">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceOrder_BusinessApplication">
+          <End Role="BusinessApplication" Type="VESTALISModel.Store.BusinessApplication" Multiplicity="1" />
+          <End Role="ServiceOrder" Type="VESTALISModel.Store.ServiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="ServiceOrder">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VestalisUserApplication_BusinessApplication">
+          <End Role="BusinessApplication" Type="VESTALISModel.Store.BusinessApplication" Multiplicity="0..1" />
+          <End Role="VestalisUserApplication" Type="VESTALISModel.Store.VestalisUserApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="VestalisUserApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VESTALISModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="VestalisEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ApprovalItems" EntityType="VESTALISModel.ApprovalItem" />
+          <EntitySet Name="BusinessApplications" EntityType="VESTALISModel.BusinessApplication" />
+          <EntitySet Name="Catalogues" EntityType="VESTALISModel.Catalogue" />
+          <EntitySet Name="CatalogueValues" EntityType="VESTALISModel.CatalogueValue" />
+          <EntitySet Name="Countries" EntityType="VESTALISModel.Country" />
+          <EntitySet Name="Documents" EntityType="VESTALISModel.Document" />
+          <EntitySet Name="FormDefinitions" EntityType="VESTALISModel.FormDefinition" />
+          <EntitySet Name="FormValues" EntityType="VESTALISModel.FormValue" />
+          <EntitySet Name="InspectionReports" EntityType="VESTALISModel.InspectionReport" />
+          <EntitySet Name="InspectionReportItems" EntityType="VESTALISModel.InspectionReportItem" />
+          <EntitySet Name="ServiceOrders" EntityType="VESTALISModel.ServiceOrder" />
+          <EntitySet Name="VestalisUserApplications" EntityType="VESTALISModel.VestalisUserApplication" />
+          <AssociationSet Name="FK_ApprovalItem_InspectionReportItem" Association="VESTALISModel.FK_ApprovalItem_InspectionReportItem">
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItems" />
+            <End Role="ApprovalItem" EntitySet="ApprovalItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BusinessApplication_Country" Association="VESTALISModel.FK_BusinessApplication_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="BusinessApplication" EntitySet="BusinessApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Catalogue_BusinessApplication" Association="VESTALISModel.FK_Catalogue_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplications" />
+            <End Role="Catalogue" EntitySet="Catalogues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormDefinition_BusinessApplication" Association="VESTALISModel.FK_FormDefinition_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplications" />
+            <End Role="FormDefinition" EntitySet="FormDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceOrder_BusinessApplication" Association="VESTALISModel.FK_ServiceOrder_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplications" />
+            <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VestalisUserApplication_BusinessApplication" Association="VESTALISModel.FK_VestalisUserApplication_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplications" />
+            <End Role="VestalisUserApplication" EntitySet="VestalisUserApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatalogueValue_Catalogue" Association="VESTALISModel.FK_CatalogueValue_Catalogue">
+            <End Role="Catalogue" EntitySet="Catalogues" />
+            <End Role="CatalogueValue" EntitySet="CatalogueValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormDefinition_CatalogueValue" Association="VESTALISModel.FK_FormDefinition_CatalogueValue">
+            <End Role="CatalogueValue" EntitySet="CatalogueValues" />
+            <End Role="FormDefinition" EntitySet="FormDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormValue_CatalogueValue" Association="VESTALISModel.FK_FormValue_CatalogueValue">
+            <End Role="CatalogueValue" EntitySet="CatalogueValues" />
+            <End Role="FormValue" EntitySet="FormValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_ServiceOrder" Association="VESTALISModel.FK_Document_ServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormValue_InspectionReportItem" Association="VESTALISModel.FK_FormValue_InspectionReportItem">
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItems" />
+            <End Role="FormValue" EntitySet="FormValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormValueServiceOrder" Association="VESTALISModel.FK_FormValueServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+            <End Role="FormValue" EntitySet="FormValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InspectionReport_ServiceOrder" Association="VESTALISModel.FK_InspectionReport_ServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+            <End Role="InspectionReport" EntitySet="InspectionReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InspectionReportItem_InspectionReport" Association="VESTALISModel.FK_InspectionReportItem_InspectionReport">
+            <End Role="InspectionReport" EntitySet="InspectionReports" />
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItems" />
+          </AssociationSet>
+          <EntitySet Name="ValidationRoles" EntityType="VESTALISModel.ValidationRole" />
+          <AssociationSet Name="FK_Role_BusinessApplication" Association="VESTALISModel.FK_Role_BusinessApplication">
+            <End Role="BusinessApplication" EntitySet="BusinessApplications" />
+            <End Role="ValidationRole" EntitySet="ValidationRoles" />
+          </AssociationSet>
+          <EntitySet Name="Pictures" EntityType="VESTALISModel.Picture" />
+          <AssociationSet Name="FK_Picture_InspectionReportItem" Association="VESTALISModel.FK_Picture_InspectionReportItem">
+            <End Role="InspectionReportItem" EntitySet="InspectionReportItems" />
+            <End Role="Picture" EntitySet="Pictures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PictureServiceOrder" Association="VESTALISModel.FK_PictureServiceOrder">
+            <End Role="ServiceOrder" EntitySet="ServiceOrders" />
+            <End Role="Picture" EntitySet="Pictures" />
+          </AssociationSet>
+          <EntitySet Name="aspnet_Membership" EntityType="VESTALISModel.aspnet_Membership" />
+          <EntitySet Name="aspnet_Users" EntityType="VESTALISModel.aspnet_Users" />
+          <AssociationSet Name="FK__aspnet_Me__UserI__778AC167" Association="VESTALISModel.FK__aspnet_Me__UserI__778AC167">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+          </AssociationSet>
+          <EntitySet Name="aspnet_Profile" EntityType="VESTALISModel.aspnet_Profile" />
+          <EntitySet Name="aspnet_Roles" EntityType="VESTALISModel.aspnet_Roles" />
+          <AssociationSet Name="FK__aspnet_Pr__UserI__2DE6D218" Association="VESTALISModel.FK__aspnet_Pr__UserI__2DE6D218">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_Profile" EntitySet="aspnet_Profile" />
+          </AssociationSet>
+          <AssociationSet Name="aspnet_UsersInRoles" Association="VESTALISModel.aspnet_UsersInRoles">
+            <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ApprovalItem">
+          <Key>
+            <PropertyRef Name="ApprovalItemId" />
+          </Key>
+          <Property Type="Guid" Name="ApprovalItemId" Nullable="false" />
+          <Property Type="Guid" Name="InspectionReportItemId" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ApprovalLevel" Nullable="false" />
+          <Property Type="Boolean" Name="CanPublish" />
+          <Property Type="Boolean" Name="IsReadOnly" />
+          <Property Type="Int32" Name="ApprovalStatus" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="InspectionReportItem" Relationship="VESTALISModel.FK_ApprovalItem_InspectionReportItem" FromRole="ApprovalItem" ToRole="InspectionReportItem" />
+        </EntityType>
+        <EntityType Name="BusinessApplication">
+          <Key>
+            <PropertyRef Name="BusinessApplicationId" />
+          </Key>
+          <Property Type="Guid" Name="BusinessApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="CountryId" />
+          <Property Type="String" Name="BusinessApplicationName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="XmlFieldDefinition" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="String" Name="Prefix" MaxLength="2" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Country" Relationship="VESTALISModel.FK_BusinessApplication_Country" FromRole="BusinessApplication" ToRole="Country" />
+          <NavigationProperty Name="Catalogues" Relationship="VESTALISModel.FK_Catalogue_BusinessApplication" FromRole="BusinessApplication" ToRole="Catalogue" />
+          <NavigationProperty Name="FormDefinitions" Relationship="VESTALISModel.FK_FormDefinition_BusinessApplication" FromRole="BusinessApplication" ToRole="FormDefinition" />
+          <NavigationProperty Name="ServiceOrders" Relationship="VESTALISModel.FK_ServiceOrder_BusinessApplication" FromRole="BusinessApplication" ToRole="ServiceOrder" />
+          <NavigationProperty Name="VestalisUserApplications" Relationship="VESTALISModel.FK_VestalisUserApplication_BusinessApplication" FromRole="BusinessApplication" ToRole="VestalisUserApplication" />
+          <NavigationProperty Name="ValidationRoles" Relationship="VESTALISModel.FK_Role_BusinessApplication" FromRole="BusinessApplication" ToRole="ValidationRole" />
+        </EntityType>
+        <EntityType Name="Catalogue">
+          <Key>
+            <PropertyRef Name="CatalogueId" />
+          </Key>
+          <Property Type="Guid" Name="CatalogueId" Nullable="false" />
+          <Property Type="Guid" Name="BusinessApplicationId" />
+          <Property Type="String" Name="CatalogueCategoryName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="BusinessApplication" Relationship="VESTALISModel.FK_Catalogue_BusinessApplication" FromRole="Catalogue" ToRole="BusinessApplication" />
+          <NavigationProperty Name="CatalogueValues" Relationship="VESTALISModel.FK_CatalogueValue_Catalogue" FromRole="Catalogue" ToRole="CatalogueValue" />
+        </EntityType>
+        <EntityType Name="CatalogueValue">
+          <Key>
+            <PropertyRef Name="CatalogueValueId" />
+          </Key>
+          <Property Type="Guid" Name="CatalogueValueId" Nullable="false" />
+          <Property Type="Guid" Name="CatalogueId" Nullable="false" />
+          <Property Type="String" Name="CatalogueValueData" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CatalogueValueDescription" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="Catalogue" Relationship="VESTALISModel.FK_CatalogueValue_Catalogue" FromRole="CatalogueValue" ToRole="Catalogue" />
+          <NavigationProperty Name="FormDefinitions" Relationship="VESTALISModel.FK_FormDefinition_CatalogueValue" FromRole="CatalogueValue" ToRole="FormDefinition" />
+          <NavigationProperty Name="FormValues" Relationship="VESTALISModel.FK_FormValue_CatalogueValue" FromRole="CatalogueValue" ToRole="FormValue" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Type="Guid" Name="CountryId" Nullable="false" />
+          <Property Type="String" Name="CountryCode" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CountryName" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DefaultLanguage" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="BusinessApplications" Relationship="VESTALISModel.FK_BusinessApplication_Country" FromRole="Country" ToRole="BusinessApplication" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Type="Guid" Name="DocumentId" Nullable="false" />
+          <Property Type="Guid" Name="ServiceOrderId" />
+          <Property Type="String" Name="DocumentDescription" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="DocumentFile" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="String" Name="DocumentName" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ServiceOrder" Relationship="VESTALISModel.FK_Document_ServiceOrder" FromRole="Document" ToRole="ServiceOrder" />
+        </EntityType>
+        <EntityType Name="FormDefinition">
+          <Key>
+            <PropertyRef Name="FormDefinitionId" />
+          </Key>
+          <Property Type="Guid" Name="FormDefinitionId" Nullable="false" />
+          <Property Type="Guid" Name="BusinessApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="FormTypeId" Nullable="false" />
+          <Property Type="String" Name="XmlFormDefinition" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsClientVisible" Nullable="false" />
+          <Property Type="String" Name="FormName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Int32" Name="FormOrder" Nullable="false" />
+          <NavigationProperty Name="BusinessApplication" Relationship="VESTALISModel.FK_FormDefinition_BusinessApplication" FromRole="FormDefinition" ToRole="BusinessApplication" />
+          <NavigationProperty Name="CatalogueValue" Relationship="VESTALISModel.FK_FormDefinition_CatalogueValue" FromRole="FormDefinition" ToRole="CatalogueValue" />
+        </EntityType>
+        <EntityType Name="FormValue">
+          <Key>
+            <PropertyRef Name="FormValueId" />
+          </Key>
+          <Property Type="Guid" Name="FormValueId" Nullable="false" />
+          <Property Type="Guid" Name="ServiceOrderId" />
+          <Property Type="Guid" Name="InspectionReportItemId" />
+          <Property Type="String" Name="FieldName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FieldType" Nullable="false" />
+          <Property Type="Guid" Name="CatalogueValueId" />
+          <Property Type="String" Name="TextValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="CheckValue" />
+          <Property Type="DateTime" Name="DateValue" />
+          <Property Type="Int32" Name="IntegerValue" />
+          <Property Type="Decimal" Name="DecimalValue" Precision="18" Scale="5" />
+          <Property Type="String" Name="UserName" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="CatalogueValue" Relationship="VESTALISModel.FK_FormValue_CatalogueValue" FromRole="FormValue" ToRole="CatalogueValue" />
+          <NavigationProperty Name="InspectionReportItem" Relationship="VESTALISModel.FK_FormValue_InspectionReportItem" FromRole="FormValue" ToRole="InspectionReportItem" />
+          <NavigationProperty Name="ServiceOrder" Relationship="VESTALISModel.FK_FormValueServiceOrder" FromRole="FormValue" ToRole="ServiceOrder" />
+        </EntityType>
+        <EntityType Name="InspectionReport">
+          <Key>
+            <PropertyRef Name="InspectionReportId" />
+          </Key>
+          <Property Type="Guid" Name="InspectionReportId" Nullable="false" />
+          <Property Type="Guid" Name="ServiceOrderId" Nullable="false" />
+          <Property Type="String" Name="XmlFormDefinitionInstance" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsClientVisible" Nullable="false" />
+          <Property Type="String" Name="StatusCode" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FormName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Int32" Name="FormOrder" Nullable="false" />
+          <NavigationProperty Name="ServiceOrder" Relationship="VESTALISModel.FK_InspectionReport_ServiceOrder" FromRole="InspectionReport" ToRole="ServiceOrder" />
+          <NavigationProperty Name="InspectionReportItems" Relationship="VESTALISModel.FK_InspectionReportItem_InspectionReport" FromRole="InspectionReport" ToRole="InspectionReportItem" />
+        </EntityType>
+        <EntityType Name="InspectionReportItem">
+          <Key>
+            <PropertyRef Name="InspectionReportItemId" />
+          </Key>
+          <Property Type="Guid" Name="InspectionReportItemId" Nullable="false" />
+          <Property Type="Guid" Name="InspectionReportId" />
+          <Property Type="Int32" Name="CurrentCompletedLevel" />
+          <Property Type="String" Name="StatusCode" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="DateTime" Name="PublicationDate" />
+          <NavigationProperty Name="ApprovalItems" Relationship="VESTALISModel.FK_ApprovalItem_InspectionReportItem" FromRole="InspectionReportItem" ToRole="ApprovalItem" />
+          <NavigationProperty Name="FormValues" Relationship="VESTALISModel.FK_FormValue_InspectionReportItem" FromRole="InspectionReportItem" ToRole="FormValue" />
+          <NavigationProperty Name="InspectionReport" Relationship="VESTALISModel.FK_InspectionReportItem_InspectionReport" FromRole="InspectionReportItem" ToRole="InspectionReport" />
+          <NavigationProperty Name="Pictures" Relationship="VESTALISModel.FK_Picture_InspectionReportItem" FromRole="InspectionReportItem" ToRole="Picture" />
+        </EntityType>
+        <EntityType Name="ServiceOrder">
+          <Key>
+            <PropertyRef Name="ServiceOrderId" />
+          </Key>
+          <Property Type="Guid" Name="ServiceOrderId" Nullable="false" />
+          <Property Type="Guid" Name="BusinessApplicationId" Nullable="false" />
+          <Property Type="String" Name="StatusCode" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="XmlFormDefinitionInstance" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="BusinessApplication" Relationship="VESTALISModel.FK_ServiceOrder_BusinessApplication" FromRole="ServiceOrder" ToRole="BusinessApplication" />
+          <NavigationProperty Name="Documents" Relationship="VESTALISModel.FK_Document_ServiceOrder" FromRole="ServiceOrder" ToRole="Document" />
+          <NavigationProperty Name="FormValues" Relationship="VESTALISModel.FK_FormValueServiceOrder" FromRole="ServiceOrder" ToRole="FormValue" />
+          <NavigationProperty Name="InspectionReports" Relationship="VESTALISModel.FK_InspectionReport_ServiceOrder" FromRole="ServiceOrder" ToRole="InspectionReport" />
+          <NavigationProperty Name="Pictures" Relationship="VESTALISModel.FK_PictureServiceOrder" FromRole="ServiceOrder" ToRole="Picture" />
+        </EntityType>
+        <EntityType Name="VestalisUserApplication">
+          <Key>
+            <PropertyRef Name="VestalisUserApplicationId" />
+          </Key>
+          <Property Type="Guid" Name="VestalisUserApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="BusinessApplicationId" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="BusinessApplication" Relationship="VESTALISModel.FK_VestalisUserApplication_BusinessApplication" FromRole="VestalisUserApplication" ToRole="BusinessApplication" />
+          <Property Type="Guid" Name="ClientId" />
+        </EntityType>
+        <Association Name="FK_ApprovalItem_InspectionReportItem">
+          <End Type="VESTALISModel.InspectionReportItem" Role="InspectionReportItem" Multiplicity="0..1" />
+          <End Type="VESTALISModel.ApprovalItem" Role="ApprovalItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Principal>
+            <Dependent Role="ApprovalItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BusinessApplication_Country">
+          <End Type="VESTALISModel.Country" Role="Country" Multiplicity="0..1" />
+          <End Type="VESTALISModel.BusinessApplication" Role="BusinessApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="BusinessApplication">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Catalogue_BusinessApplication">
+          <End Type="VESTALISModel.BusinessApplication" Role="BusinessApplication" Multiplicity="0..1" />
+          <End Type="VESTALISModel.Catalogue" Role="Catalogue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="Catalogue">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormDefinition_BusinessApplication">
+          <End Type="VESTALISModel.BusinessApplication" Role="BusinessApplication" Multiplicity="1" />
+          <End Type="VESTALISModel.FormDefinition" Role="FormDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="FormDefinition">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceOrder_BusinessApplication">
+          <End Type="VESTALISModel.BusinessApplication" Role="BusinessApplication" Multiplicity="1" />
+          <End Type="VESTALISModel.ServiceOrder" Role="ServiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="ServiceOrder">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VestalisUserApplication_BusinessApplication">
+          <End Type="VESTALISModel.BusinessApplication" Role="BusinessApplication" Multiplicity="0..1" />
+          <End Type="VESTALISModel.VestalisUserApplication" Role="VestalisUserApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="VestalisUserApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatalogueValue_Catalogue">
+          <End Type="VESTALISModel.Catalogue" Role="Catalogue" Multiplicity="1" />
+          <End Type="VESTALISModel.CatalogueValue" Role="CatalogueValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogue">
+              <PropertyRef Name="CatalogueId" />
+            </Principal>
+            <Dependent Role="CatalogueValue">
+              <PropertyRef Name="CatalogueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormDefinition_CatalogueValue">
+          <End Type="VESTALISModel.CatalogueValue" Role="CatalogueValue" Multiplicity="1" />
+          <End Type="VESTALISModel.FormDefinition" Role="FormDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogueValue">
+              <PropertyRef Name="CatalogueValueId" />
+            </Principal>
+            <Dependent Role="FormDefinition">
+              <PropertyRef Name="FormTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormValue_CatalogueValue">
+          <End Type="VESTALISModel.CatalogueValue" Role="CatalogueValue" Multiplicity="0..1" />
+          <End Type="VESTALISModel.FormValue" Role="FormValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogueValue">
+              <PropertyRef Name="CatalogueValueId" />
+            </Principal>
+            <Dependent Role="FormValue">
+              <PropertyRef Name="CatalogueValueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_ServiceOrder">
+          <End Type="VESTALISModel.ServiceOrder" Role="ServiceOrder" Multiplicity="0..1" />
+          <End Type="VESTALISModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormValue_InspectionReportItem">
+          <End Type="VESTALISModel.InspectionReportItem" Role="InspectionReportItem" Multiplicity="0..1" />
+          <End Type="VESTALISModel.FormValue" Role="FormValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Principal>
+            <Dependent Role="FormValue">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormValueServiceOrder">
+          <End Type="VESTALISModel.ServiceOrder" Role="ServiceOrder" Multiplicity="0..1" />
+          <End Type="VESTALISModel.FormValue" Role="FormValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="FormValue">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InspectionReport_ServiceOrder">
+          <End Type="VESTALISModel.ServiceOrder" Role="ServiceOrder" Multiplicity="1" />
+          <End Type="VESTALISModel.InspectionReport" Role="InspectionReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="InspectionReport">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InspectionReportItem_InspectionReport">
+          <End Type="VESTALISModel.InspectionReport" Role="InspectionReport" Multiplicity="0..1" />
+          <End Type="VESTALISModel.InspectionReportItem" Role="InspectionReportItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReport">
+              <PropertyRef Name="InspectionReportId" />
+            </Principal>
+            <Dependent Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ValidationRole">
+          <Key>
+            <PropertyRef Name="ValidationRoleId" />
+          </Key>
+          <Property Type="Guid" Name="ValidationRoleId" Nullable="false" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="BusinessApplicationId" />
+          <Property Type="Boolean" Name="CanPublish" />
+          <Property Type="Boolean" Name="IsReadOnly" />
+          <Property Type="Int32" Name="RoleLevel" Nullable="false" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="BusinessApplication" Relationship="VESTALISModel.FK_Role_BusinessApplication" FromRole="ValidationRole" ToRole="BusinessApplication" />
+        </EntityType>
+        <Association Name="FK_Role_BusinessApplication">
+          <End Type="VESTALISModel.BusinessApplication" Role="BusinessApplication" Multiplicity="0..1" />
+          <End Type="VESTALISModel.ValidationRole" Role="ValidationRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessApplication">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Principal>
+            <Dependent Role="ValidationRole">
+              <PropertyRef Name="BusinessApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Picture">
+          <Key>
+            <PropertyRef Name="PictureId" />
+          </Key>
+          <Property Type="Guid" Name="PictureId" Nullable="false" />
+          <Property Type="Guid" Name="ServiceOrderId" />
+          <Property Type="Guid" Name="InspectionReportItemId" />
+          <Property Type="Binary" Name="PictureFile" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="CreationBy" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="String" Name="ModificationBy" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModificationDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Binary" Name="PictureFileThumbnail" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="InspectionReportItem" Relationship="VESTALISModel.FK_Picture_InspectionReportItem" FromRole="Picture" ToRole="InspectionReportItem" />
+          <NavigationProperty Name="ServiceOrder" Relationship="VESTALISModel.FK_PictureServiceOrder" FromRole="Picture" ToRole="ServiceOrder" />
+        </EntityType>
+        <Association Name="FK_Picture_InspectionReportItem">
+          <End Type="VESTALISModel.InspectionReportItem" Role="InspectionReportItem" Multiplicity="0..1" />
+          <End Type="VESTALISModel.Picture" Role="Picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InspectionReportItem">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Principal>
+            <Dependent Role="Picture">
+              <PropertyRef Name="InspectionReportItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PictureServiceOrder">
+          <End Type="VESTALISModel.ServiceOrder" Role="ServiceOrder" Multiplicity="0..1" />
+          <End Type="VESTALISModel.Picture" Role="Picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceOrder">
+              <PropertyRef Name="ServiceOrderId" />
+            </Principal>
+            <Dependent Role="Picture">
+              <PropertyRef Name="ServiceOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="aspnet_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="PasswordFormat" Nullable="false" />
+          <Property Type="String" Name="PasswordSalt" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MobilePIN" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredEmail" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordQuestion" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordAnswer" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsApproved" Nullable="false" />
+          <Property Type="Boolean" Name="IsLockedOut" Nullable="false" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastPasswordChangedDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastLockoutDate" Nullable="false" />
+          <Property Type="Int32" Name="FailedPasswordAttemptCount" Nullable="false" />
+          <Property Type="DateTime" Name="FailedPasswordAttemptWindowStart" Nullable="false" />
+          <Property Type="Int32" Name="FailedPasswordAnswerAttemptCount" Nullable="false" />
+          <Property Type="DateTime" Name="FailedPasswordAnswerAttemptWindowStart" Nullable="false" />
+          <Property Type="String" Name="Comment" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="aspnet_Users" Relationship="VESTALISModel.FK__aspnet_Me__UserI__778AC167" FromRole="aspnet_Membership" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="aspnet_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredUserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MobileAlias" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsAnonymous" Nullable="false" />
+          <Property Type="DateTime" Name="LastActivityDate" Nullable="false" />
+          <NavigationProperty Name="aspnet_Membership" Relationship="VESTALISModel.FK__aspnet_Me__UserI__778AC167" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
+          <NavigationProperty Name="aspnet_Profile" Relationship="VESTALISModel.FK__aspnet_Pr__UserI__2DE6D218" FromRole="aspnet_Users" ToRole="aspnet_Profile" />
+          <NavigationProperty Name="aspnet_Roles" Relationship="VESTALISModel.aspnet_UsersInRoles" FromRole="aspnet_Users" ToRole="aspnet_Roles" />
+        </EntityType>
+        <Association Name="FK__aspnet_Me__UserI__778AC167">
+          <End Type="VESTALISModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+          <End Type="VESTALISModel.aspnet_Membership" Role="aspnet_Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="aspnet_Profile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="PropertyNames" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PropertyValuesString" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="PropertyValuesBinary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="LastUpdatedDate" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="VESTALISModel.FK__aspnet_Pr__UserI__2DE6D218" FromRole="aspnet_Profile" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="aspnet_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="RoleId" Nullable="false" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredRoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="aspnet_Users" Relationship="VESTALISModel.aspnet_UsersInRoles" FromRole="aspnet_Roles" ToRole="aspnet_Users" />
+        </EntityType>
+        <Association Name="FK__aspnet_Pr__UserI__2DE6D218">
+          <End Type="VESTALISModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+          <End Type="VESTALISModel.aspnet_Profile" Role="aspnet_Profile" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_Profile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="aspnet_UsersInRoles">
+          <End Type="VESTALISModel.aspnet_Roles" Role="aspnet_Roles" Multiplicity="*" />
+          <End Type="VESTALISModel.aspnet_Users" Role="aspnet_Users" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VESTALISModelStoreContainer" CdmEntityContainer="VestalisEntities">
+          <EntitySetMapping Name="ApprovalItems">
+            <EntityTypeMapping TypeName="VESTALISModel.ApprovalItem">
+              <MappingFragment StoreEntitySet="ApprovalItem">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
+                <ScalarProperty Name="CanPublish" ColumnName="CanPublish" />
+                <ScalarProperty Name="ApprovalLevel" ColumnName="ApprovalLevel" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="InspectionReportItemId" ColumnName="InspectionReportItemId" />
+                <ScalarProperty Name="ApprovalItemId" ColumnName="ApprovalItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BusinessApplications">
+            <EntityTypeMapping TypeName="VESTALISModel.BusinessApplication">
+              <MappingFragment StoreEntitySet="BusinessApplication">
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="XmlFieldDefinition" ColumnName="XmlFieldDefinition" />
+                <ScalarProperty Name="BusinessApplicationName" ColumnName="BusinessApplicationName" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="BusinessApplicationId" ColumnName="BusinessApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Catalogues">
+            <EntityTypeMapping TypeName="VESTALISModel.Catalogue">
+              <MappingFragment StoreEntitySet="Catalogue">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="CatalogueCategoryName" ColumnName="CatalogueCategoryName" />
+                <ScalarProperty Name="BusinessApplicationId" ColumnName="BusinessApplicationId" />
+                <ScalarProperty Name="CatalogueId" ColumnName="CatalogueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatalogueValues">
+            <EntityTypeMapping TypeName="VESTALISModel.CatalogueValue">
+              <MappingFragment StoreEntitySet="CatalogueValue">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="CatalogueValueDescription" ColumnName="CatalogueValueDescription" />
+                <ScalarProperty Name="CatalogueValueData" ColumnName="CatalogueValueData" />
+                <ScalarProperty Name="CatalogueId" ColumnName="CatalogueId" />
+                <ScalarProperty Name="CatalogueValueId" ColumnName="CatalogueValueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="VESTALISModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="DefaultLanguage" ColumnName="DefaultLanguage" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="VESTALISModel.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="DocumentFile" ColumnName="DocumentFile" />
+                <ScalarProperty Name="DocumentDescription" ColumnName="DocumentDescription" />
+                <ScalarProperty Name="ServiceOrderId" ColumnName="ServiceOrderId" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormDefinitions">
+            <EntityTypeMapping TypeName="VESTALISModel.FormDefinition">
+              <MappingFragment StoreEntitySet="FormDefinition">
+                <ScalarProperty Name="FormOrder" ColumnName="FormOrder" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="FormName" ColumnName="FormName" />
+                <ScalarProperty Name="IsClientVisible" ColumnName="IsClientVisible" />
+                <ScalarProperty Name="XmlFormDefinition" ColumnName="XmlFormDefinition" />
+                <ScalarProperty Name="FormTypeId" ColumnName="FormTypeId" />
+                <ScalarProperty Name="BusinessApplicationId" ColumnName="BusinessApplicationId" />
+                <ScalarProperty Name="FormDefinitionId" ColumnName="FormDefinitionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormValues">
+            <EntityTypeMapping TypeName="VESTALISModel.FormValue">
+              <MappingFragment StoreEntitySet="FormValue">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DecimalValue" ColumnName="DecimalValue" />
+                <ScalarProperty Name="IntegerValue" ColumnName="IntegerValue" />
+                <ScalarProperty Name="DateValue" ColumnName="DateValue" />
+                <ScalarProperty Name="CheckValue" ColumnName="CheckValue" />
+                <ScalarProperty Name="TextValue" ColumnName="TextValue" />
+                <ScalarProperty Name="CatalogueValueId" ColumnName="CatalogueValueId" />
+                <ScalarProperty Name="FieldType" ColumnName="FieldType" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="InspectionReportItemId" ColumnName="InspectionReportItemId" />
+                <ScalarProperty Name="ServiceOrderId" ColumnName="ServiceOrderId" />
+                <ScalarProperty Name="FormValueId" ColumnName="FormValueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InspectionReports">
+            <EntityTypeMapping TypeName="VESTALISModel.InspectionReport">
+              <MappingFragment StoreEntitySet="InspectionReport">
+                <ScalarProperty Name="FormOrder" ColumnName="FormOrder" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="FormName" ColumnName="FormName" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="IsClientVisible" ColumnName="IsClientVisible" />
+                <ScalarProperty Name="XmlFormDefinitionInstance" ColumnName="XmlFormDefinitionInstance" />
+                <ScalarProperty Name="ServiceOrderId" ColumnName="ServiceOrderId" />
+                <ScalarProperty Name="InspectionReportId" ColumnName="InspectionReportId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InspectionReportItems">
+            <EntityTypeMapping TypeName="VESTALISModel.InspectionReportItem">
+              <MappingFragment StoreEntitySet="InspectionReportItem">
+                <ScalarProperty Name="PublicationDate" ColumnName="PublicationDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="CurrentCompletedLevel" ColumnName="CurrentCompletedLevel" />
+                <ScalarProperty Name="InspectionReportId" ColumnName="InspectionReportId" />
+                <ScalarProperty Name="InspectionReportItemId" ColumnName="InspectionReportItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceOrders">
+            <EntityTypeMapping TypeName="VESTALISModel.ServiceOrder">
+              <MappingFragment StoreEntitySet="ServiceOrder">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="XmlFormDefinitionInstance" ColumnName="XmlFormDefinitionInstance" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="BusinessApplicationId" ColumnName="BusinessApplicationId" />
+                <ScalarProperty Name="ServiceOrderId" ColumnName="ServiceOrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VestalisUserApplications">
+            <EntityTypeMapping TypeName="VESTALISModel.VestalisUserApplication">
+              <MappingFragment StoreEntitySet="VestalisUserApplication">
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="BusinessApplicationId" ColumnName="BusinessApplicationId" />
+                <ScalarProperty Name="VestalisUserApplicationId" ColumnName="VestalisUserApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ValidationRoles">
+            <EntityTypeMapping TypeName="VESTALISModel.ValidationRole">
+              <MappingFragment StoreEntitySet="ValidationRole">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="RoleLevel" ColumnName="RoleLevel" />
+                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
+                <ScalarProperty Name="CanPublish" ColumnName="CanPublish" />
+                <ScalarProperty Name="BusinessApplicationId" ColumnName="BusinessApplicationId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="ValidationRoleId" ColumnName="ValidationRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pictures">
+            <EntityTypeMapping TypeName="VESTALISModel.Picture">
+              <MappingFragment StoreEntitySet="Picture">
+                <ScalarProperty Name="PictureFileThumbnail" ColumnName="PictureFileThumbnail" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModificationDate" ColumnName="ModificationDate" />
+                <ScalarProperty Name="ModificationBy" ColumnName="ModificationBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreationBy" ColumnName="CreationBy" />
+                <ScalarProperty Name="PictureFile" ColumnName="PictureFile" />
+                <ScalarProperty Name="InspectionReportItemId" ColumnName="InspectionReportItemId" />
+                <ScalarProperty Name="ServiceOrderId" ColumnName="ServiceOrderId" />
+                <ScalarProperty Name="PictureId" ColumnName="PictureId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnet_Membership">
+            <EntityTypeMapping TypeName="VESTALISModel.aspnet_Membership">
+              <MappingFragment StoreEntitySet="aspnet_Membership">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FailedPasswordAnswerAttemptWindowStart" ColumnName="FailedPasswordAnswerAttemptWindowStart" />
+                <ScalarProperty Name="FailedPasswordAnswerAttemptCount" ColumnName="FailedPasswordAnswerAttemptCount" />
+                <ScalarProperty Name="FailedPasswordAttemptWindowStart" ColumnName="FailedPasswordAttemptWindowStart" />
+                <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+                <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+                <ScalarProperty Name="LoweredEmail" ColumnName="LoweredEmail" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MobilePIN" ColumnName="MobilePIN" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordFormat" ColumnName="PasswordFormat" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnet_Users">
+            <EntityTypeMapping TypeName="VESTALISModel.aspnet_Users">
+              <MappingFragment StoreEntitySet="aspnet_Users">
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="MobileAlias" ColumnName="MobileAlias" />
+                <ScalarProperty Name="LoweredUserName" ColumnName="LoweredUserName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnet_Profile">
+            <EntityTypeMapping TypeName="VESTALISModel.aspnet_Profile">
+              <MappingFragment StoreEntitySet="aspnet_Profile">
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="PropertyValuesBinary" ColumnName="PropertyValuesBinary" />
+                <ScalarProperty Name="PropertyValuesString" ColumnName="PropertyValuesString" />
+                <ScalarProperty Name="PropertyNames" ColumnName="PropertyNames" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnet_Roles">
+            <EntityTypeMapping TypeName="VESTALISModel.aspnet_Roles">
+              <MappingFragment StoreEntitySet="aspnet_Roles">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LoweredRoleName" ColumnName="LoweredRoleName" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="aspnet_UsersInRoles" TypeName="VESTALISModel.aspnet_UsersInRoles" StoreEntitySet="aspnet_UsersInRoles">
+            <EndProperty Name="aspnet_Users">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="aspnet_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="BusinessEntities" ZoomLevel="80">
+        <EntityTypeShape EntityType="VESTALISModel.ApprovalItem" Width="1.5" PointX="12" PointY="15.125" Height="3.5186979166666674" />
+        <EntityTypeShape EntityType="VESTALISModel.BusinessApplication" Width="1.5" PointX="3" PointY="14.75" Height="4.0956022135416674" />
+        <EntityTypeShape EntityType="VESTALISModel.Catalogue" Width="1.5" PointX="5.25" PointY="7.25" Height="2.9417936197916674" />
+        <EntityTypeShape EntityType="VESTALISModel.CatalogueValue" Width="1.5" PointX="7.5" PointY="7.125" Height="3.3263964843750102" />
+        <EntityTypeShape EntityType="VESTALISModel.Country" Width="1.5" PointX="0.75" PointY="15.25" Height="2.9417936197916674" />
+        <EntityTypeShape EntityType="VESTALISModel.Document" Width="1.5" PointX="7.5" PointY="11.25" Height="3.1340950520833246" />
+        <EntityTypeShape EntityType="VESTALISModel.FormDefinition" Width="1.5" PointX="9.75" PointY="10.125" Height="3.7109993489583388" />
+        <EntityTypeShape EntityType="VESTALISModel.FormValue" Width="1.5" PointX="12" PointY="9.5" Height="4.8648079427083246" />
+        <EntityTypeShape EntityType="VESTALISModel.InspectionReport" Width="1.5" PointX="7.5" PointY="15.125" Height="3.7109993489583388" />
+        <EntityTypeShape EntityType="VESTALISModel.InspectionReportItem" Width="1.5" PointX="9.75" PointY="15.125" Height="3.7109993489583246" />
+        <EntityTypeShape EntityType="VESTALISModel.ServiceOrder" Width="1.5" PointX="5.25" PointY="13.125" Height="3.7109993489583388" />
+        <EntityTypeShape EntityType="VESTALISModel.VestalisUserApplication" Width="1.5" PointX="5.25" PointY="23.625" Height="2.749492187499996" />
+        <AssociationConnector Association="VESTALISModel.FK_ApprovalItem_InspectionReportItem" >
+          <ConnectorPoint PointX="11.25" PointY="16.884348958333334" />
+          <ConnectorPoint PointX="11.385416666666666" PointY="16.884348958333334" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="16.884348958333334" />
+          <ConnectorPoint PointX="12" PointY="16.884348958333334" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_BusinessApplication_Country" >
+          <ConnectorPoint PointX="2.25" PointY="16.720896809895834" />
+          <ConnectorPoint PointX="3" PointY="16.720896809895834" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_Catalogue_BusinessApplication" >
+          <ConnectorPoint PointX="3.5039053125" PointY="14.75" />
+          <ConnectorPoint PointX="3.5039053125" PointY="8.7208968098958337" />
+          <ConnectorPoint PointX="5.25" PointY="8.7208968098958337" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_FormDefinition_BusinessApplication" >
+          <ConnectorPoint PointX="4.03320515625" PointY="14.75" />
+          <ConnectorPoint PointX="4.03320515625" PointY="10.850698242187505" />
+          <ConnectorPoint PointX="9.75" PointY="10.850698242187505" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_ServiceOrder_BusinessApplication" >
+          <ConnectorPoint PointX="4.5" PointY="15.792999674479168" />
+          <ConnectorPoint PointX="5.25" PointY="15.792999674479168" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_VestalisUserApplication_BusinessApplication" >
+          <ConnectorPoint PointX="3.54687375" PointY="18.845602213541667" />
+          <ConnectorPoint PointX="3.54687375" PointY="24.999746093749998" />
+          <ConnectorPoint PointX="5.25" PointY="24.999746093749998" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_CatalogueValue_Catalogue" >
+          <ConnectorPoint PointX="6.75" PointY="8.7208968098958337" />
+          <ConnectorPoint PointX="7.5" PointY="8.7208968098958337" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_FormDefinition_CatalogueValue" >
+          <ConnectorPoint PointX="9" PointY="10.288198242187505" />
+          <ConnectorPoint PointX="9.75" PointY="10.288198242187505" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_FormValue_CatalogueValue" >
+          <ConnectorPoint PointX="9" PointY="9.78125" />
+          <ConnectorPoint PointX="11.385416666666666" PointY="9.78125" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="9.78125" />
+          <ConnectorPoint PointX="12" PointY="9.78125" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_Document_ServiceOrder" >
+          <ConnectorPoint PointX="6.75" PointY="13.754547526041662" />
+          <ConnectorPoint PointX="7.5" PointY="13.754547526041662" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_FormValue_InspectionReportItem" >
+          <ConnectorPoint PointX="11.25" PointY="15.125" />
+          <ConnectorPoint PointX="11.40982443490112" PointY="14.965175565098878" />
+          <ConnectorPoint PointX="11.527675565098878" PointY="14.847324434901122" />
+          <ConnectorPoint PointX="11.625" PointY="14.75" />
+          <ConnectorPoint PointX="11.625" PointY="11.901151971354167" />
+          <ConnectorPoint PointX="12" PointY="11.901151971354167" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_FormValueServiceOrder" >
+          <ConnectorPoint PointX="6.75" PointY="16.835999348958335" />
+          <ConnectorPoint PointX="7.125" PointY="17.210999348958335" />
+          <ConnectorPoint PointX="7.125" PointY="14.739807942708325" />
+          <ConnectorPoint PointX="11.385416666666666" PointY="14.739807942708325" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="14.739807942708325" />
+          <ConnectorPoint PointX="11.625" PointY="14.739807942708325" />
+          <ConnectorPoint PointX="12" PointY="14.364807942708325" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_InspectionReport_ServiceOrder" >
+          <ConnectorPoint PointX="6.75" PointY="15.949247174479174" />
+          <ConnectorPoint PointX="7.041666666666667" PointY="15.949247174479174" />
+          <ConnectorPoint PointX="7.208333333333333" PointY="15.949247174479174" />
+          <ConnectorPoint PointX="7.5" PointY="15.949247174479174" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_InspectionReportItem_InspectionReport" >
+          <ConnectorPoint PointX="9" PointY="16.980499674479169" />
+          <ConnectorPoint PointX="9.75" PointY="16.980499674479169" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="VESTALISModel.ValidationRole" Width="1.5" PointX="8.25" PointY="20.375" Height="3.3263964843750031" />
+        <AssociationConnector Association="VESTALISModel.FK_Role_BusinessApplication" >
+          <ConnectorPoint PointX="4.1562525" PointY="18.845602213541667" />
+          <ConnectorPoint PointX="4.1562525" PointY="21.96875" />
+          <ConnectorPoint PointX="8.25" PointY="21.96875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="VESTALISModel.Picture" Width="2.375" PointX="15" PointY="14.375" Height="3.326396484374996" />
+        <AssociationConnector Association="VESTALISModel.FK_Picture_InspectionReportItem" >
+          <ConnectorPoint PointX="11.25" PointY="18.771098632812503" />
+          <ConnectorPoint PointX="11.385416666666666" PointY="18.771098632812503" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="18.771098632812503" />
+          <ConnectorPoint PointX="16.1875" PointY="18.771098632812503" />
+          <ConnectorPoint PointX="16.1875" PointY="17.701396484374996" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.FK_PictureServiceOrder" >
+          <ConnectorPoint PointX="6.75" PointY="14.963653971354162" />
+          <ConnectorPoint PointX="7.041666666666667" PointY="14.963653971354162" />
+          <ConnectorPoint PointX="7.208333333333333" PointY="14.963653971354162" />
+          <ConnectorPoint PointX="11.328012695312504" PointY="14.963653971354162" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="14.963653971354162" />
+          <ConnectorPoint PointX="15" PointY="14.963653971354162" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="VESTALISModel.aspnet_Membership" Width="1.5" PointX="12.625" PointY="1.125" Height="5.2494108072916674" />
+        <EntityTypeShape EntityType="VESTALISModel.aspnet_Users" Width="1.5" PointX="10.375" PointY="2.375" Height="2.5571907552083388" />
+        <AssociationConnector Association="VESTALISModel.FK__aspnet_Me__UserI__778AC167" >
+          <ConnectorPoint PointX="11.875" PointY="3.8458968098958328" />
+          <ConnectorPoint PointX="12.625" PointY="3.8458968098958328" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="VESTALISModel.aspnet_Profile" Width="1.5" PointX="12.625" PointY="19.75" Height="2.1725878906250031" />
+        <EntityTypeShape EntityType="VESTALISModel.aspnet_Roles" Width="1.5" PointX="8.125" PointY="2.75" Height="2.1725878906250031" />
+        <AssociationConnector Association="VESTALISModel.FK__aspnet_Pr__UserI__2DE6D218" >
+          <ConnectorPoint PointX="11.46875" PointY="5.3167936197916656" />
+          <ConnectorPoint PointX="11.46875" PointY="20.8362939453125" />
+          <ConnectorPoint PointX="12.625" PointY="20.8362939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="VESTALISModel.aspnet_UsersInRoles" >
+          <ConnectorPoint PointX="9.625" PointY="3.8362939453125016" />
+          <ConnectorPoint PointX="10.375" PointY="3.8362939453125016" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

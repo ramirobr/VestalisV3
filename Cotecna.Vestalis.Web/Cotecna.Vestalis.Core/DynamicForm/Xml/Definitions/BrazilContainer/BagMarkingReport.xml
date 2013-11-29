@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Bag Marking">
+  <Sections>
+    <Section Caption="Bag Marking report">
+      <FormElements>
+        <Element Identifier="Status" IsDataGridVisible="true" IsVisibleClient="false"/>
+        <Element Identifier="BMRMill" IsDataGridVisible="true" Mandatoy="true"/>
+        <Element Identifier="MarkingType" />
+        <Element Identifier="MarkingText" IsDataGridVisible="true"  Mandatoy="true" />
+        <Element Identifier="BagColor" IsDataGridVisible="true"/>
+        <Element Identifier="BagTextOfTheBag" IsDataGridVisible="true"/>
+      </FormElements>
+    </Section>
+    <Section Caption="Pictures">
+      <FormElements>
+        <Element Identifier="PictureReport" IsDataGridVisible="true"/>
+      </FormElements>
+    </Section>
+  </Sections>
+  <Rules>
+    <DefaultValueDependentOnCatalogue CatalogueField="MarkingType" TextField="MarkingText" />
+  </Rules>
+</Form>

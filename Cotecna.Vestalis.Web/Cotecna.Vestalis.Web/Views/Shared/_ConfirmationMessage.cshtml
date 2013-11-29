@@ -1,0 +1,29 @@
+﻿@{ string yes = Resources.Common.Yes;
+   string no = Resources.Common.No; 
+ }
+<script type="text/javascript">
+    function ShowMessage(message,title,functionToExecute) {
+        $(function () {
+            $("#messageBody").html(message);
+            $("#confirmationMessage").attr("title", title);
+            $("#confirmationMessage").dialog({
+                resizable: false,
+                height: 130,
+                modal: true,
+                buttons: {
+                    '@yes': function () {
+                        functionToExecute();
+                        $(this).dialog('close');
+                    },
+                    '@no': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        });
+    }    
+    
+</script>
+<div id="confirmationMessage" >
+    <span id="messageBody"></span>
+</div>

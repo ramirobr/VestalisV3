@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Bag Weighing">
+  <Sections>
+    <Section Caption="Bag weighing report">
+      <FormElements >
+        <Element Identifier="Status" IsDataGridVisible="true" IsVisibleClient="false"/>
+        <Element Identifier="Mill" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="InspectionDate" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="StartTime" IsDataGridVisible="false"/>
+        <Element Identifier="EndTime" IsDataGridVisible="false"/>
+        <Element Identifier="TotalWeightOfBags" IsDataGridVisible="true"/>
+        <Element Identifier="TotalOfBags" IsDataGridVisible="true"/>
+        <Element Identifier="GrossWeightAverage" IsDataGridVisible="true"/>
+        <Element Identifier="LessTareAverage" IsDataGridVisible="true"/>
+        <Element Identifier="NetWeightAverage" IsDataGridVisible="true"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

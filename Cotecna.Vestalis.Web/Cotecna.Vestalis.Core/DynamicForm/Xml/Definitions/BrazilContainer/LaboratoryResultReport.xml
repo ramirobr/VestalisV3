@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Laboratory Analysis">
+  <Sections>
+    <Section  Caption="Laboratory analysis result">
+      <FormElements>
+        <Element Identifier="Status" IsDataGridVisible="true" IsVisibleClient="false"/>
+        <Element Identifier="LaboratoryDate" IsDataGridVisible="true" Mandatory="true" IsFilterVisible ="true"/>
+        <Element Identifier="LaboratoryReference" IsDataGridVisible="true" Mandatory="true"/>
+        <Element Identifier="Parameter" IsDataGridVisible="true" Mandatory="true"/>
+        <Element Identifier="Unit" IsDataGridVisible="true" Mandatory="true"/>
+        <Element Identifier="Result" IsDataGridVisible="true" Mandatory="true"/>
+        <Element Identifier="Method" IsDataGridVisible="true" Mandatory="true"/>
+        <Element Identifier="LRRemark" IsDataGridVisible="true" />
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

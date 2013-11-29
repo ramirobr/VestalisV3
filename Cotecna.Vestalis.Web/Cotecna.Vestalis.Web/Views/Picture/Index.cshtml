@@ -1,0 +1,97 @@
+﻿@model Cotecna.Vestalis.Core.PictureSearchModel
+
+
+@{
+    ViewBag.Title = "Vestalis";
+}
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>    
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for lightbox efect*@
+    <script src="@Url.Content("~/Scripts/lightbox.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/lightbox.css")" rel="stylesheet" />
+
+}
+
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection") 
+
+}
+
+@Html.Partial("_ConfirmationMessage")
+
+<script type="text/javascript">
+
+    function CuteWebUI_AjaxUploader_OnPostback() {
+        document.uploadForm.submit();
+    }    
+
+    $(document).ready(function () {
+        $("#liServicerOrderMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@Model.PrincipalFormName");
+    });
+    
+</script>
+
+@section leftmenu {
+@Html.Partial("_LeftMenuOrder", Model.Links)
+}
+@{
+    string orderNumber = Model.OrderIdentifier == null || String.IsNullOrEmpty(Model.OrderIdentifier.FieldValue)
+                                     ? Resources.Common.ServiceOrderUndefined
+                                     : Model.OrderIdentifier.FieldValue;
+
+    string serviceOrderNumber = string.Format(Model.CaptionBreadcrumbsPrincipal + " {0}", orderNumber);
+    string pictureTitle = string.Format(Resources.Picture.PictureTitle, orderNumber);
+}
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    
+    <ul>
+        <li>@Html.ActionLink(Model.CaptionTitlePrincipal, "Index", "ServiceOrder") &gt;</li>
+        @if (User.IsInRole("Client"))
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "ViewServiceOrder", "ServiceOrder") &gt;</li>
+        }
+        else
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "EditServiceOrder", "ServiceOrder") &gt;</li>
+        }
+        <li class="last">@pictureTitle</li>
+    </ul>
+    
+    <div class="cap-right">
+    </div>
+</div>
+
+<h1>@pictureTitle</h1>
+@Html.Partial("_InspectionReportHeader", Model.ServiceOrderHeader)
+
+<div class="gridArea">
+@Html.Partial("_PictureGrid", Model)
+</div>
+
+@using (Html.BeginForm("Upload", "Picture", FormMethod.Post, new { enctype = "multipart/form-data", name = "uploadForm" }))
+{
+    if (!User.IsInRole("Client"))
+    {
+    
+    @Html.AntiForgeryToken() 
+    @Html.Raw(ViewData["uploaderhtml"].ToString())
+    <a id="uploadbutton" style="cursor:pointer;"  class="btn">
+                        <span style="cursor:pointer;" class="btn" >@Resources.Picture.Upload</span>
+    </a>
+        if (Model.PictureList.Count > 0)
+        {
+    <a id="deletebutton" onclick="DeletePicture()" style="margin-right: 10px;cursor:pointer;"  class="btn">
+                        <span style="cursor:pointer;" class="btn" >@Resources.Picture.Delete</span>
+    </a>
+        }
+    }
+}

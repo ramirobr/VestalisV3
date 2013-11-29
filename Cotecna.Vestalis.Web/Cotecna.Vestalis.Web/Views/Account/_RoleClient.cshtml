@@ -1,0 +1,69 @@
+﻿@using Cotecna.Vestalis.Core
+@using Cotecna.Vestalis.Web.Common
+@using Cotecna.Vestalis.Entities;
+
+@model UserModel
+
+@if (Model.SelectedUserType == 4)
+{
+<li>
+    <label id="rolLabel">
+        <span class="name">@Resources.Administration.Roles</span>
+        <div style=" overflow: auto; height: auto; max-height: 120px" @Html.Raw(ViewBag.IdDivRoles) >
+            @foreach (KeyValuePair<string, string> value in Model.Roles)
+            {
+                string ischecked;
+                if (Model.Roles == null)
+                {
+                    ischecked = "";
+                }
+                else
+                {
+                    if (Model.SelectedRoles.Keys.Contains(value.Key))
+                    {
+                        ischecked = Html.Raw("checked='checked'").ToString();
+                    }
+                    else
+                    {
+                        ischecked = "";
+                    }
+                }
+                string idChecks = "chk" + value.Key;
+                  
+                <input type="checkbox" id="@idChecks" value="@value.Key" name="@idChecks" @ischecked style="margin-left: -7px;width:20px;" />
+                @value.Value
+                <br />
+                
+            }
+        </div>
+    </label>
+</li>
+}
+@if (Model.SelectedUserType == 3)
+{
+<li>
+    <label id="clientsList">
+        @{
+            List<CatalogueValue> clientList = Model.ClientList;
+            if (clientList != null)
+            {
+                List<SelectListItem> itemSource = clientList.Select(data => new SelectListItem
+                {
+                    Text = data.CatalogueValueData,
+                    Value = data.CatalogueValueId.ToString()
+                }).ToList();
+                if (ViewBag.IsPermission)
+                {
+                    <span class="name">@Resources.Administration.Clients</span>
+                    @Html.DropDownListFor(m => m.ClientIdPer, itemSource, Resources.Common.SelectOneOption);
+                }
+                else
+                {
+                    <span class="name">Linked with the client</span>
+                    @Html.DropDownListFor(m => m.ClientId, itemSource, Resources.Common.SelectOneOption);
+                }
+            }   
+        } 
+    </label>
+</li>
+}

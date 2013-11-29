@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6c834838-eeb2-4e4a-b4ab-09730eb9f6fa" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/MonitoringService/MonitoringService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MonitoringService.xsd" MetadataType="Schema" ID="97705ff4-d017-4449-be5b-622aab5cd602" SourceId="1" SourceUrl="http://localhost/MonitoringService/MonitoringService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MonitoringService.disco" MetadataType="Disco" ID="6508bc0d-4f39-46e3-9f0c-d70510ded5e8" SourceId="1" SourceUrl="http://localhost/MonitoringService/MonitoringService.svc?disco" />
+    <MetadataFile FileName="MonitoringService.wsdl" MetadataType="Wsdl" ID="ac9fc2e1-f49b-4519-9245-c08c6841fa05" SourceId="1" SourceUrl="http://localhost/MonitoringService/MonitoringService.svc?wsdl" />
+    <MetadataFile FileName="MonitoringService1.xsd" MetadataType="Schema" ID="9036c7ac-09ca-4000-9b5d-26c2318897bf" SourceId="1" SourceUrl="http://localhost/MonitoringService/MonitoringService.svc?xsd=xsd2" />
+    <MetadataFile FileName="MonitoringService2.xsd" MetadataType="Schema" ID="4565882b-bade-4e0e-8976-ecbb9e94e7e7" SourceId="1" SourceUrl="http://localhost/MonitoringService/MonitoringService.svc?xsd=xsd3" />
+    <MetadataFile FileName="MonitoringService3.xsd" MetadataType="Schema" ID="f7fb9b26-22c0-4b6f-a65f-643908efa29a" SourceId="1" SourceUrl="http://localhost/MonitoringService/MonitoringService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

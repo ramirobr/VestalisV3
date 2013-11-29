@@ -1,0 +1,942 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Web.Common
+@using Cotecna.Vestalis.Core.DynamicForm
+@model InspectionReportModel
+@{
+    ViewBag.Title = "Vestalis";
+}
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for radios and checks*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+        @*Used for lightbox efect*@
+    <script src="@Url.Content("~/Scripts/lightboxLargeRoute.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/lightbox.css")" rel="stylesheet" />
+
+}
+
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection")            
+
+}
+@Html.Partial("_ConfirmationMessage")
+@{
+    string orderNumber = Model.OrderIdentifier == null || String.IsNullOrEmpty(Model.OrderIdentifier.FieldValue)
+                                     ? Resources.Common.ServiceOrderUndefined
+                                     : Model.OrderIdentifier.FieldValue;
+    string serviceOrderNumber = string.Format(Model.CaptionBreadcrumbsPrincipal + " {0}", orderNumber);    
+}
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    
+    <ul>
+        <li>@Html.ActionLink(Model.CaptionTitlePrincipal, "Index", "ServiceOrder") &gt;</li>
+        @if (User.IsInRole("Client"))
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "ViewServiceOrder", "ServiceOrder") &gt;</li>
+        }
+        else
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "EditServiceOrder", "ServiceOrder") &gt;</li>
+        }
+
+        <li class="last">@Html.ActionLink(Model.GridColumns.FormName, "ChangeReport", "InspectionReport")&gt;</li>
+        @if (Model.ScreenOpenMode == ScreenOpenMode.Add)
+        {   
+            <li class="last">@string.Format(Resources.InspectionReports.TitleAdd, Model.GridColumns.FormName)</li>
+        }
+        else if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+        {
+            <li class="last">@string.Format(Resources.InspectionReports.TitleEdit, Model.GridColumns.FormName)</li>
+        }
+        else if (Model.ScreenOpenMode == ScreenOpenMode.View)
+        { 
+            <li class="last">@string.Format(Resources.InspectionReports.TitleView, Model.GridColumns.FormName)</li>
+        }
+    </ul>
+    
+    <div class="cap-right">
+    </div>
+</div>
+
+@section leftmenu {
+@Html.Partial("_LeftMenuOrder", Model.Links)
+}
+
+@{
+    string dataSent = "";
+    bool containUploader = false;
+}
+
+ @foreach (var sec in Model.FormDefinition.Sections)
+ {
+
+     foreach (var formElement in sec.FormElements)
+     {
+         var htmlIdentifierValue = formElement.Identifier;
+
+         if (formElement == sec.FormElements.Last())
+         {
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val()", htmlIdentifierValue, htmlIdentifierValue);
+         }
+         else
+         {
+             dataSent = dataSent + String.Format(" {0}:$('#{1}').val(),", htmlIdentifierValue, htmlIdentifierValue);
+         }
+         
+         
+     }
+     
+     
+ }
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#liServicerOrderMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@Model.PrincipalFormName");
+        $("div#ErrorPlacementContainer").hide();
+
+        setupSelects($('#Content select').not('[multiple*=multiple]')); //Get from vestalis script
+        $('input[type="radio"]').ezMark();
+        $('input[type="checkbox"]').ezMark();
+        jQuery.validator.addMethod("time", function (value, element) {
+            return this.optional(element) || /^(([0-9])|([0-1][0-9])|([2][0-3])):(([0-9])|([0-5][0-9]))$/.test(value);
+        }, "@Resources.ServiceOrder.TimeValidadtionMessage");
+
+        jQuery.validator.addMethod("valueNotEquals", function (value, element, arg) {
+            return arg != value;
+        }, "Value must not equal arg.");
+
+
+        $("#form1").validate({
+            errorElement: "span",
+            errorClass: "error",
+            messages: {
+                required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage",
+                minlength: jQuery.format("@Resources.ServiceOrder.MinLengthValidationMessage")
+            },
+            success: function (span) {
+            },
+            errorPlacement: function (error, element) {
+                var span = element.prev('span');
+                error.appendTo(span)
+            },
+            highlight: function (element, errorClass) {
+                var li = $(element).closest('li');
+                $(li).addClass(errorClass);
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                var li = $(element).closest('li');
+                $(li).removeClass(errorClass);
+            },
+            invalidHandler: function (event, validator) {
+                var a = validator.errorList[0].element.id;
+                $('#' + a).focus();
+            }
+        });
+
+        $("#cancelButton").click(function () {
+            window.location = '@Url.Action("ChangeReport")';
+        });
+
+        $("#deleteButton").click(function () {
+            LaunchDeleteInspectionReport('@Model.InspectionReportItemId');
+        });
+    });
+
+    function LaunchDeleteInspectionReport(sol) {
+            ShowMessage("@Resources.InspectionReports.DeleteInspectionReport","@Resources.Common.DeleteConfirmation", function () {
+                var ajaxUrl = '@Url.Action("DeleteInspectionReport", "InspectionReport")';
+            
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(data){
+                        window.location = '@Url.Action("ChangeReport")';
+                    },
+                    error: function () { alert('An error occurred') },
+                    data:{inspectionReportItemId: sol}
+                });           
+            });            
+        }
+</script>
+@if (Model.ScreenOpenMode == ScreenOpenMode.Add)
+{   
+    <h1>@string.Format(Resources.InspectionReports.TitleAdd, Model.GridColumns.FormName)</h1>
+}
+else if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+{
+    <h1>@string.Format(Resources.InspectionReports.TitleEdit, Model.GridColumns.FormName)</h1>
+}
+else if (Model.ScreenOpenMode == ScreenOpenMode.View)
+{ 
+    <h1>@string.Format(Resources.InspectionReports.TitleView, Model.GridColumns.FormName)</h1>
+}
+
+@Html.Partial("_InspectionReportHeader", Model.ServiceOrderHeader)
+
+@if (Model.ScreenOpenMode == ScreenOpenMode.Add || Model.ScreenOpenMode == ScreenOpenMode.Edit)
+{
+    <p>@Html.Raw(Resources.InspectionReports.GeneralInstruction)</p>    
+}
+
+@using (Html.BeginForm("SaveInspectionReport", "InspectionReport", FormMethod.Post, new { id = "form1", enctype = "multipart/form-data" }))
+{
+    foreach (var sec in Model.FormDefinition.Sections)
+    {
+    <div class="form product">    
+    <div class="legend"><span>&nbsp;</span>@sec.Caption</div>    
+    <ol>
+        @if (sec.Legend != null && sec.Legend.Length > 0)
+        {
+        <li>
+            <p style="margin: 0 25px 5px 0; color: #057c68; font-style: italic; display: block; padding-right: 20px;">@sec.Legend</p>
+        </li>
+        }
+
+        @for (int i = 0; i < sec.FormElements.Length; i++)
+        {
+            var element = sec.FormElements[i];
+            var val = element.Field.FieldValue;
+            var htmlIdentifier = element.Identifier;
+            string caption = element.Field.Mandatory ? element.Field.Caption + " *" : element.Field.Caption;
+            if (element.Field.Mandatory)
+            {
+                if (Model.ScreenOpenMode != ScreenOpenMode.View)
+                {
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#@htmlIdentifier").rules("add", { required: true, messages: { required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage"} });
+                        });
+                    </script>
+            
+                    if (element.Field.FieldType == FieldType.Catalogue || element.Field.FieldType == FieldType.Datepicker)
+                    {
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#@htmlIdentifier").change(function () {
+                                    $(this).valid();
+                                });
+                            });
+                        </script>
+                    }
+                }
+            }
+
+            switch (element.Field.FieldType)
+            {
+                case FieldType.None:
+                    break;
+                case FieldType.PictureField:
+                    FieldsPictureField pictureField = element.Field as FieldsPictureField;
+                    dataSent += string.Format(",Picture{0}:true", pictureField.FieldName);
+                    containUploader = true;
+                    if(Model.ScreenOpenMode != ScreenOpenMode.View)
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span>
+                        </label> 
+                            <br /> 
+                            <table style="width:80px;border: none;">
+                            <tbody>
+                            <tr>
+                            <td style="padding-left:0px;background-color:#F6F5F4;filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#F6F5F4',EndColorStr='#F6F5F4');     -ms-filter: 'progid:DXImageTransform.Microsoft.gradient(startColorStr='#F6F5F4',EndColorStr='#F6F5F4')';     zoom: 1; ">       
+                            </td>
+                            </tr>
+                            </tbody></table>
+                            <div id="picturesReport">
+                                @Html.Partial("_InspectionReportPictures",Model.PictureModel)  
+                             </div>
+                             <p class="btn">
+                               
+                                 <span class="btn" style="cursor:pointer;" id="uploadbutton">
+                                    <input type="button" value="@Resources.Picture.Upload" />
+                                </span>
+                                <span class="btn" style="margin-right: 10px;" id ="deletePictures">
+                                    <input type="button" value="@Resources.InspectionReports.DeletePictureButton" onclick="DeletePicture()" />
+                                </span> 
+
+                             </p>
+                            @Html.AntiForgeryToken() 
+                            @Html.Raw(ViewData["uploaderhtml"].ToString())
+                        
+                    </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <div id="picturesReport">
+                                @Html.Partial("_InspectionReportPictures", Model.PictureModel)  
+                             </div>
+                        </li>
+                    }
+                    break;
+                case FieldType.AutoComplete:
+                    FieldsAutoCompleteTextField autoCompleteField = element.Field as FieldsAutoCompleteTextField;
+                    if (Model.ScreenOpenMode != ScreenOpenMode.View)
+                    {
+                        DynamicFormEngine.InitAutoCompleteInspectionReportField(autoCompleteField, Model.ServiceOrderId);
+                        string availableTags = string.Empty;
+                        foreach (string item in autoCompleteField.ItemSource)
+                        {
+                            availableTags += string.Format("'{0}',", item);
+                        }
+                        if (autoCompleteField.Mandatory)
+                        {
+                             <script type="text/javascript">
+                                 $(function () {
+                                     $("#@htmlIdentifier").rules("add", { valueNotEquals: "", messages: { valueNotEquals: "@Resources.ServiceOrder.SelectionNotValidMessage"} });
+                                 });
+                             </script>
+                        }
+
+                        if (!string.IsNullOrEmpty(availableTags))
+                        {
+                            if (availableTags.Last() == ',')
+                            {
+                                availableTags = availableTags.Remove(availableTags.LastIndexOf(','));
+                            }
+                            
+                            
+                            <script type="text/javascript">
+                                $(function () {
+                                    var availableTags = [@Html.Raw(availableTags)];
+                                    $("#@htmlIdentifier").autocomplete({            
+                                        source: availableTags        
+                                    });
+                                });
+                            </script>
+                        }
+                        
+                        <li> 
+                            <label> 
+                                <span class="name">@caption</span> 
+                                <input id="@htmlIdentifier" type="text" class="txt w3" name="@htmlIdentifier" value="@val" />
+                            </label> 
+                        </li>
+                    }
+                    else
+                    {
+                        <li> 
+                            <label> 
+                                <span class="name">@caption</span>
+                                <span class="valueForm">@val</span> 
+                            </label> 
+                        </li>
+                    }
+                    break;
+                case FieldType.Catalogue:
+                    FieldsCatalogueField catalogueField = element.Field as FieldsCatalogueField;
+
+                    if (Model.ScreenOpenMode != ScreenOpenMode.View)
+                    {
+                        if (catalogueField.Mandatory)
+                        {
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $("#@htmlIdentifier").rules("add", { valueNotEquals: "", messages: { valueNotEquals: "@Resources.ServiceOrder.SelectionNotValidMessage"} });
+                                    });
+                                </script>
+                        }
+
+                        if (Model.FormDefinition.Rules != null && Model.FormDefinition.Rules.DefaultValueDependentOnCatalogue != null && Model.FormDefinition.Rules.DefaultValueDependentOnCatalogue.CatalogueField == element.Identifier)
+                        {
+                            var textField = Model.FormDefinition.Rules.DefaultValueDependentOnCatalogue.TextField;
+                        
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#@htmlIdentifier').change(function () {
+                                        $.post('@Url.Action("GetDescriptionCatalogueOnDependent")', { id: $(this).attr('value') }, ResultDescription, "html");
+                                    });
+
+                                    function ResultDescription(results) {
+                                        $("#@textField").val(results);
+                                    }
+                                });
+                                </script>
+                        }                        
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            @switch (catalogueField.EditorType)
+                            {
+                                case FieldsCatalogueFieldEditorType.DropDownList:
+                                    @Html.DropDownList(element.Identifier, catalogueField.ItemsSource, Resources.Common.SelectOneOption)
+                               break;
+                                case FieldsCatalogueFieldEditorType.List:
+                                    @Html.ListBox(element.Identifier, catalogueField.ItemsSource)
+                               break;
+                                case FieldsCatalogueFieldEditorType.Radios:
+                               foreach (var item in catalogueField.ItemsSource)
+                               {                                    
+                                        @Html.RadioButton(element.Identifier, item.Value, item.Selected)
+                                        <span>@item.Text</span> 
+                                        <text>&nbsp&nbsp&nbsp</text>
+                               }
+                               break;
+                                default:
+                               break;
+                            }
+                                                
+                        </label> 
+                    </li>
+                    }
+                    else
+                    {
+                        string catalagValue = string.Empty;
+                        if (!string.IsNullOrEmpty(val))
+                        {
+                            catalagValue = catalogueField.ItemsSource.FirstOrDefault(x => x.Value == val).Text;
+                        }
+                            <li> 
+                                <label> 
+                                    <span class="name">@caption</span>
+                                    <span class="valueForm">@catalagValue</span> 
+                                </label> 
+                            </li>
+                    }
+                    break;
+                case FieldType.SingleTextLine:
+                    if (Model.ScreenOpenMode != ScreenOpenMode.View)
+                    {
+                        FieldsSingleTextLineField singleTextField = element.Field as FieldsSingleTextLineField;
+                        if (singleTextField.MaxLength != null && singleTextField.MaxLength.Length > 0)
+                        {
+                            <script type="text/javascript">
+                                $(function () {
+                                    $("#@htmlIdentifier").rules("add", { maxlength: '@singleTextField.MaxLength' });
+                                });
+                            </script>            
+                        }
+                        if (singleTextField.MinLength != null && singleTextField.MinLength.Length > 0)
+                        {
+                            <script type="text/javascript">
+                                $(function () {
+                                    $("#@htmlIdentifier").rules("add", { minlength: '@singleTextField.MinLength' });
+                                });
+                            </script>            
+                        }
+                    }
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                        <li> 
+                            <label> 
+                                <span class="name">@caption</span>
+                                <span class="valueForm">@val</span> 
+                            </label> 
+                        </li>
+                    }
+                    else
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <input id="@htmlIdentifier" type="text" class="txt w3" name="@htmlIdentifier" value="@val" />
+                        </label> 
+                    </li>
+                    }
+                    break;
+                case FieldType.MultipleTextLine:
+
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span>
+                            <span class="valueTexArea">@val</span> 
+                        </label> 
+                    </li>
+                    }
+                    else
+                    {
+                        FieldsMultipleTextLineField multiTextField = element.Field as FieldsMultipleTextLineField;
+
+                        if (multiTextField.MaxLength != null && multiTextField.MaxLength.Length > 0)
+                        {
+                            <script type="text/javascript">
+                                $(function () {
+                                    $("#@htmlIdentifier").rules("add", { maxlength: '@multiTextField.MaxLength' });
+                                });
+                            </script>            
+                        }
+                        if (multiTextField.MinLength != null && multiTextField.MinLength.Length > 0)
+                        {
+                            <script type="text/javascript">
+                                $(function () {
+                                    $("#@htmlIdentifier").rules("add", { minlength: '@multiTextField.MinLength' });
+                                });
+                            </script>            
+                        }
+                    
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <textarea id="@htmlIdentifier" rows="4" cols="50" name="@htmlIdentifier">@val</textarea>
+                        </label> 
+                    </li>
+                    }
+                    break;
+                case FieldType.Boolean:
+
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                        <li> 
+                            <label> 
+                                <span class="name">@caption</span> 
+                                @if (string.IsNullOrEmpty(val))
+                                {
+                                    <span class="valueForm">@Resources.Common.No</span> 
+                                }
+                                else
+                                {
+                                    if (val.ToUpper() == "TRUE")
+                                    {
+                                        <span class="valueForm">@Resources.Common.Yes</span> 
+                                    }
+                                    else if (val.ToUpper() == "FALSE")
+                                    {
+                                        <span class="valueForm">@Resources.Common.No</span> 
+                                    }
+                                }
+                                
+                            </label> 
+                        </li>
+                    }
+                    else
+                    {
+                        string ischecked = "";
+                        if (!String.IsNullOrEmpty(val) && val.ToUpper() == "TRUE")
+                        {
+                            ischecked = "checked='checked'";
+                        }
+                    
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                              <input id="@htmlIdentifier" type="checkbox" class="txt" name="@htmlIdentifier" @ischecked />
+                        </label> 
+                    </li>
+                    }
+
+                    break;
+
+                case FieldType.Datepicker:
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                    
+                        <li class="date"> 
+                            <label> 
+                                <span class="name">@caption</span> 
+                                <span class="valueForm">@val</span> 
+                            </label> 
+                        </li> 
+                        
+                    }
+                    else
+                    {
+                        FieldsDatepickerField dateField = element.Field as FieldsDatepickerField;
+                            
+                    <script>
+                        $(function () {
+                            $("#@htmlIdentifier").datepicker({
+                                showOn: "button",
+                                buttonImage: '@Url.Content("~/Images/date.png")',
+                                buttonImageOnly: true,
+                                dateFormat: "dd/mm/yy",
+                                firstDay: 1
+                            });
+
+                        });
+                    </script>
+                        if (dateField.StartDate != null && dateField.StartDate.Length > 0)
+                        {
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#@htmlIdentifier").datepicker("option", "minDate", '@dateField.StartDate');
+                            });
+                        </script>            
+                        }
+                        if (dateField.EndDate != null && dateField.EndDate.Length > 0)
+                        {
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#@htmlIdentifier").datepicker("option", "maxDate", '@dateField.EndDate');
+                            });
+                        </script>            
+                        }        
+                    
+            
+                    <li class="date"> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <input id="@htmlIdentifier" type="text" class="txt" name="@htmlIdentifier" value="@val" />
+                        </label> 
+                    </li>                                        
+                    }
+                    break;
+                case FieldType.Time:
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <span class="valueForm">@val</span> 
+                        </label> 
+                    </li> 
+                    }
+                    else
+                    {
+                        FieldsTimeField timeField = element.Field as FieldsTimeField;
+
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#@htmlIdentifier").rules("add", { time: true });
+                        });
+                    </script>   
+                
+                
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <input id="@htmlIdentifier" type="text" class="txt w3" name="@htmlIdentifier" value="@val"/>
+                        </label> 
+                    </li> 
+                    }
+                    break;
+                case FieldType.Integer:
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <span class="valueForm">@val</span> 
+                        </label> 
+                    </li> 
+                    }
+                    else
+                    {
+                        FieldsIntegerField integerField = element.Field as FieldsIntegerField;
+
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#@htmlIdentifier").rules("add", { digits: true, messages: { digits: "@Resources.ServiceOrder.DigitsValidationMessage"} });
+                        });
+                    </script>            
+                    
+                        if (integerField.MaxValue != null && integerField.MaxValue.Length > 0)
+                        {
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#@htmlIdentifier").rules("add", { max: '@integerField.MaxValue', messages: { max: jQuery.format("@Resources.ServiceOrder.MaxValueValidationMessage")} });
+                            });
+                        </script>            
+                        }
+                        if (integerField.MinValue != null && integerField.MinValue.Length > 0)
+                        {
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#@htmlIdentifier").rules("add", { min: '@integerField.MinValue', messages: { min: jQuery.format("@Resources.ServiceOrder.MinValueValidationMessage")} });
+                            });
+                        </script>            
+                        }
+                    
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <input id="@htmlIdentifier" type="text" class="txt w3" name="@htmlIdentifier" value="@val"/>
+                        </label> 
+                    </li> 
+                    }
+                    break;
+                case FieldType.Decimal:
+
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <span class="valueForm">@val</span> 
+                        </label> 
+                    </li> 
+                    }
+                    else
+                    {
+                        FieldsDecimalField decimalField = element.Field as FieldsDecimalField;
+            
+                    
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#@htmlIdentifier").rules("add", { number: true, messages: { number: "@Resources.ServiceOrder.NumbersValidationMessage"} });
+                        });
+                    </script>            
+        
+                        if (decimalField.MaxValue != null && decimalField.MaxValue > 0)
+                        {
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#@htmlIdentifier").rules("add", { max: '@decimalField.MaxValue', messages: { max: jQuery.format("@Resources.ServiceOrder.MaxValueValidationMessage")} });
+                        });
+                    </script>            
+                        }
+                        if (decimalField.MinValue != null && decimalField.MinValue > 0)
+                        {
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#@htmlIdentifier").rules("add", { min: '@decimalField.MinValue', messages: { min: jQuery.format("@Resources.ServiceOrder.MinValueValidationMessage")} });
+                        });
+                    </script>            
+                        }
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <input id="@htmlIdentifier" type="text" class="txt w3" name="@htmlIdentifier" value="@val"/>
+                        </label> 
+                    </li> 
+                    }
+                    break;
+                case FieldType.RegularExpressionText:
+
+                    if (Model.ScreenOpenMode == ScreenOpenMode.View)
+                    {
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <span class="valueForm">@val</span> 
+                        </label> 
+                    </li> 
+                    }
+                    else
+                    {
+
+                        FieldsRegularExpressionTextField expressionField = element.Field as FieldsRegularExpressionTextField;                   
+
+                        <script type="text/javascript">
+                        $(function () {
+                            jQuery.validator.addMethod("@expressionField.FieldName", function (value, element) {
+                                return this.optional(element) || /@expressionField.Expression/.test(value);
+                            }, "@Resources.ServiceOrder.RegularExpressionErrorMessage " + "@element.Field.Caption");
+                            $("#@htmlIdentifier").rules("add", { @expressionField.FieldName: true });
+                        });
+                        </script>                     
+                    
+                    <li> 
+                        <label> 
+                            <span class="name">@caption</span> 
+                            <input id="@htmlIdentifier" type="text" class="txt w3" name="@htmlIdentifier" value="@val"/>
+                        </label> 
+                    </li>
+                    }
+                    break;
+                case FieldType.User:
+                    FieldsUserField userField = element.Field as FieldsUserField;
+                    
+                <li> 
+                    <label> 
+                        <span class="name">@caption</span> 
+                        @Html.DropDownList(element.Identifier, userField.ItemsSource, Resources.ServiceOrder.ComboBoxUserDefaultOption)
+                    </label> 
+                </li> 
+            
+                
+                   break;
+                default:
+                   break;
+            }
+        }
+    </ol>
+    </div>
+    }
+    <input type="hidden" id="serviceOrderId" name="serviceOrderId" value="@Model.FormDefinition.FormIdentifier" />
+    <br />
+    <div class="form"> 
+    @Html.LocalValidationSummary()
+        <div id="ErrorPlacementContainer" class="error">
+            <h5 id="ErrorTitle"></h5>
+            <ul id="ErrorContainer">
+                <div id="liContainer">
+                </div>
+            </ul>
+        </div>    
+    </div>
+        
+    
+    <script type="text/javascript">
+        function LaunchPublishValidate(option) {
+            $("#PublishValidateOption").val(option);
+            $("#form1").submit();
+        }
+    </script>
+    if (containUploader && Model.ScreenOpenMode == ScreenOpenMode.Add)
+    {
+    <script type="text/javascript">
+        function CuteWebUI_AjaxUploader_OnPostback() {
+            $("#form1").submit();
+        }
+
+        function doStart() {
+            var uploadobj = document.getElementById('myuploader');
+            if (uploadobj.getqueuecount() > 0) {
+                uploadobj.startupload();
+            }
+            else {
+                $("#form1").submit();
+            }
+        }
+    </script>
+    }
+    if (containUploader && Model.ScreenOpenMode == ScreenOpenMode.Edit)
+    {
+    <script type="text/javascript">
+
+        function UpdateResultsSearchPictures() {
+
+            $("#inspectionReportItemId").val('@Model.InspectionReportItemId');
+            $("#updatePictures").submit();
+          
+        }
+
+
+        function CuteWebUI_AjaxUploader_OnPostback() {
+
+            var ajaxUrl = '@Url.Action("UploadNewPictures", "InspectionReport")';
+            
+            var serviceOrderId = '@Model.ServiceOrderId';
+            var inspectionReportItemId = '@Model.InspectionReportItemId';
+            
+            var uploader = document.getElementById("myuploader");
+            var guidlist = uploader.value;
+            
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                success: UpdateResultsSearchPictures,
+                error: function () { alert('An error occurred') },
+                data: { myuploader: guidlist, serviceOrderId: serviceOrderId, inspectionReportItemId: inspectionReportItemId }
+            });
+        }
+
+        function doStart() {
+            var uploadobj = document.getElementById('myuploader');
+            if (uploadobj.getqueuecount() > 0) {
+                uploadobj.startupload();
+            }
+            else {
+                $("#form1").submit();
+            }
+        }
+
+        function DeletePicture() {
+            ShowMessage("@Resources.Picture.DeletePicture", "@Resources.Common.DeleteConfirmation", function () {
+                var ajaxUrl = '@Url.Action("DeletePictures", "InspectionReport")';
+                var data = '';
+                var counter = 0;
+                $("#selectedPictures input:checked").each(function () {
+                    //fill the array with the values
+                    data += $(this).val() + '&&&';
+                    counter++;
+                });
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    success: UpdateResultsSearchPictures,
+                    error: function () { alert('An error occurred') },
+                    data: { pictureIds: data }
+                });
+            });
+        }
+
+
+
+
+
+    </script>
+    }
+    
+    <p class="btn">
+    @if (Model.ScreenOpenMode != ScreenOpenMode.View)
+    {
+        <span class="btn2">
+            <input type="reset" value="@Resources.Common.Cancel" id="cancelButton" />
+        </span>
+        if (containUploader)
+        {
+            <span class="btn" >
+                <input type="button" class="btn" value="@Resources.Common.Save" id="saveButton" onclick="doStart(); return false;" />
+            </span>
+        }
+        else
+        {
+            <span class="btn" >
+                <input type="submit" class="btn" value="@Resources.Common.Save" id="saveButton" />
+            </span>
+        }
+
+
+        if (Model.CanPublish && !Model.CanValidate && Model.ApprovalStatus != (int)ApprovalStatus.Completed)
+        {
+            <span class="btn" style="margin-right: 10px;">
+                <input type="submit" class="btn" value="@Resources.InspectionReports.Publish" onclick="LaunchPublishValidate('Publish')"/>
+            </span>
+        }
+        else if (!Model.CanPublish && Model.CanValidate && Model.ApprovalStatus != (int)ApprovalStatus.Completed)
+        {
+            <span class="btn" style="margin-right: 10px;">
+                <input type="submit" class="btn" value="@Resources.InspectionReports.Validate" onclick="LaunchPublishValidate('Validate')" />
+            </span>
+        }
+
+
+
+        if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+        {
+            <span class="btn" style="margin-right: 10px;">
+                <input type="reset" class="btn" value="@Resources.Common.Delete" id="deleteButton"/>
+            </span>
+        }
+
+    }
+    else
+    {
+        if (Model.CanPublish && !Model.CanValidate && Model.ApprovalStatus != (int)ApprovalStatus.Completed)
+        {
+            <span class="btn">
+                <input type="submit" class="btn" value="@Resources.InspectionReports.Publish" onclick="LaunchPublishValidate('Publish')"/>
+            </span>
+        }
+        else if (!Model.CanPublish && Model.CanValidate && Model.ApprovalStatus != (int)ApprovalStatus.Completed)
+        {
+            <span class="btn">
+                <input type="submit" class="btn" value="@Resources.InspectionReports.Validate" onclick="LaunchPublishValidate('Validate')" />
+            </span>
+        }
+
+        if (Model.IsPublished && Model.CanPublish)
+        {
+            <span class="btn">
+                <input type="submit" class="btn" value="@Resources.InspectionReports.UnPublish" onclick="LaunchPublishValidate('UnPublish')" />
+            </span>
+        }
+        
+        <span class="btn2">
+            <input type="reset" value="@Resources.Common.Return" id="cancelButton" />
+        </span>
+    }
+    </p>  
+    <input type="hidden" name="PublishValidateOption" id="PublishValidateOption" value="" />
+}
+<form id="updatePictures" action="@Url.Action("EditInspectionReport")" method="post">
+    <input type="hidden" id ="inspectionReportItemId" name="inspectionReportItemId" value="" />
+</form>

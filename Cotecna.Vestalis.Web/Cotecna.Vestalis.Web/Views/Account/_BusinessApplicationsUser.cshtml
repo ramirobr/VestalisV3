@@ -1,0 +1,83 @@
+﻿@using Cotecna.Vestalis.Core
+@using Cotecna.Vestalis.Web.Common
+@using Cotecna.Vestalis.Entities;
+
+@model UserModel
+@{
+    bool isPermission = ViewBag.IspermissionBusinessApp == null ? false : ViewBag.IspermissionBusinessApp;
+    string idDivRolClient = isPermission ? "#roleClientPer" : "#roleClient";
+    string idDropBusinessApp = isPermission ? "#BusinessApplicationIdPer" : "#BusinessApplicationId";
+    string idRoleList = isPermission ? "roleListPer" : "roleList";
+}
+
+<script type="text/javascript">
+    $("@idDropBusinessApp").change(function () {
+        var selectedBusinessApp = $("@idDropBusinessApp").val();
+        var ajaxUrl = '@Url.Action("GetRolesByBusinessApplication", "Account")';
+        var selectedUserType = $("#SelectedUserType").val();
+
+        $("#rolLabel").hide();
+        $("#clientsList").hide();
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: function (results) {
+                if (results.indexOf('rolLabel') != -1 || results.indexOf('clientsList') != -1) {
+                    $("@idDivRolClient").html(results);
+                    $("@idDivRolClient").fadeIn("slow");
+                    if (selectedUserType == 3) {
+                        setupSelects($('@idDivRolClient select').not('[multiple*=multiple]'));
+                        $("#rolLabel").hide();
+                        $("#clientsList").show();
+                    }
+                    if (selectedUserType == 4) {
+                        $('#formPermissionGrid input[type="checkbox"]').ezMark();
+                        $("#rolLabel").show();
+                        $("#clientsList").hide();
+                    }
+                }
+                else {
+                    $("#formError").submit();
+                }
+            },
+            error: function () { alert('An error occurred') },
+            data: { businessApplicationId: selectedBusinessApp, selectedUserType: selectedUserType, divRolesId: 'id="@idRoleList"', isPermission: '@isPermission' }
+        });
+    });
+</script>
+
+@Html.HiddenFor(m => m.OpenModePer)
+
+@if (Model.OpenModePer != (int)ScreenOpenMode.Edit)
+{
+<li id ="liBusinessApp">
+    <label>
+        <span class="name">@Resources.Administration.BusinessApplication</span>
+        @if (isPermission)
+        {
+            @Html.DropDownListFor(m => m.BusinessApplicationIdPer, Model.BusinessApplications, Resources.Common.SelectOneOption)
+            @Html.Hidden("BusinessApplicationIdPerEdit", Model.BusinessApplicationIdPer)
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.BusinessApplicationId, Model.BusinessApplications, Resources.Common.SelectOneOption)
+        }
+    </label>
+</li>
+}
+else
+{
+    string selectedBusinessApp = Model.BusinessApplications.FirstOrDefault(m => m.Value == Model.BusinessApplicationIdPer.ToString()).Text;
+    
+    
+    <li id ="liBusinessApp">
+        <label>
+            <span class="name">@Resources.Administration.BusinessApplication</span>
+            <span class="value">@selectedBusinessApp</span>
+            @Html.Hidden("BusinessApplicationIdPer", Model.BusinessApplicationIdPer)
+            @Html.Hidden("BusinessApplicationIdPerEdit", Model.BusinessApplicationIdPer)
+        </label>
+    </li>
+}

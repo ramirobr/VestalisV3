@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Service orders" CaptionTitle="Service order list" CaptionBreadcrumbs="Service order">
+  <Sections>
+    <Section Caption="General">
+      <FormElements>
+        <Element Identifier="OrderStatus" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier="Client" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="false" />
+        <Element Identifier="BookingNumber" IsDataGridVisible="true" IsFilterVisible ="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier="Vessel" />
+        <Element Identifier="OrderNumber" IsDataGridVisible="true" IsFilterVisible ="true" IsOrderIdentifier ="true" IsVisibleClient="false"/>
+        <Element Identifier="OrderDate" IsDataGridVisible="true" IsFilterVisible ="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier="ClientContact" />
+        <Element Identifier="Product"  />
+        <Element Identifier="Quantity" IsDataGridVisible="true"/>
+        <Element Identifier="Tonnage" />
+        <Element Identifier="InspectionDatePlanned" IsVisibleClient="true" />
+        <Element Identifier="InspectionDeadline" />
+        <Element Identifier="Agent" />
+        <Element Identifier="InspectionPort" />
+        <Element Identifier="Destination" />
+        <Element Identifier="Shipper" />
+        <Element Identifier="DoubleCheck" />
+        <Element Identifier="Service" />
+        <Element Identifier="JobDescription" />
+        <Element Identifier="Specifications" />
+        <Element Identifier="LaboratoryName" />
+        <Element Identifier="Remark" />
+      </FormElements>
+    </Section>
+    <Section Caption="Analysis">
+      <FormElements>
+        <Element Identifier="AnalysisColorUI"/>
+        <Element Identifier="AnalysisPolarization"/>
+        <Element Identifier="AnalysisMoisture" />
+        <Element Identifier="AnalysisAsh" />
+      </FormElements>
+    </Section>
+    <Section Caption="Empty container inspection">
+      <FormElements>
+        <Element Identifier="RequestedEmpty" />
+        <Element Identifier="InspectionPlaceEmpty" />
+        <Element Identifier="InspectionDateEmpty"/>
+        <Element Identifier="TimeInspectionDateEmpty" />
+        <Element Identifier="ContactInspectionPlaceEmpty" />
+        <Element Identifier="QuantityInspectedEmpty" IsDataGridVisible="true" />
+        <Element Identifier="QuantityRemainingEmpty" />
+      </FormElements>
+    </Section>
+    <Section Caption="Stuffing inspection">
+      <FormElements>
+        <Element Identifier="InspectionPlaceStuffing" />
+        <Element Identifier="InspectionDateStuffing"/>
+        <Element Identifier="TimeInspectionDateStuffing" />
+        <Element Identifier="ContactInspectionPlaceStuffing"/>
+        <Element Identifier="QuantityInspectedStuffing" IsDataGridVisible="true"/>
+        <Element Identifier="QuantityRemainingStuffing" />
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

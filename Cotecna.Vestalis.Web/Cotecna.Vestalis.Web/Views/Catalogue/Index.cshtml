@@ -1,0 +1,237 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Entities
+@{
+    ViewBag.Title = "Vestalis";
+}
+@model  PaginatedList<CatalogueModel>
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for radios and checks*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+}
+
+@if (!User.IsInRole("GlobalAdministrator"))
+{
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection") 
+
+}
+}
+
+@section leftmenu {
+    @Html.Partial("_LeftMenuAdministration")            
+}
+@{
+    string principalForm = string.Empty;
+    if (Session["PrincipalFormName"] != null)
+    {
+        principalForm = Session["PrincipalFormName"].ToString();
+    }
+}
+
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    <ul>
+        <li class="last">@Resources.Administration.CatalogueIndexBreadCrumb</li>
+    </ul>
+    <div class="cap-right">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function UpdateResults(results) {
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+
+    $(function () {
+        $("#searchButton").click(function () {
+            var ajaxUrl = '@Url.Action("SearchCatalogueList", "Catalogue")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResults,
+                error: function () { alert('An error occurred') },
+                data: { page: 1, businessApplicationId: $("#businessApplications").val() }
+            });
+
+        });
+
+        $("#resetButton").click(function () {
+            window.location = '@Url.Action("Index")';
+        });
+
+        
+    });
+
+    function exportGridToExcel() {
+        var businessAppId = $("#businessApplications").val();
+        var ajaxUrl = '@Url.Action("SearchCatalogueCategoriesExcel", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            success: function () {
+                $("#exportToExcel").submit();
+            },
+            error: function () { alert('An error occurred') },
+            data: { businessAppId: businessAppId }
+        });
+
+    }
+
+
+
+     $("document").ready(function(){
+         var ajaxUrl = '@Url.Action("SearchCatalogueList", "Catalogue")';
+         $.ajax({
+             url: ajaxUrl,
+             type: 'POST',
+             dataType: 'html',
+             success: UpdateResults,
+             error: function () { alert('An error occurred') },
+             data: { page: 1, businessApplicationId: $("#businessApplications").val() }
+         });
+
+         $("#liCatalogueMenu").attr("class", "first current");
+         $("#serviceOrderLink").html("@principalForm");
+         $("#spanExportButton").hide();
+     });
+
+</script>
+
+@{
+    bool isGloblaAdmin = User.IsInRole("GlobalAdministrator");
+}
+
+<h1>@Resources.Administration.CatalogueManagementTitle</h1>
+@if (isGloblaAdmin)
+{
+<p>@Resources.Administration.CatalogueAdministrationInstruction</p>
+}
+
+
+<div class="form">
+@if (isGloblaAdmin)
+{
+    <div class="legend">        
+        <span>&nbsp;</span>
+        @Resources.Common.SearchCriteria
+    </div>
+    <ol>
+        <li class="datehalf">
+            <label>
+                <span class="name">@Resources.Common.BusinessAppLabel</span>
+                @{
+                    List<BusinessApplication> businessAplications = AuthorizationBusiness.GetAllBusinessAplications();
+                    if (businessAplications != null)
+                    {
+                        List<SelectListItem> itemSource = businessAplications.Select(data => new SelectListItem
+                        {
+                            Text = data.BusinessApplicationName,
+                            Value = data.BusinessApplicationId.ToString()
+                        }).ToList();
+                        @Html.DropDownList("businessApplications", itemSource, Resources.Common.SelectOneOption);
+                    }
+                } 
+            </label>
+        </li>
+    </ol>
+    <p class="btn">
+        <span class="btn">
+            <input type="submit" value="@Resources.Common.Search" id="searchButton" name="searchButton" />
+        </span>
+        <span class="btn2">
+            <input type="reset" value="@Resources.Common.Reset" id="resetButton" name ="resetButton"/>
+        </span>
+    </p>
+}
+else
+{
+    List<BusinessApplicationByUser> businessAplicationsByUser = AuthorizationBusiness.GetBusinessApplicationsByUser(User.Identity.Name);
+    string[] roles = Roles.GetRolesForUser(User.Identity.Name);
+    List<BusinessApplicationByUser> businessAppsAdmin = new List<BusinessApplicationByUser>();
+    foreach (var item in businessAplicationsByUser)
+    {
+        string localAdminRoles = string.Format("ApplicationAdministrator_{0}", item.Prefix);
+        if (roles.Contains(localAdminRoles))
+        {
+            businessAppsAdmin.Add(item);
+        }
+    }
+
+
+    if (businessAplicationsByUser != null && businessAppsAdmin.Count > 1)
+    {
+        <div class="legend">        
+            <span>&nbsp;</span>
+            @Resources.Common.SearchCriteria
+        </div>
+        <ol>
+            <li class="datehalf">
+                <span class="name">@Resources.Common.BusinessAppLabel</span>
+                @{
+                    List<SelectListItem> itemSource = businessAplicationsByUser
+                        .Where(item=> roles.Contains(String.Format("ApplicationAdministrator_{0}",item.Prefix)))
+                        .Select(data => new SelectListItem
+                    {
+                        Text = data.Name,
+                        Value = data.Id.ToString(),
+                    }).ToList();
+                    @Html.DropDownList("businessApplications", itemSource, Resources.Common.SelectOneOption);
+                }           
+            </li>
+        </ol>
+        <p class="btn">
+            <span class="btn">
+                <input type="submit" value="@Resources.Common.Search" id="searchButton" name="searchButton" />
+            </span>
+            <span class="btn2">
+                <input type="reset" value="@Resources.Common.Reset" id="resetButton" name ="resetButton"/>
+            </span>
+        </p>        
+    }
+    else if (businessAplicationsByUser != null && businessAppsAdmin.Count == 1)
+    {
+        Guid? BusinessAplicationId = businessAppsAdmin.First().Id;
+        <input type="hidden" id="businessApplications" name="businessApplications" value="@BusinessAplicationId.Value" />
+    }
+    else
+    {
+        string businessId = businessAplicationsByUser.FirstOrDefault().Id.ToString();
+        <input type="hidden" id="businessApplications" name="businessApplications" value="@businessId" />
+    }
+
+}
+</div>
+
+<div class="gridArea">
+    @Html.Partial("_CatalogueGrid", Model)
+</div>
+<div class="form">
+    <div class="error" id="errorDiv">
+            
+    </div>
+</div>
+
+
+
+<form action="@Url.Action("ExportExcelCategories", "Catalogue")" method="post" id="exportToExcel">
+    
+</form>

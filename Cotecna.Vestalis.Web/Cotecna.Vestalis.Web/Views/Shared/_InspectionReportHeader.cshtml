@@ -1,0 +1,57 @@
+﻿
+@using Cotecna.Vestalis.Core;
+@model IList<Field>
+
+<div class="form">
+<div class="legend">        
+        <span>&nbsp;</span>
+        @Resources.InspectionReports.InspectionReportHeaderSeach
+    </div>
+<ol>
+@foreach (var filter in Model)
+    {
+        var htmlIdentifier = filter.FieldName;
+        string catalagValue = string.Empty;
+        string caption = string.IsNullOrEmpty(filter.ShortCaption) ? filter.Caption : filter.ShortCaption;
+        
+            <li class="datehalf">
+                <label>
+                    <span class="name" style="font-weight: bold;">@caption</span>
+
+            @if (filter.FieldType == FieldType.Catalogue)
+            {
+
+                FieldsCatalogueField catalogueField = filter as FieldsCatalogueField;
+
+
+                switch (catalogueField.EditorType)
+                {
+                    case FieldsCatalogueFieldEditorType.DropDownList:
+                            catalagValue = string.Empty;                            
+                                catalagValue = catalogueField.ItemsSource.FirstOrDefault(x => x.Selected).Text;
+                                <span class="value">@catalagValue</span> 
+                             break;
+                    case FieldsCatalogueFieldEditorType.List:
+                            catalagValue = string.Empty;
+                                catalagValue = catalogueField.ItemsSource.FirstOrDefault(x => x.Selected).Text;
+                                <span class="value">@catalagValue</span> 
+                       break;
+                    case FieldsCatalogueFieldEditorType.Radios:
+                       catalagValue = string.Empty;
+                                catalagValue = catalogueField.ItemsSource.FirstOrDefault(x => x.Selected).Text;
+                                <span class="value">@catalagValue</span>
+                                              break;
+                }
+            }
+            else
+            {
+                <span class="value">@filter.FieldValue</span>
+            }
+
+                </label>
+            </li>
+        
+    }
+</ol>
+</div>
+<br />

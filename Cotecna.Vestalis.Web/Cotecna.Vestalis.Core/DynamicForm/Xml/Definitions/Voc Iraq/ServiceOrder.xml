@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Certificates" CaptionTitle="Certificates of conformity" CaptionBreadcrumbs="Certificate of conformity">
+  <Sections>
+    <Section Caption="General">
+      <FormElements>
+        <Element Identifier="CertificateNumber" IsDataGridVisible="true" IsFilterVisible ="true"  IsOrderIdentifier ="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier="Client" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="false"/>
+        <Element Identifier="Status" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="IssuanceDate" IsDataGridVisible="true" IsFilterVisible ="true" IsInspectionReportVisible = "true"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

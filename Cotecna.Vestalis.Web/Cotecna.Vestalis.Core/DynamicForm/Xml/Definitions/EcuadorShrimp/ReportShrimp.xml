@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form>
+  <Sections>
+    <Section Caption="Report shrimp">
+      <FormElements>
+        <Element Identifier="InspectionDate" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="StartTime" IsDataGridVisible="true"/>
+        <Element Identifier="EndTime" IsDataGridVisible="true"/>
+        <Element Identifier="Dimensions" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="ProductQuality" IsDataGridVisible="true"/>
+        <Element Identifier="Remark" IsDataGridVisible="true"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

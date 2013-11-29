@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Time log">
+  <Sections>
+    <Section Caption="Time log report">
+      <FormElements>
+        <Element Identifier="Status" IsDataGridVisible="true" IsVisibleClient="false"/>
+        <Element Identifier="BeginDate" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="TLStartTime" IsDataGridVisible="true"/>
+        <Element Identifier="EndDate" IsDataGridVisible="true"/>
+        <Element Identifier="EndTime" IsDataGridVisible="true"/>
+        <Element Identifier="TLRemark" IsDataGridVisible="true"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

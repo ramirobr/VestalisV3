@@ -1,0 +1,102 @@
+﻿@using Cotecna.Vestalis.Core;
+
+@model  IList<string>
+
+<script type="text/javascript">
+
+    function ShowInspectionReport(inspectionReportName) {
+        $("#inspectionReportName").val(inspectionReportName);
+        $("#InspectionReports").submit();
+    }
+    function ShowPictures() {
+        $("#PictureForm").submit();
+    }
+    function ShowDocuments() {
+        $("#DocumentForm").submit();
+    }
+    function ShowServiceOrder() {
+        $("#ServiceOrderForm").submit();
+    }
+
+    $(document).ready(function () {
+
+        $("#reportTitle").click(function () {
+
+            if ($("#liReportTitle").hasClass('current section')) {
+                $("#liReportTitle").removeClass('current section');
+                $("#ulReportTitle").removeAttr('style');
+            }
+            else {
+                $("#liReportTitle").addClass('current section');
+                $("#ulReportTitle").css({ display: "block" });
+            }
+        });
+
+    });
+</script>
+<ul>
+@if (Model != null)
+{
+    <li>
+         <a style="cursor: pointer;" onclick="ShowServiceOrder();">
+         <p>@Resources.Common.ServiceOrderGeneralInformation</p>
+         </a>
+    </li>
+    if (Model.Count > 0)
+    {
+    <li id="liReportTitle" class="current section"><a id="reportTitle" href="#">@Resources.Common.ReportLeftTitle</a>
+    <ul id="ulReportTitle" style="display:block;">
+    
+    @foreach (var link in Model)
+    {
+        if (link == "Picture")
+        {
+                <li>
+                    <a style="cursor: pointer;" onclick="ShowPictures();">
+                        @Resources.Common.Pictures
+                    </a>
+                </li>
+        }
+        else if (link == "Document")
+        {
+                <li>
+                    <a style="cursor: pointer;" onclick="ShowDocuments();">
+                        @Resources.Common.Documents
+                    </a>
+                </li>
+        }
+        else
+        {
+            <li>
+                <a style="cursor: pointer;" onclick="ShowInspectionReport('@link');">
+                    @link
+                </a>
+            </li>
+        }
+    }
+    
+    </ul>
+    </li>
+    }
+}
+</ul>
+
+<form id="InspectionReports" action="@Url.Action("ChangeReport", "InspectionReport")" method="post">
+    <input type="hidden" name="inspectionReportName" id="inspectionReportName" value="" />
+</form>
+
+<form id="PictureForm" action="@Url.Action("Index", "Picture")" method="post">
+</form>
+
+<form id="DocumentForm" action="@Url.Action("Index", "Document")" method="post">
+</form>
+@if (User.IsInRole("Client"))
+{
+    <form id="ServiceOrderForm" action="@Url.Action("ViewServiceOrder", "ServiceOrder")" method="post">
+    </form>
+}
+else
+{
+    <form id="ServiceOrderForm" action="@Url.Action("EditServiceOrder", "ServiceOrder")" method="post">
+    </form>
+}

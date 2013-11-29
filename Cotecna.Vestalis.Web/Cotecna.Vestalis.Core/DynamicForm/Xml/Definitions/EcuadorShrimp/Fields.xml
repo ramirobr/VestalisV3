@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Fields>
+  <CatalogueField FieldName="Client" Mandatory="true" CatalogueName="Client" EditorType="DropDownList" Caption="Client" Width="150"/>
+  <SingleTextLineField FieldName="Reference" Caption="Reference" MaxLength="20" Width="200" />
+  <CatalogueField FieldName="Product" CatalogueName="Product" Mandatory="true" EditorType="DropDownList" Caption="Product"  />
+  <DatepickerField FieldName="OrderDate" Mandatory="true" StartDate="01/01/2012" EndDate="today" Caption="Service order date" StartDateFilter="today-30" EndDateFilter="today" Width="135" />
+  <SingleTextLineField FieldName="InspectionPlace" Caption="Inspection Place" MaxLength="256" Width="250"/>
+  <TimeField FieldName="TimeInspection" Caption="Inspection time"/>
+  <IntegerField FieldName="QuantityPerBox" MinValue="0" MaxValue="2147483647" Caption="Boxes" Mandatory="true" Width="80" />"
+  <IntegerField FieldName="BoxValue" Caption="Box Value"/>"
+  <IntegerField FieldName="FOBValue" Caption="Fob Value"/>"
+  <DatepickerField FieldName="InspectionDate" Mandatory="true" Caption="Date" StartDateFilter="today-30" EndDateFilter="today" Width="90"/>
+  <TimeField FieldName="StartTime" Caption="Start time" Width="90"/>
+  <TimeField FieldName="EndTime" Caption="End time" Width="90"/>
+  <CatalogueField FieldName="ProductQuality" Mandatory="false" CatalogueName="ProductQuality" EditorType="DropDownList" Caption="Quality" Width="100"/>
+  <CatalogueField FieldName="Dimensions" CatalogueName="Dimensions" EditorType="DropDownList" Caption="Dimension"/>
+  <MultipleTextLineField FieldName="Remark"  Caption="Remark" MaxLength="2000" Width="270"/>
+</Fields>

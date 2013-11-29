@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Stuffing inspection">
+  <Sections>
+    <Section Caption="Stuffing inspection">
+      <FormElements>
+        <Element Identifier="Status" IsDataGridVisible="true" IsVisibleClient="false"/>
+        <Element Identifier="SIContainerNumber" IsDataGridVisible="true" IsFilterVisible ="true" />
+        <Element Identifier="InspectionDate" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="BillNumber" IsDataGridVisible="true"/>
+        <Element Identifier="Plate" IsDataGridVisible="true"/>
+        <Element Identifier="QuantityOfBagsBill" IsDataGridVisible="true"/>
+        <Element Identifier="StartTime" IsDataGridVisible="true"/>
+        <Element Identifier="EndTime" IsDataGridVisible="true"/>
+        <Element Identifier="Tare" IsDataGridVisible="true"/>
+        <Element Identifier="QuantityOfBags" IsDataGridVisible="true"/>
+        <Element Identifier="Seal" IsDataGridVisible="true"/>
+        <Element Identifier="OwnersSeal" IsDataGridVisible="true"/>
+        <Element Identifier="OtherSeal" IsDataGridVisible="true"/>
+        <Element Identifier="Mill" IsDataGridVisible="true"/>
+        <Element Identifier="Remark" IsDataGridVisible="true"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

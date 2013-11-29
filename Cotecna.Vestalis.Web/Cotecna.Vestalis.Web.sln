@@ -1,0 +1,109 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9FB37E8A-4436-4A10-9EF5-ADC42A5F8D5A}"
+	ProjectSection(SolutionItems) = preProject
+		Cotecna.Vestalis.Web.vsmdi = Cotecna.Vestalis.Web.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cotecna.Vestalis.Web", "Cotecna.Vestalis.Web\Cotecna.Vestalis.Web.csproj", "{6873296B-0285-42F6-A765-4AB7F132429D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cotecna.Vestalis.Entities", "Cotecna.Vestalis.Entities\Cotecna.Vestalis.Entities.csproj", "{2A125344-A6D2-4774-B731-7217A05CB3BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cotecna.Vestalis.Web.Test", "Cotecna.Vestalis.Web.Test\Cotecna.Vestalis.Web.Test.csproj", "{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cotecna.Vestalis.Initalization", "Cotecna.Vestalis.Initalization\Cotecna.Vestalis.Initalization.csproj", "{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cotecna.Vestalis.Core", "Cotecna.Vestalis.Core\Cotecna.Vestalis.Core.csproj", "{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://gvatfs:8080/tfs/cotecna
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Cotecna.Vestalis.Web\\Cotecna.Vestalis.Web.csproj
+		SccProjectName1 = Cotecna.Vestalis.Web
+		SccLocalPath1 = Cotecna.Vestalis.Web
+		SccProjectUniqueName2 = Cotecna.Vestalis.Entities\\Cotecna.Vestalis.Entities.csproj
+		SccProjectName2 = Cotecna.Vestalis.Entities
+		SccLocalPath2 = Cotecna.Vestalis.Entities
+		SccProjectUniqueName3 = Cotecna.Vestalis.Web.Test\\Cotecna.Vestalis.Web.Test.csproj
+		SccProjectName3 = Cotecna.Vestalis.Web.Test
+		SccLocalPath3 = Cotecna.Vestalis.Web.Test
+		SccProjectUniqueName4 = Cotecna.Vestalis.Initalization\\Cotecna.Vestalis.Initalization.csproj
+		SccProjectName4 = Cotecna.Vestalis.Initalization
+		SccLocalPath4 = Cotecna.Vestalis.Initalization
+		SccProjectUniqueName5 = Cotecna.Vestalis.Core\\Cotecna.Vestalis.Core.csproj
+		SccProjectName5 = Cotecna.Vestalis.Core
+		SccLocalPath5 = Cotecna.Vestalis.Core
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Cotecna.Vestalis.Web.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6873296B-0285-42F6-A765-4AB7F132429D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2A125344-A6D2-4774-B731-7217A05CB3BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B5D4F3B2-18D7-4D05-9B8D-49D5BC937DAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Debug|x86.ActiveCfg = Debug|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Debug|x86.Build.0 = Debug|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Release|Any CPU.ActiveCfg = Release|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Release|x86.ActiveCfg = Release|x86
+		{BB0BF9AA-1F18-4CAB-94F8-A7497BF4AD39}.Release|x86.Build.0 = Release|x86
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{12AC19D5-A9F1-4ED6-BA9A-547E6D0CCA6C}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

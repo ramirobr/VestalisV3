@@ -1,0 +1,544 @@
+﻿@using Cotecna.Vestalis.Entities;
+@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Web.Common
+@{
+    ViewBag.Title = "Vestalis";
+}
+@model CatalogueModel
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for radios and checks*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")"></script>
+}
+
+@section leftmenu {
+    @Html.Partial("_LeftMenuAdministration")            
+}
+
+@{
+    string principalForm = string.Empty;
+    if (Session["PrincipalFormName"] != null)
+    {
+        principalForm = Session["PrincipalFormName"].ToString();
+    }
+}
+
+
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    <ul>
+        <li>@Html.ActionLink(Resources.Administration.CatalogueIndexBreadCrumb, "Index", "Catalogue") &gt;</li>
+        <li class="last">@Resources.Administration.CatalogueAdministrationTitle</li>
+    </ul>
+    <div class="cap-right">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function InitCatalogueValues(){
+            $("#CatalogueValueData").val("");
+            $("#CatalogueValueDescription").val("");
+            $("#CatalogueValueId").val("");
+            $("#errorDivCV").html("");
+            $("#errorDivCV").hide();
+            $("#spanDeleteCVButton").hide();
+     }
+
+     function DeleteCatalogueValue(catalogId, businessApplicationId) {
+        ShowMessage("@Resources.Administration.DeleteCatalogueValueMessage", "@Resources.Common.DeleteConfirmation", function () {
+            var ajaxUrl = '@Url.Action("DeleteCatalogueValue", "Catalogue")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function(result) {
+                    
+                    if(result == undefined || result == ''){
+                        $('#formCatalogueValue').dialog('close');
+                        SearchCatalogueValues($("#CatalogueId").val());
+                    }
+                    else {
+                        $('#formCatalogueValue').dialog({
+                            autoOpen: false,
+                            resizable: false,
+                            height: 330,
+                            width: 370,
+                            modal: true
+                        });
+                        $("#errorDivCV").show();
+                        var titleError = "";
+                        var errors = "";
+                        titleError = "<h5>There is 1 error</h5> <ul id ='errorUlCV'></ul>";
+                        $("#errorDivCV").html("");
+                        $("#errorDivCV").html(titleError);
+                        errors += "<li>"+result+"</li>";
+                        $("#errorUlCV").html(errors);
+                    }
+                },
+                error: function () { alert('An error occurred') },
+                data: {catalogueValueId: catalogId, businessApplicationId: businessApplicationId}
+            });
+        });
+    }
+
+    function DeleteCatalogueCategory(catalogId, businessApplicationId) {
+         ShowMessage("@Resources.Administration.DeleteCatalogueCategoryMessage", "@Resources.Common.DeleteConfirmation", function () {
+                var ajaxUrl = '@Url.Action("DeleteCatalogue", "Catalogue")';
+            
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (result){
+                        if(result == undefined || result == '') {
+                            window.location = '@Url.Action("Index")';
+                        }
+                        else
+                        {
+                            $("#errorDiv").show();
+                            var titleError = "";
+                            var errors = "";
+                            titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+                            $("#errorDiv").html("");
+                            $("#errorDiv").html(titleError);
+                            errors += "<li>"+result+"</li>";
+                            $("#errorUl").html(errors);
+                        }
+                    },
+                    error: function () { alert('An error occurred') },
+                    data: { catalogueId: catalogId, businessApplicationId : businessApplicationId }
+                });           
+            });            
+        }
+
+    function InitDialog()
+    {
+        $("#formCatalogueValue").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 260,
+            width: 370,
+            modal: true
+        });
+    }
+
+    function exportExcelGrid() {
+
+            var ajaxUrl = '@Url.Action("SearchCatalogueValuesExcel", "Catalogue")';
+            
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',                
+                success: function () {
+                    $("#exportToExcel").submit();
+                },
+                error: function () { alert('An error occurred') },
+                data: { businessApplicatioId: $("#BusinessApplicationId").val(),catalogueSelectedName: $("#CatalogueCategoryName").val(), catalogueId: $("#CatalogueId").val() }
+            });
+
+            
+    }
+
+
+    $(function () {
+
+        $("#deleteButton").click(function () {
+            DeleteCatalogueCategory($("#CatalogueId").val(), $("#BusinessApplicationId").val());
+        });
+
+        $("#cancelButton").click(function () {
+            window.location = '@Url.Action("Index")';
+        });
+
+        InitDialog();
+
+
+        $("#canceCVButton").click(function () {
+            $('#formCatalogueValue').dialog('close');
+        });
+
+        function JsonSucces(data) {
+            if(data.HasErrors == false){
+                $('#formCatalogueValue').dialog('close');
+                SearchCatalogueValues(data.CatalogueId);
+            }else{
+                $('#formCatalogueValue').dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    height: 330,
+                    width: 370,
+                    modal: true
+                });
+                $("#errorDivCV").show();
+                var numErrors = data.Errors.length;
+                var titleError = "";
+                var errors = "";
+                if (numErrors > 1) {
+                    titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUlCV'></ul>";
+                } else {
+                    titleError = "<h5>There is 1 error</h5> <ul id ='errorUlCV'></ul>";
+                }
+                $("#errorDivCV").html("");
+                $("#errorDivCV").html(titleError);
+                for (var i = 0; i < data.Errors.length; i++) {
+                    errors += "<li>"+data.Errors[0]+"</li>";
+                }
+                $("#errorUlCV").html(errors);
+            }
+        }
+
+        $("#saveCVButton").click(function(){
+
+            var ajaxUrl = '@Url.Action("SaveCatalogueValue", "Catalogue")';
+            var catalogId = $("#CatalogueId").val();
+            var catalogValData = $("#CatalogueValueData").val();
+            var catalogDesc= $("#CatalogueValueDescription").val();
+            var catalogValId= $("#CatalogueValueId").val();
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: JsonSucces,
+                error: function () { alert('An error occurred') },
+                data: { CatalogueId: catalogId, CatalogValData: catalogValData, CatalogDesc: catalogDesc, CatalogValId: catalogValId }
+            });
+        });
+
+        $("#BusinessApplicationId").change(function () {
+            $(this).valid();
+        });
+
+        $("#deleteCVButton").click(function () {
+            var catalogValueId = $("#CatalogueValueId").val();
+            var businessApplicationId = $("#BusinessApplicationId").val();
+            DeleteCatalogueValue(catalogValueId, businessApplicationId);
+        });
+
+    });
+
+    $(document).ready(function () {
+        $("#liCatalogueMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@principalForm");
+        $("#errorDiv").hide();
+        $('#formCatalogueValue').dialog('close');
+        $("#form0").validate({
+        errorElement: "span",
+        errorClass: "error",
+        rules:{
+            CatalogueCategoryName:{
+                required : true
+            },
+            BusinessApplicationId:{
+                required : true
+            }
+        },
+        messages: {
+            required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage",
+        },
+        success: function (span) {
+        },
+        errorPlacement: function (error, element) {
+            var span = element.prev('span');
+            error.appendTo(span)
+        },
+        highlight: function (element, errorClass) {
+            var li = $(element).closest('li');
+            $(li).addClass(errorClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            var li = $(element).closest('li');
+            $(li).removeClass(errorClass);
+        },
+        invalidHandler: function (event, validator) {
+                        var a = validator.errorList[0].element.id;
+                        $('#'+a).focus();
+                    }
+        });
+    });
+
+    function PostBegin(){
+
+    }
+
+    function PostSuccess(data) {
+        $.unblockUI();
+        if (data.HasErrors == false) {
+            $("#errorDiv").hide();
+            $("#catalogueValues").show();
+            $("#catalogueValuesButtons").show();
+            $("#CatalogueId").val(data.CatalogueId);
+            $("#catalogueIdExport").val(data.CatalogueId);
+            $("#BusinessApplicationId").val(data.BusinessApplicationId);
+            $("#businessApplicatioId").val(data.BusinessApplicationId);
+            $("#CatalogueCategoryName").val(data.CatalogueCategoryName);
+            $("#spanDeleteButton").show();
+            var openMode = $("#OpenMode").val();
+            if(openMode == 1){
+                SearchCatalogueValues(data.CatalogueId);
+            }
+            else if(openMode == 2){
+                window.location = '@Url.Action("Index")';
+            }
+            else{
+                SearchCatalogueValues(data.CatalogueId);
+            }
+        }
+        else {
+            $("#errorDiv").show();
+            $("#catalogueValues").hide();
+            $("#catalogueValuesButtons").hide();
+            var numErrors = data.Errors.length;
+            var titleError = "";
+            var errors = "";
+            if (numErrors > 1) {
+                titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUl'></ul>";
+            } else {
+                titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+            }
+            $("#errorDiv").html("");
+            $("#errorDiv").html(titleError);
+            for (var i = 0; i < data.Errors.length; i++) {
+                errors += "<li>"+data.Errors[i]+"</li>";
+            }
+            $("#errorUl").html(errors);
+        }
+    } 
+
+    function PostFailure(request,error){ 
+        $.unblockUI();
+        alert("Failure"); 
+    } 
+
+    function UpdateResults(results) {
+        $("#catalogueValues").html(results);
+        $("#catalogueValues").fadeIn("slow");
+    }
+
+    function SearchCatalogueValues(catalogId) {
+        var ajaxUrl = '@Url.Action("SearchCatalogueValueList", "Catalogue")';
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResults,
+            error: function () { alert('An error occurred') },
+            data: { catalogueId: catalogId}
+        });
+    }
+</script>
+@if (Model.ScreenOpenMode == ScreenOpenMode.Add)
+{
+    <script type ="text/javascript">
+        $(document).ready(function () {
+            $("#catalogueValues").hide();
+            $("#catalogueValuesButtons").hide();
+            $("#spanDeleteButton").hide();
+            $("#OpenMode").val(1);
+        });
+    </script>
+}
+
+
+@if (Model.ScreenOpenMode == ScreenOpenMode.Edit)
+{
+    <script type ="text/javascript">
+        $(document).ready(function () {
+            $("#catalogueValues").show();
+            $("#catalogueValuesButtons").show();
+            $("#spanDeleteButton").show();
+            $("#OpenMode").val(2);
+            SearchCatalogueValues('@Model.CatalogueId');
+        });
+
+    </script>
+}
+
+@{
+    AjaxOptions ajaxOption = new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnSuccess = "PostSuccess",
+        OnFailure = "PostFailure",
+        OnBegin = "PostBegin",
+        InsertionMode = InsertionMode.Replace
+    };
+}
+
+<h1>@Resources.Administration.CatalogueAdministrationTitle</h1>
+<p>@Resources.Administration.CatalogueEditNewInstruction</p>
+
+@using (Ajax.BeginForm("SaveCatalogue", ajaxOption))
+{
+    
+    <div class="form product">
+        <div class="legend">
+            <span>&nbsp;</span>
+        </div>
+        
+        @if (User.IsInRole("GlobalAdministrator"))
+        {
+        <ol>
+            <li>
+                <label>
+                    <span class="name">@Resources.Administration.BusinessApplicationMandatory</span>
+                    @{
+            List<BusinessApplication> businessAplications = AuthorizationBusiness.GetAllBusinessAplications();
+            if (businessAplications != null)
+            {
+                List<SelectListItem> itemSource = businessAplications.Select(data => new SelectListItem
+                {
+                    Text = data.BusinessApplicationName,
+                    Value = data.BusinessApplicationId.ToString()
+                }).ToList();
+                            @Html.DropDownListFor(m => m.BusinessApplicationId, itemSource, Resources.Common.SelectOneOption);
+            }
+                    }           
+                    @Html.ValidationMessageFor(m => m.BusinessApplicationId)  
+                </label>
+            </li> 
+            <li>
+                <label>
+                    <span class="name">@Resources.Administration.NameMandatory</span>
+                    @Html.TextBoxFor(m => m.CatalogueCategoryName, new { @class = "txt" })
+                    @Html.ValidationMessageFor(m => m.CatalogueCategoryName)
+                </label>
+            </li>
+        </ol>
+        <input type="hidden" id="CatalogueId" name="CatalogueId" value="@Model.CatalogueId" />
+        <input type="hidden" id="OpenMode" name="OpenMode" value="" />
+        }
+        else
+        {
+            List<BusinessApplicationByUser> businessAplicationsByUser = Session["BusinessAplicationsByUser"] as List<BusinessApplicationByUser>;
+            string[] roles = Roles.GetRolesForUser(User.Identity.Name);
+            if (businessAplicationsByUser != null && businessAplicationsByUser.Count > 1 && roles.Count(rol => rol.Contains("ApplicationAdministrator")) > 1)
+            {
+                <ol>
+                    <li>
+                        <span class="name">@Resources.Administration.BusinessApplicationMandatory</span>
+                        @{
+                List<SelectListItem> itemSource = businessAplicationsByUser.Select(data => new SelectListItem
+                {
+                    Text = data.Name,
+                    Value = data.Id.ToString(),
+                }).ToList();
+                            @Html.DropDownListFor(m => m.BusinessApplicationId, itemSource, Resources.Common.SelectOneOption);
+                        }   
+                    </li>
+                    <li>
+                        <label>
+                            <span class="name">@Resources.Administration.NameMandatory</span>
+                            @Html.TextBoxFor(m => m.CatalogueCategoryName, new { @class = "txt" })
+                        </label>
+                    </li>
+                </ol>
+                <input type="hidden" id="CatalogueId" name="CatalogueId" value="@Model.CatalogueId" />
+                <input type="hidden" id="OpenMode" name="OpenMode" value="" />
+            }
+            else if (businessAplicationsByUser != null && businessAplicationsByUser.Count > 1 && roles.Count(rol => rol.Contains("ApplicationAdministrator")) == 1)
+            {
+                <ol>
+                    <li>
+                        <label>
+                            <span class="name">Name</span>
+                            @Html.TextBoxFor(m => m.CatalogueCategoryName, new { @class = "txt" })
+                        </label>
+                    </li>
+                </ol>
+                Guid? BusinessAplicationId = Session["BusinessAplicationId"] as Guid?;
+                <input type="hidden" id="BusinessApplicationId" name="BusinessApplicationId" value="@BusinessAplicationId.Value" />
+                <input type="hidden" id="CatalogueId" name="CatalogueId" value="@Model.CatalogueId" />
+                <input type="hidden" id="OpenMode" name="OpenMode" value="" />
+            }
+            else
+            {
+                <ol>
+                    <li>
+                        <label>
+                            <span class="name">Name</span>
+                            @Html.TextBoxFor(m => m.CatalogueCategoryName, new { @class = "txt" })
+                        </label>
+                    </li>
+                </ol>
+                string bussinessAppId = AuthorizationBusiness.GetUserParameter(User.Identity.Name, "ApplicationDefault");
+                <input type="hidden" id="BusinessApplicationId" name="BusinessApplicationId" value="@bussinessAppId" />
+                <input type="hidden" id="CatalogueId" name="CatalogueId" value="@Model.CatalogueId" />
+                <input type="hidden" id="OpenMode" name="OpenMode" value="" />
+            }
+        }
+            
+    </div>
+     <p class ="btn">
+        <span class="btn" >
+            <input type="submit" value="@Resources.Common.Save" id="saveButton" />
+        </span>
+
+        <span class="btn" style="margin-right: 10px;" id="spanDeleteButton">
+            <input type="reset" value="@Resources.Common.Delete" id="deleteButton" />
+        </span>
+        
+        <span class="btn2">
+            <input type="reset" value="@Resources.Common.Cancel" id="cancelButton" />
+        </span>
+    </p>
+    <div class="form">
+        <div class="error" id="errorDiv">
+            
+        </div>
+    </div>
+}
+<div id="catalogueValues">
+    @Html.Partial("_CatalogueValueGrid", new PaginatedList<CatalogueValue>())
+</div>
+
+<div id="formCatalogueValue" title="" >
+    <div id="Content" style="width:340px; margin-left: 0;">
+        <div class="form">
+             <div class="legend">
+                @Resources.Administration.CatalogueItem
+            </div> 
+            <ol>
+                <li>
+                    <label>
+                        <span class="name" style="width: 90px;">@Resources.Administration.ValueMandatory</span>
+                        <input type="text" id="CatalogueValueData" class = "txt" style="width:210px;" />
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="name" style="width: 90px;">@Resources.Administration.CatalogueValueGridColumnDescription</span>
+                        @Html.TextArea("CatalogueValueDescription", new { @class = "txt", style = "width:210px; height:60px;" })
+                    </label>
+                </li>
+            </ol>
+            <input type="hidden" id="CatalogueValueId" name="CatalogueValueId" value="" />
+        </div>
+        <p class ="btn">
+            <span class="btn" style="margin-right: 10px;">
+                <input type="submit" value="@Resources.Common.Save" id="saveCVButton" />
+            </span>
+            <span class="btn" id="spanDeleteCVButton" style="margin-right: 10px;">
+                <input type="submit" value="@Resources.Common.Delete" id="deleteCVButton" />
+            </span>
+            <span class="btn2">
+                <input type="reset" value="@Resources.Common.Cancel" id="canceCVButton" />
+            </span>
+        </p>
+        <div class="form">
+            <div class="error" id="errorDivCV">
+            
+            </div>
+        </div>
+    </div>
+</div>

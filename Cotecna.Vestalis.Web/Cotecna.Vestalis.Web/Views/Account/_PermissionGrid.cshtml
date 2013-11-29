@@ -1,0 +1,441 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Entities
+@using Cotecna.Vestalis.Web.Common
+
+@model PaginatedList<PermissionGridModel>
+@{
+    int totalNumberOfItemsWithoutPagination = Model.TotalCount;
+    int numberOfPages = Model.NumberOfPages;
+    int currentPage = Model.Page;
+    int pageSize = Model.PageSize;
+    string sortedColumn = Model.SortedColumn;
+    int nextPage = currentPage + 1;
+    int lastPage = currentPage - 1;
+
+    //This function is localized in CustomScript.js file
+    string jqueryFunction = "UpdateResultsSearch";
+    //The action to be executed, returning the ajax partial view
+    string action = "SearchPermisssions";
+}
+
+<script type="text/javascript">
+
+    function UpdateResultsSearch(results) {
+        $("#gridArea").html(results);
+        $("#gridArea").fadeIn("slow");
+    }
+
+    $("#nextButton").click(function () {
+    
+        var ajaxUrl = '@Url.Action("SearchPermisssions", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@nextPage'}
+        });
+
+    });
+
+
+    $("#endButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchPermisssions", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@numberOfPages'}
+        });
+
+    });
+
+
+    $("#lastButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchPermisssions", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@lastPage' }
+        });
+
+    });
+
+
+    $("#firtsButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchPermisssions", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1'}
+        });
+
+    });
+
+
+    $("#gotoButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchPermisssions", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: $("#pageNumber").val() }
+        });
+
+    });
+
+    function EditPermission(businessApplication) {
+
+        InitValuesDialog();
+        var ajaxUrl = '@Url.Action("GetRolesByBusinessApplication", "Account")';
+        var selectedUserType = $("#SelectedUserType").val();
+        var userName = $("#Email").val();
+        $("#spanDeletePerButton").show();
+        $("#formPermissionGrid").dialog('open');
+        $("#openModePer").val('2');
+        $("#legendPopUp").html("Edit Permission");
+
+        $.ajax({
+            url: '@Url.Action("GetBusinessApplication", "Account")',
+            type: 'POST',
+            dataType: 'html',
+            success: function (results) {
+
+                if (results.indexOf('clientsList') != -1) {
+
+                    $("#divBusinessAppPer").html(results);
+                    $("#divBusinessAppPer").fadeIn("slow");
+                    setupSelects($('#divBusinessAppPer select').not('[multiple*=multiple]'));
+
+                    $.ajax({
+                        url: ajaxUrl,
+                        type: 'POST',
+                        dataType: 'html',
+                        success: function (results) {
+
+                            if (results.indexOf('rolLabel') != -1 || results.indexOf('clientsList') != -1) {
+                                $("#roleClientPer").html(results);
+                                $("#roleClientPer").fadeIn("slow");
+                                if (selectedUserType == 3) {
+                                    setupSelects($('#roleClientPer select').not('[multiple*=multiple]'));
+                                    $("#rolLabel").hide();
+                                    $("#clientsList").show();
+                                }
+                                if (selectedUserType == 4) {
+                                    $('#formPermissionGrid input[type="checkbox"]').ezMark();
+                                    $("#rolLabel").show();
+                                    $("#clientsList").hide();
+                                }
+                            }
+                            else {
+                                $("#formError").submit();
+                            }
+                        },
+                        error: function () { alert('An error occurred') },
+                        data: { businessApplicationId: businessApplication, selectedUserType: selectedUserType, divRolesId: 'id="roleListPer"', isPermission: true, isEditPermission: true, userName: userName }
+                    });
+                }
+                else {
+                    $("#formError").submit();
+                }
+
+            },
+            error: function () { alert('An error occurred') },
+            data: { isPermission: true, isEdition: true, businessAppSelected: businessApplication }
+        });
+
+    }
+
+    $(document).ready(function () {
+        $("#newPermission").click(function () {
+            InitValuesDialog();
+            $("#formPermissionGrid").dialog('open');
+            $("#openModePer").val("1");
+            $("#spanDeletePerButton").hide();
+
+            var ajaxUrl = '@Url.Action("GetBusinessApplication", "Account")';
+            $("#divBusinessAppPer").show();
+
+            $("#legendPopUp").html("Add Permission");
+
+            $("#rolLabel").hide();
+            $("#clientsList").hide();
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: function (results) {
+                    $("#divBusinessAppPer").html(results);
+                    $("#divBusinessAppPer").fadeIn("slow");
+                    setupSelects($('#divBusinessAppPer select').not('[multiple*=multiple]'));
+                },
+                error: function () { alert('An error occurred') },
+                data: { isPermission: true, isEdition: false }
+            });
+        });
+
+        $("#exportExcelPermission").click(function () {
+
+            var ajaxUrl = '@Url.Action("SearchPermissionExcel", "Account")';
+            var userName = $("#Email").val();
+            var userType = $("#SelectedUserType").val();
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                success: function () {
+                    $("#exportExcelPemrission").submit();
+                },
+                error: function () { alert('An error occurred') },
+                data: { userName: userName, userType: userType }
+            });
+        });
+
+        $("#wrapTable").css('overflow-x', 'hidden');
+        $("#editPermissionSpan").hide();
+        $("#deletePermissionSpan").hide();
+
+        $("#editPermissionButton").click(function () {
+            $("#tablePermissionsBody input:checked").each(function () {
+                EditPermission(this.value);
+            });
+        });
+
+        $("#deletePermissionButton").click(function () {
+            var permisssionSelected = '';
+            $("#tablePermissionsBody input:checked").each(function () {
+                permisssionSelected += this.value + '&';
+            });
+            ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+                var userType = $("#SelectedUserType").val();
+                var userName = $("#Email").val();
+                var ajaxUrl = '@Url.Action("DeleteSelectedPermissions", "Account")';
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+
+                        if (data.length == 0) {
+                            $('#formPermissionGrid').dialog('close');
+                            $.ajax({
+                                url: '@Url.Action("SearchPermisssions", "Account")',
+                                type: 'POST',
+                                dataType: 'html',
+                                success: function (result) {
+                                    $("#gridArea").show();
+                                    $("#gridArea").html(result);
+                                    $("#gridArea").fadeIn("slow");
+                                },
+                                error: function () { alert('An error occurred') }
+                            });
+                        }
+                        else {
+                            $.ajax({
+                                url: '@Url.Action("SearchPermisssions", "Account")',
+                                type: 'POST',
+                                dataType: 'html',
+                                success: function (result) {
+                                    $("#gridArea").show();
+                                    $("#gridArea").html(result);
+                                    $("#gridArea").fadeIn("slow");
+
+                                    $("#errorDiv").show();
+                                    var numErrors = data.length;
+                                    var titleError = "";
+                                    var errors = "";
+                                    if (numErrors > 1) {
+                                        titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUl'></ul>";
+                                    } else {
+                                        titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+                                    }
+                                    $("#errorDiv").html("");
+                                    $("#errorDiv").html(titleError);
+                                    for (var i = 0; i < data.length; i++) {
+                                        errors += "<li>" + data[i] + "</li>";
+                                    }
+                                    $("#errorUl").html(errors);
+                                },
+                                error: function () { alert('An error occurred') }
+                            });
+                        }
+                    },
+                    error: function () { alert('An error occurred') },
+                    data: { loginName: userName, selectedPermissions: permisssionSelected, userType: userType }
+                });
+            });
+        });
+    });
+
+    function CheckBoxChange() {
+        var len = $("#tablePermissionsBody input:checked").length;
+        if (len == 1) {
+            $("#editPermissionSpan").show();
+            $("#deletePermissionSpan").show();
+        }
+        else if (len > 1) {
+            $("#editPermissionSpan").hide();
+            $("#deletePermissionSpan").show();
+        }
+        else {
+            $("#editPermissionSpan").hide();
+            $("#deletePermissionSpan").hide();
+        }
+    }
+
+    function CheckBoxHeaderChange(status) {
+        $("#tablePermissionsBody input").each(function () {
+            this.checked = status;
+        });
+        var len = $("#tablePermissionsBody input:checked").length;
+        if (len >= 1) {
+            $("#editPermissionSpan").hide();
+            $("#deletePermissionSpan").show();
+        }
+        else {
+            $("#editPermissionSpan").hide();
+            $("#deletePermissionSpan").hide();
+        }
+    }
+
+</script>
+
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+        @Resources.Common.NoResults
+    </div>
+}
+else
+{
+    
+<div class="table-legend">
+    @Resources.Administration.PermissionList 
+</div>
+    
+    
+<div class="wrapper" id="wrapTable">
+    <table class="data" summary="search results">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" id="chkHeader" onchange="CheckBoxHeaderChange(this.checked);" /></th>
+                <th>@Ajax.SortActionLink(Resources.Administration.BusinessApplication, action, "BusinessApplication", Model, jqueryFunction, 1)</th>
+                <th>@Ajax.SortActionLink(Resources.Administration.AssignedRoles, action, "Roles", Model, jqueryFunction, 1)</th>
+            </tr>
+        </thead>
+        <tbody id="tablePermissionsBody">
+            @for (int i = 0; i < Model.Collection.Count; i++)
+            {
+                string rowAlter = "ev";
+                PermissionGridModel actualDataRow = Model.Collection[i];
+                Guid rowIdentifier = actualDataRow.BusinessApplictionId;
+                string chkId = "chk" + i;
+                if (i % 2 == 0)
+                {
+                    rowAlter = "od";
+                }
+                <tr class="@rowAlter">
+                    <td width="20">
+                        <input type="checkbox" id="@chkId" value="@rowIdentifier" onchange="CheckBoxChange();" />
+                    </td>
+                    <td width="150" >
+                        <a style="cursor: pointer;" onclick="EditPermission('@rowIdentifier')" title="@Resources.Common.Edit">
+                            <span>@actualDataRow.BusinessApplication</span>
+                        </a>
+                    </td>                    
+                    <td style="white-space:pre-wrap;">@actualDataRow.Roles</td>
+                </tr>
+                
+            }
+        </tbody>
+    </table>
+</div>
+<div class="form">
+    <div class="pages">
+        <div style="float:left; padding-left:17px;">
+            <span class="btn">
+                <input type="reset" value="@Resources.Common.ExportExcelButton" id="exportExcelPermission" />
+            </span>
+        </div>
+        <div>
+        
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}
+<p class="btn">
+    <span class="btn">
+        <input type="button" value="@Resources.Administration.NewPersmissionButton" id="newPermission" />
+    </span>
+    <span class="btn" id="editPermissionSpan" style="margin-right:10px;">
+        <input type="button" value="@Resources.Administration.EditPermisssionButton" id="editPermissionButton" />
+    </span>
+    <span class="btn" id="deletePermissionSpan" style="margin-right:10px;">
+        <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deletePermissionButton" />
+    </span>
+</p>
+<form id="exportExcelPemrission" action="@Url.Action("ExportExcelPermissions")" method="post">
+</form>
+
+
+
+

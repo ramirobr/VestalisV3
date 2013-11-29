@@ -1,0 +1,11 @@
+USE VESTALIS3
+GO
+
+IF ( NOT EXISTS (SELECT COLUMN_NAME
+				FROM INFORMATION_SCHEMA.COLUMNS
+				WHERE TABLE_NAME = 'Picture' AND COLUMN_NAME = 'PictureFileThumbnail'))
+BEGIN
+
+	ALTER TABLE dbo.Picture ADD PictureFileThumbnail varbinary(max) null
+
+END

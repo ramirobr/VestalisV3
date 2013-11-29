@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Inspecciones" CaptionTitle="Orden de inspección" CaptionBreadcrumbs="Orden de inspección">
+  <Sections>
+    <Section Caption="General">
+      <FormElements>
+        <Element Identifier ="Client" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="false" />
+        <Element Identifier ="FileNumber" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="true" IsInspectionReportVisible = "true" IsOrderIdentifier ="true"/>
+        <Element Identifier ="RequestedBy" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="true" />
+        <Element Identifier ="Exporter" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier ="Consignee" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="InspectionDate" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="true" IsInspectionReportVisible = "true" />
+        <Element Identifier ="InspectionTime" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="InspectionPlace" IsDataGridVisible="true" IsFilterVisible ="false" IsVisibleClient="true" IsInspectionReportVisible="true"/>
+        <Element Identifier ="Reference" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Buyer" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier ="Lot" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" IsInspectionReportVisible = "true" />
+        <Element Identifier ="Quality"  IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier ="ShipmentDate" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Vessel" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" IsInspectionReportVisible = "true"/>
+        <Element Identifier ="ShippingAgency" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="PortOfLoading" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="DestinationCountry" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="PortOfDestination" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="FobValueToBeExported" IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="InvoiceNumber"  IsDataGridVisible="false" IsFilterVisible ="false" IsVisibleClient="true" />
+        <Element Identifier ="Inspector" IsDataGridVisible="true" IsFilterVisible ="true" IsVisibleClient="true" />
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

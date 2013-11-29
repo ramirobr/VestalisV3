@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddPermissionsTitle" xml:space="preserve">
+    <value>Add permissions for the user {0}</value>
+  </data>
+  <data name="AssignedRoles" xml:space="preserve">
+    <value>Assigned roles</value>
+  </data>
+  <data name="BusinessApplication" xml:space="preserve">
+    <value>Business application</value>
+  </data>
+  <data name="BusinessApplicationNotSelected" xml:space="preserve">
+    <value>Please choose one business application</value>
+  </data>
+  <data name="CatalogueAdministrationGridColumnApplication" xml:space="preserve">
+    <value>Business application</value>
+  </data>
+  <data name="CatalogueAdministrationGridColumnCatalogueName" xml:space="preserve">
+    <value>Catalogue Name</value>
+  </data>
+  <data name="CatalogueAdministrationInstruction" xml:space="preserve">
+    <value>Please select an application in the search criteria to filter the list of catalogs. If you don’t select anything, all catalog lists is retrieved.</value>
+  </data>
+  <data name="CatalogueAdministrationTitle" xml:space="preserve">
+    <value>Catalogue configuration</value>
+  </data>
+  <data name="CatalogueMenu" xml:space="preserve">
+    <value>Catalogue Management</value>
+  </data>
+  <data name="CatalogueValueAdministrationInstruction" xml:space="preserve">
+    <value>Please fill the mandatory fields to create a new value. After that please click in save button.</value>
+  </data>
+  <data name="CatalogueValueAdministrationTitle" xml:space="preserve">
+    <value>Catalogue value administration</value>
+  </data>
+  <data name="CatalogueValueGridColumnDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="CatalogueValueGridColumnValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="CatalogueValueList" xml:space="preserve">
+    <value>Catalogue value list</value>
+  </data>
+  <data name="ChangePasswordTitle" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="ClientNotSelected" xml:space="preserve">
+    <value>Please choose one client</value>
+  </data>
+  <data name="Clients" xml:space="preserve">
+    <value>Clients</value>
+  </data>
+  <data name="CompletedName" xml:space="preserve">
+    <value>Completed name</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="DeleteCatalogueCategoryMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this catalogue?</value>
+  </data>
+  <data name="DeleteCatalogueValueMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this catalogue value?</value>
+  </data>
+  <data name="DeleteUserMessage" xml:space="preserve">
+    <value>Are you sure you want to delete the permission the user ?</value>
+  </data>
+  <data name="EditPermissionsTitle" xml:space="preserve">
+    <value>Edit the permission for the user {0}</value>
+  </data>
+  <data name="FullNameRequired" xml:space="preserve">
+    <value>Please write a full name</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LoginNameRequired" xml:space="preserve">
+    <value>Please write a login name</value>
+  </data>
+  <data name="MinLegthPassword" xml:space="preserve">
+    <value>The password length is too short, you have to write at least 6 characters</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NewPassRequired" xml:space="preserve">
+    <value>The write the new password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="NotEqualPassword" xml:space="preserve">
+    <value>The passwords aren't equals</value>
+  </data>
+  <data name="OldPassRequired" xml:space="preserve">
+    <value>Please write the old password</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordNotFilled" xml:space="preserve">
+    <value>Please write a password</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="PermissionTitle" xml:space="preserve">
+    <value>List of permissions for the user ''{0}''</value>
+  </data>
+  <data name="ReNewPassWordRequired" xml:space="preserve">
+    <value>The re-write the new password</value>
+  </data>
+  <data name="ReTypeNewPassword" xml:space="preserve">
+    <value>Re-type new password</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="RolesNotSelected" xml:space="preserve">
+    <value>Please choose one or more roles for the user</value>
+  </data>
+  <data name="SelectedUserTypeNotFilled" xml:space="preserve">
+    <value>Please select a user type</value>
+  </data>
+  <data name="UserConfigurationInstruction" xml:space="preserve">
+    <value>Please complete the following form to create a user</value>
+  </data>
+  <data name="UserConfigurationTitle" xml:space="preserve">
+    <value>User configuration</value>
+  </data>
+  <data name="UserCreationError" xml:space="preserve">
+    <value>This user already exists</value>
+  </data>
+  <data name="UserManagementInstruction" xml:space="preserve">
+    <value>Please select  a search criteria to get the list of users. If you don’t select any search criteria, the system retrieves the completed list of users.</value>
+  </data>
+  <data name="UserManagementTitle" xml:space="preserve">
+    <value>User management</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="UsersMenu" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="UserType" xml:space="preserve">
+    <value>User type</value>
+  </data>
+  <data name="UserTypeClient" xml:space="preserve">
+    <value>Client user</value>
+  </data>
+  <data name="UserTypeCotecna" xml:space="preserve">
+    <value>Cotecna user</value>
+  </data>
+  <data name="UserTypeGlobal" xml:space="preserve">
+    <value>Global administrator</value>
+  </data>
+  <data name="UserTypeLocal" xml:space="preserve">
+    <value>Application administrator</value>
+  </data>
+  <data name="UserConfigurationInstructionEdit" xml:space="preserve">
+    <value>Please edit the password of the user if you need. The field email and the user type field cannot be modified.</value>
+  </data>
+  <data name="DefaultAppMandatory" xml:space="preserve">
+    <value>Please mark the business application as default</value>
+  </data>
+  <data name="CaptchaCode" xml:space="preserve">
+    <value>Captcha code</value>
+  </data>
+  <data name="CaptchaValue" xml:space="preserve">
+    <value>Please write the code shown above</value>
+  </data>
+  <data name="ChangedPasswordConfirmationParagraph1" xml:space="preserve">
+    <value>Your password has been changed successfully</value>
+  </data>
+  <data name="ChangedPasswordConfirmationParagraph2" xml:space="preserve">
+    <value>Please, go to the login screen and log on with your username and your new password</value>
+  </data>
+  <data name="ChangePasswordButton" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="EmailFormatNotValid" xml:space="preserve">
+    <value>Please write a valid email address</value>
+  </data>
+  <data name="ResetPasswordButton" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="ResetPasswordConfirmationParagraph1" xml:space="preserve">
+    <value>An e-mail has been sent to your e-mail address allowing you to reset your password.</value>
+  </data>
+  <data name="ResetPasswordConfirmationParagraph2" xml:space="preserve">
+    <value>You may have to check your junk mail box for our message.</value>
+  </data>
+  <data name="ResetPasswordTitle" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="ReturnLogin" xml:space="preserve">
+    <value>Return to login</value>
+  </data>
+  <data name="TemporaryPassword" xml:space="preserve">
+    <value>Temporary password</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="RolesBusinessAppTitle" xml:space="preserve">
+    <value>Roles and Business applications</value>
+  </data>
+  <data name="BusinessApplicationMandatory" xml:space="preserve">
+    <value>Business application *</value>
+  </data>
+  <data name="CatalogueEditNewInstruction" xml:space="preserve">
+    <value>Please fill the mandatory fields to create a new category. After that please click on save button for create the new catalogue.</value>
+  </data>
+  <data name="CatalogueItem" xml:space="preserve">
+    <value>Catalogue item</value>
+  </data>
+  <data name="CatalogueItems" xml:space="preserve">
+    <value>Catalogue items</value>
+  </data>
+  <data name="NameMandatory" xml:space="preserve">
+    <value>Name *</value>
+  </data>
+  <data name="ValueMandatory" xml:space="preserve">
+    <value>Value *</value>
+  </data>
+  <data name="NewItem" xml:space="preserve">
+    <value>New item</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="EmailMandatory" xml:space="preserve">
+    <value>Please wirte a e-mail address</value>
+  </data>
+  <data name="PermissionList" xml:space="preserve">
+    <value>Permissions list</value>
+  </data>
+  <data name="ChangePasswordError" xml:space="preserve">
+    <value>Old password is incorrect, please verify your information</value>
+  </data>
+  <data name="DeletePermissionMessage" xml:space="preserve">
+    <value>Are you sure you want to delete the user permission?</value>
+  </data>
+  <data name="DeleteUserConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to delete the selected User?</value>
+  </data>
+  <data name="CatalogueIndexBreadCrumb" xml:space="preserve">
+    <value>Catalogue management</value>
+  </data>
+  <data name="CatalogueManagementTitle" xml:space="preserve">
+    <value>Catalogue management</value>
+  </data>
+  <data name="ForgetPasswordCaptchaNotValid" xml:space="preserve">
+    <value>The captcha code isn't correct.</value>
+  </data>
+  <data name="ForgetPasswordEmailNotValid" xml:space="preserve">
+    <value>Please write an e-mail</value>
+  </data>
+  <data name="ForgetPasswordGeneralError" xml:space="preserve">
+    <value>There is an error changing the password</value>
+  </data>
+  <data name="ForgetPasswordSubjectConfirEmail" xml:space="preserve">
+    <value>Password has been changed sucessfully</value>
+  </data>
+  <data name="ForgetPasswordSubjectEmail" xml:space="preserve">
+    <value>Password recovery</value>
+  </data>
+  <data name="ForgetPasswordUserNotFound" xml:space="preserve">
+    <value>This user was not found, please verify your information.</value>
+  </data>
+  <data name="NonDeletePermissionMessage" xml:space="preserve">
+    <value>This permission cannot be deleted.</value>
+  </data>
+  <data name="NonDeleteUserMessage" xml:space="preserve">
+    <value>This user cannot be deleted.</value>
+  </data>
+  <data name="EditItem" xml:space="preserve">
+    <value>Edit item</value>
+  </data>
+  <data name="DeleteItem" xml:space="preserve">
+    <value>Delete item</value>
+  </data>
+  <data name="NonDeleteMultipleUseMessage" xml:space="preserve">
+    <value>The user {0} cannot be deleted.</value>
+  </data>
+  <data name="EditPermisssionButton" xml:space="preserve">
+    <value>Edit permission</value>
+  </data>
+  <data name="NewPersmissionButton" xml:space="preserve">
+    <value>New permission</value>
+  </data>
+  <data name="NonDeleteMultiplePermissionMessage" xml:space="preserve">
+    <value>The permission in the business application {0} cannot be deleted.</value>
+  </data>
+</root>

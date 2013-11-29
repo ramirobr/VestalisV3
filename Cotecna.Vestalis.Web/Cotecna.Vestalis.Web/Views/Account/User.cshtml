@@ -1,0 +1,578 @@
+﻿@using Cotecna.Vestalis.Core
+@using Cotecna.Vestalis.Web.Common
+@using Cotecna.Vestalis.Entities;
+@{
+    ViewBag.Title = "Vestalis";
+}
+
+@model UserModel
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for radios and checks*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")"></script>
+}
+
+@section leftmenu {
+    @Html.Partial("_LeftMenuAdministration")            
+}
+@{
+    string principalForm = string.Empty;
+    if (Session["PrincipalFormName"] != null)
+    {
+        principalForm = Session["PrincipalFormName"].ToString();
+    }
+}
+
+@Html.Partial("_ConfirmationMessage")
+
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    <ul>
+        <li>@Html.ActionLink(Resources.Administration.UserManagementTitle, "Index", "Account") &gt;</li>
+        <li class="last">@Resources.Administration.UserConfigurationTitle</li>
+    </ul>
+    <div class="cap-right">
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+    function InitDialog()
+    {
+        $("#formPermissionGrid").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 300,
+            width: 440,
+            modal: true
+        });
+    }
+
+
+    $(document).ready(function () {
+        $('#formPermissionGrid').dialog('close');
+        $("#liCatalogueMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@principalForm");
+        $("#form0").validate({
+        errorElement: "span",
+        errorClass: "error",
+        messages: {
+            required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage",
+        },
+        success: function (span) {
+        },
+        errorPlacement: function (error, element) {
+            var span = element.prev('span');
+            error.appendTo(span)
+        },
+        highlight: function (element, errorClass) {
+            var li = $(element).closest('li');
+            $(li).addClass(errorClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            var li = $(element).closest('li');
+            $(li).removeClass(errorClass);
+        },
+        invalidHandler: function (event, validator) {
+                        var a = validator.errorList[0].element.id;
+                        $('#'+a).focus();
+                    }
+        });
+
+        $("#errorDiv").hide();
+    });
+
+     $(function () {
+        $("#cancelButton").click(function () {
+            window.location = '@Url.Action("Index")';
+        });
+
+        $("#SelectedUserType").change(function () {
+            $(this).valid();
+        });
+
+        $("#deleteButton").click(function () {
+            DeleteUser('@Model.Email');
+        });
+
+        $("#formPermissionGrid").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 300,
+            width: 440,
+            modal: true
+        });
+    });
+
+    function DeleteUser(selectedUserName) {
+        ShowMessage("@Resources.Administration.DeleteUserConfirmationMessage", "@Resources.Common.DeleteConfirmation", function () {
+            var ajaxUrl = '@Url.Action("DeleteUser", "Account")';
+            var userType = $("#SelectedUserType").val();
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType : 'JSON',
+                success: function(data) {
+
+                    if(data == undefined || data == ''){
+                        window.location = '@Url.Action("Index")';
+                    }
+                    else {
+                        
+                        $("#errorDiv").show();
+                        var titleError = "";
+                        var errors = "";
+                        
+                        titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+                        
+                        $("#errorDiv").html("");
+                        $("#errorDiv").html(titleError);
+                       
+                        errors += "<li>"+data+"</li>";
+                        
+                        $("#errorUl").html(errors);
+
+                    }
+                },
+                error: function () { alert('An error occurred') },
+                data: { selectedUserName: selectedUserName, userType: userType }
+            });
+        }); 
+    }
+
+    function SaveUserSuccess(results){
+        if(results.HasErrors == false){
+            
+            var openMode = $("#OpenMode").val();    
+            $("#errorDiv").html("");
+            $("#errorDiv").hide();
+            var email = $("#Email").val();
+            var selectedUserType = $("#SelectedUserType").val();
+
+            if(selectedUserType > 1 && openMode == 1) {
+                $("#userNameEdit").val(email);
+                $("#editUserForm").submit();
+            }
+            else if(openMode == 2){
+                window.location = '@Url.Action("Index")';
+            }
+            else {
+                window.location = '@Url.Action("Index")';
+            }
+        }
+        else {
+            $("#errorDiv").show();
+            var numErrors = results.ErrorList.length;
+            var titleError = "";
+            var errors = "";
+            if (numErrors > 1) {
+                titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUl'></ul>";
+            } else {
+                titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+            }
+            $("#errorDiv").html("");
+            $("#errorDiv").html(titleError);
+            for (var i = 0; i < results.ErrorList.length; i++) {
+                errors += "<li>"+results.ErrorList[i]+"</li>";
+            }
+            $("#errorUl").html(errors);
+        }
+    }
+
+
+    function SaveUserFailure(){
+        alert('An error occurred'); 
+    }
+
+    function CloseForm() {
+        var data = '';
+        var counter = 0;
+        $("#roleList input:checked").each(function () {
+            //fill the array with the values
+            data += $(this).val() + ';';
+            counter++;
+        });
+        $("#CheckedRoles").val(data);
+    }
+
+</script>
+
+@if (Model.SelectedUserType == 1)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#gridArea").hide();
+        });
+    </script>
+}
+
+
+@if (Model.OpenMode == (int)ScreenOpenMode.Add)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#gridArea").hide();
+            $("#liBusinessApp").hide();
+            
+            $("#SelectedUserType").change(function () {
+                var selectedUserType = $("#SelectedUserType").val();
+
+                if (selectedUserType == 1 || selectedUserType == "") {
+                    $("#liBusinessApp").hide();
+                    $("#divBusinessApp").hide();
+                    $("#rolLabel").hide();
+                    $("#clientsList").hide();
+                }
+                else {
+                    var ajaxUrl = '@Url.Action("GetBusinessApplication", "Account")';
+                    $("#divBusinessApp").show();
+
+                    $("#rolLabel").hide();
+                    $("#clientsList").hide();
+
+                    $.ajax({
+                        url: ajaxUrl,
+                        type: 'POST',
+                        dataType: 'html',
+                        success: function (results) {
+                            $("#divBusinessApp").html(results);
+                            $("#divBusinessApp").fadeIn("slow");
+                            setupSelects($('#divBusinessApp select').not('[multiple*=multiple]'));
+                        },
+                        error: function () { alert('An error occurred') },
+                        data: { isPermission: false, isEdition: false }
+                    });
+                }
+            });
+
+            $("#Email").blur(function () {
+
+                var email = $("#Email").val();
+                var ajaxUrl = '@Url.Action("VerifyUser", "Account")';
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if (data == true) {
+                            $("#userNameEdit").val(email);
+                            $("#editUserForm").submit();
+                        }
+                    },
+                    error: function () { alert('An error occurred') },
+                    data: { userName: email }
+                });
+
+            });
+
+        });
+    </script>
+}
+
+<form id="editUserForm" action="@Url.Action("EditUser")" method="post">
+    <input type="hidden" name="userNameEdit" id="userNameEdit" value="" />
+</form>
+
+<h1>@Resources.Administration.UserConfigurationTitle</h1>
+@if (Model.OpenMode == (int)ScreenOpenMode.Add)
+{
+<p>@Resources.Administration.UserConfigurationInstruction</p>
+}
+@if (Model.OpenMode == (int)ScreenOpenMode.Edit)
+{
+<p>@Resources.Administration.UserConfigurationInstructionEdit</p>
+}
+
+
+@{
+    AjaxOptions ajaxOption = new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnSuccess = "SaveUserSuccess",
+        OnFailure = "SaveUserFailure"
+    };
+}
+
+
+@using (Ajax.BeginForm("SaveUser",ajaxOption))
+{
+    @Html.HiddenFor(m => m.OpenMode)
+    @Html.HiddenFor(m => m.CheckedRoles)
+    <div class="form product">
+        <ol>
+            <li>
+               @if (Model.OpenMode == (int)ScreenOpenMode.Add)
+               { 
+                <label>
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#SelectedUserType").rules("add", { required: true, messages: { required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage"} });
+                        });
+                        </script>
+
+                    <span class="name">@Resources.Administration.UserType</span>
+                    @{
+                   List<SelectListItem> itemSource = Model.UserTypes.Select(data => new SelectListItem
+                   {
+                       Text = data.Value,
+                       Value = data.Key.ToString()
+                   }).ToList();
+                        @Html.DropDownListFor(m => m.SelectedUserType, itemSource, Resources.Common.SelectOneOption);
+                    }
+                </label>
+               }
+               else if (Model.OpenMode == (int)ScreenOpenMode.Edit)
+               {
+                   <label>
+                        <span class="name">@Resources.Administration.UserType</span>
+                        <span class="value" >@Model.UserTypes.First(x => x.Key == Model.SelectedUserType).Value</span>
+                        @Html.HiddenFor(m => m.SelectedUserType)
+                   </label>
+               }
+            </li>
+            <li>
+                @if (Model.OpenMode == (int)ScreenOpenMode.Add)
+                {
+                <label>
+                     <script type="text/javascript">
+                         $(function () {
+                             $("#Email").rules("add", { required: true, messages: { required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage"} });
+                         });
+                         $(function () {
+                             $("#Email").rules("add", { email: true, messages: { email: "@Resources.Administration.EmailFormatNotValid"} });
+                         });
+                        </script>
+                    <span class="name">@Resources.Administration.Email</span>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "txt" })
+                </label>
+                }
+                else if (Model.OpenMode == (int)ScreenOpenMode.Edit)
+                {
+                <label>
+                    <span class="name">@Resources.Administration.Email</span>
+                    <span class="value" >@Model.Email</span>
+                    @Html.HiddenFor(m => m.Email)
+                </label>
+                }
+            </li>
+            <li>
+                <label>
+                    @if (Model.OpenMode == (int)ScreenOpenMode.Add)
+                    {
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#Password").rules("add", { required: true, messages: { required: "@Resources.ServiceOrder.MandatoryFieldValidationMessage"} });
+                            });
+                            $(function () {
+                                $("#Password").rules("add", { minlength: 6, messages: { minlength: "@Resources.Administration.MinLegthPassword"} });
+                            });
+                        </script>
+                    }
+                    <span class="name">@Resources.Administration.Password</span>
+                    @Html.PasswordFor(m => m.Password, new { @class = "txt" })
+                </label>
+            </li>
+            @if (Model.OpenMode == (int)ScreenOpenMode.Add)
+            {
+            <div id="divBusinessApp">
+                @Html.Partial("_BusinessApplicationsUser", Model)
+            </div>
+            <div  id="roleClient">
+                @Html.Partial("_RoleClient", Model)
+            </div>
+            }
+        </ol>
+    </div>
+    <p class="btn">
+        <span class="btn" >
+            <input type="submit" value="@Resources.Common.Save" id="saveButton" onclick="CloseForm();"/>
+        </span>
+        @if (Model.OpenMode == (int)ScreenOpenMode.Edit)
+        {
+        <span class="btn" style="margin-right: 10px;">
+            <input type="reset" value="@Resources.Common.Delete" id="deleteButton" />
+        </span>
+        }
+        <span class="btn2">
+            <input type="reset" value="@Resources.Common.Cancel" id="cancelButton" />
+        </span>
+    </p>
+     <div class="form"> 
+        <div class="error" id="errorDiv">
+            
+        </div>
+    </div>
+}        
+<div id="gridArea">
+    @Html.Partial("_PermissionGrid", Model.PermissionList)
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cancelPerButton").click(function () {
+            $('#formPermissionGrid').dialog('close');
+        });
+
+        $("#savePerButton").click(function () {
+            var checkedRoles = '';
+            $("#roleListPer input:checked").each(function () {
+                //fill the array with the values
+                checkedRoles += $(this).val() + ';';
+            });
+            var clientSelected = $("#ClientIdPer").val();
+            var userType = $("#SelectedUserType").val();
+            var userName = $("#Email").val();
+            var businessAppId = $("#BusinessApplicationIdPer").val();
+            var openMode = $("#OpenModePer").val();
+            var ajaxUrl = '@Url.Action("SavePermission", "Account")';
+            var businessAppEdit = $("#BusinessApplicationIdPerEdit").val();
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.HasErrors == false) {
+                        $("#errorDivPermission").html("");
+                        $('#formPermissionGrid').dialog('close');
+                        var ajaxUrl = '@Url.Action("SearchPermisssions", "Account")';
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: function (result) {
+                                $("#gridArea").show();
+                                $("#gridArea").html(result);
+                                $("#gridArea").fadeIn("slow");
+                            },
+                            error: function () { alert('An error occurred') }
+                        });
+                    } else {
+                        $("#errorDivPermission").show();
+                        var numErrors = data.ErrorList.length;
+                        var titleError = "";
+                        var errors = "";
+                        if (numErrors > 1) {
+                            titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUlPer'></ul>";
+                        }
+                        else {
+                            titleError = "<h5>There is 1 error</h5> <ul id ='errorUlPer'></ul>";
+                        }
+                        $("#errorDivPermission").html("");
+                        $("#errorDivPermission").html(titleError);
+                        for (var i = 0; i < data.ErrorList.length; i++) {
+                            errors += "<li>" + data.ErrorList[i] + "</li>";
+                        }
+                        $("#errorUlPer").html(errors);
+                    }
+                },
+                error: function () { alert('An error occurred') },
+                data: { selectedRoles: checkedRoles, clientId: clientSelected, businessAppId: businessAppId, businessAppEdit: businessAppEdit, userType: userType, userName: userName, openMode: openMode }
+            });
+
+        });
+
+        $("#deletePerButton").click(function () {
+
+            ShowMessage("@Resources.Administration.DeletePermissionMessage", "@Resources.Common.DeleteConfirmation", function () {
+
+                var businessAppId = $("#BusinessApplicationIdPer").val();
+                var userType = $("#SelectedUserType").val();
+                var userName = $("#Email").val();
+                var ajaxUrl = '@Url.Action("DeletePermission", "Account")';
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        
+                        if (data == undefined || data == '') {
+                            $('#formPermissionGrid').dialog('close');
+                            $.ajax({
+                                url: '@Url.Action("SearchPermisssions", "Account")',
+                                type: 'POST',
+                                dataType: 'html',
+                                success: function (result) {
+                                    $("#gridArea").show();
+                                    $("#gridArea").html(result);
+                                    $("#gridArea").fadeIn("slow");
+                                },
+                                error: function () { alert('An error occurred') }
+                            });
+                        }
+                        else {
+                            $("#errorDivPermission").show();
+                            var titleError = "";
+                            var errors = "";
+
+                            titleError = "<h5>There is 1 error</h5> <ul id ='errorUlPer'></ul>";
+                           
+                            $("#errorDivPermission").html("");
+                            $("#errorDivPermission").html(titleError);
+                           
+                            errors += "<li>" + data + "</li>";
+                           
+                            $("#errorUlPer").html(errors);
+                        }
+
+                    },
+                    error: function () { alert('An error occurred') },
+                    data: { loginName: userName, businessAppId: businessAppId, userType: userType }
+                });
+
+            });
+        });
+    });
+
+    function InitValuesDialog() {
+        $("#OpenModePer").val('');
+        $("#errorDivPermission").html("");
+        $("#errorDivPermission").hide();
+    }
+</script>
+
+<div id="formPermissionGrid" title="" >
+    <div id="Content" style="width:410px; height:260px; margin-left: 0;">
+        <div class="form">
+             <div class="legend" id="legendPopUp">
+               
+            </div> 
+            <ol style="height:150px;">
+                <div id="divBusinessAppPer">
+                    @Html.Partial("_BusinessApplicationsUser", new UserModel())
+                </div>
+                <div  id="roleClientPer">                    
+                    @Html.Partial("_RoleClient", new UserModel())
+                </div>
+            </ol>
+        </div>
+        <p class ="btn">
+            <span class="btn" style="margin-right: 10px;">
+                <input type="submit" value="@Resources.Common.Save" id="savePerButton" />
+            </span>
+            <span class="btn" id="spanDeletePerButton" style="margin-right: 10px;">
+                <input type="submit" value="@Resources.Common.Delete" id="deletePerButton" />
+            </span>
+            <span class="btn2">
+                <input type="reset" value="@Resources.Common.Cancel" id="cancelPerButton" />
+            </span>
+        </p>
+        <div class="form">
+            <div class="error" id="errorDivPermission">
+                
+            </div>
+        </div>
+    </div>
+</div>

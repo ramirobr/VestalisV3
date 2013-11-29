@@ -1,0 +1,14 @@
+﻿@model List<string>
+<li>
+    <label>
+        <div style=" overflow: auto; height: auto; max-height: 120px" id="reportSelectedList" >
+        @foreach (string report in Model)
+        {
+            string idChecks = "chk" + report;
+            <input type="checkbox" id="@idChecks" value="@report" name="@idChecks" checked="checked" />
+            @report
+            <br />
+        }
+        </div>
+    </label>
+</li>

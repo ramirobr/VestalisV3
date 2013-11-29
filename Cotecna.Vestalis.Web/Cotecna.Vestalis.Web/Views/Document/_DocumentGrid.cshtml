@@ -1,0 +1,241 @@
+﻿@model Cotecna.Vestalis.Core.DocumentSearchModel
+@using Cotecna.Vestalis.Entities
+@{
+    int totalNumberOfItemsWithoutPagination = Model.DocumentList.TotalCount;
+    int numberOfPages = Model.DocumentList.NumberOfPages;
+    int currentPage = Model.DocumentList.Page;
+    int pageSize = Model.DocumentList.PageSize;
+    bool isClient = User.IsInRole("Client");
+}
+
+<script type="text/javascript">
+    function UpdateResultsSearch(results) {
+        $(".gridArea").html(results);
+        $(".gridArea").fadeIn("slow");
+    }
+
+    $(document).ready(function () {
+        
+        $("#nextButton").click(function () {
+        var parameter = '@string.Format("{0}={1}", "page", currentPage + 1)';
+        var ajaxUrl = '@Url.Action("SearchDocumentListPaginated", "Document")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#endButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", numberOfPages)';
+        var ajaxUrl = '@Url.Action("SearchDocumentListPaginated", "Document")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#lastButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", currentPage - 1)';
+        var ajaxUrl = '@Url.Action("SearchDocumentListPaginated", "Document")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#firtsButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", 1)';
+        var ajaxUrl = '@Url.Action("SearchDocumentListPaginated", "Document")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#gotoButton").click(function () {
+
+        var parameter = 'page=' + $("#pageNumber").val().toString();
+        var ajaxUrl = '@Url.Action("SearchDocumentListPaginated", "Document")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+    });
+
+    $("#selectedDocuments").css('overflow-x', 'hidden');
+});
+
+function EditDocument(documentId) {
+    $("#documentIdEdit").val(documentId);
+    $("#editDocument").submit();
+}
+
+function chkChange() {
+
+    var len = $("#tableDocumentBody input:checked").length;
+    if (len == 1) {
+        $("#editDocumentSpan").show();
+        $("#deleteDocumentSpan").show();
+    }
+    else if (len > 1) {
+        $("#deleteDocumentSpan").show();
+        $("#editDocumentSpan").hide();
+    }
+    else {
+        $("#editDocumentSpan").hide();
+        $("#deleteDocumentSpan").hide();
+
+    }
+}
+
+function chkHeaderChange(checked) {
+    $("#tableDocumentBody input").each(function () {
+        this.checked = checked;
+    });
+    var len = $("#tableDocumentBody input:checked").length;
+    if (len >= 1) {
+        $("#deleteDocumentSpan").show();
+        $("#editDocumentSpan").hide();
+    }
+    else {
+        $("#deleteDocumentSpan").hide();
+        $("#editDocumentSpan").hide();
+    }
+}
+</script>
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+       @Resources.Common.NoResults 
+    </div>
+}
+else
+{
+<div class="table-legend">
+    <span class="bottom">&nbsp;</span>@Resources.Common.Results (&nbsp;<span class="count">@totalNumberOfItemsWithoutPagination</span>&nbsp;)
+</div>
+<div class="wrapper" id="selectedDocuments">
+<table class="data" summary="search results">
+<thead>
+    <tr>
+        <th width="20"><input type="checkbox" id="chkHeader" onchange="chkHeaderChange(this.checked);" /></th>
+        <th>@Resources.Document.DocumentName</th>
+        <th>@Resources.Document.DocumentDescription</th>
+        <th>@Resources.Document.DocumentDownload</th>
+    </tr>
+</thead>
+<tbody id="tableDocumentBody">
+@for (int i = 0; i < Model.DocumentList.Collection.Count; i++)
+{
+    string rowAlter = "ev";
+    Document actualDataRow = Model.DocumentList.Collection[i];
+    Guid? rowIdentifier = actualDataRow.DocumentId;
+    string chkIdentifier = "chk" + i.ToString();
+    if (i % 2 == 0)
+    {
+        rowAlter = "od";
+    }
+    <tr class="@rowAlter">
+        <td><input type="checkbox" id="@chkIdentifier" value="@rowIdentifier" onchange="chkChange();" /></td>
+        @if (!isClient)
+        {
+        <td>
+            <a style="cursor: pointer;" onclick="EditDocument('@rowIdentifier.GetValueOrDefault()')" title="@Resources.Common.Edit">
+                <span>@actualDataRow.DocumentName</span>
+            </a>
+        </td>
+        }
+        else
+        {       
+        <td style="white-space:pre-wrap;">@actualDataRow.DocumentName</td>
+        }
+        <td width="200" style="white-space:pre-wrap;">@actualDataRow.DocumentDescription</td>
+        <td>@Html.ActionLink("Download", "Preview", new { documentId = actualDataRow.DocumentId })</td>
+    </tr>
+}
+
+</tbody>
+</table>
+</div>
+
+<div class="form">
+    <div class="pages">
+        <div>
+        
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}

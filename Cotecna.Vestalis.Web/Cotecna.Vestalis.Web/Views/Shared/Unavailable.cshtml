@@ -1,0 +1,54 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Vestalis";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/style.default.css")" media="screen,print" />    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/screen.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.7.2.min.js")"></script>    
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/vestalis.js")"></script>    
+    
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+
+</head>
+<body>
+    <div id="TopBackground" style="background-color: #09aec6;"></div>
+    <div id="Container">
+        <!-- change logo, header, margin images here -->
+        <a href="http://www.cotecna.com/" id="logo" style="left: 45px; top: 45px;">
+            <img src="@Url.Content("~/Images/logo.png")" alt="Cotecna at your side" /></a>
+        <img src="@Url.Content("~/Images/greekPillar.png")" id="headerImage" style="left: 195px; top: -22px;" />
+        <img src="@Url.Content("~/Images/vestalisWireframe.png")" id="marginImage" style="left:-240px;top:150px;" />
+        <!-- /change logo, header, margin images here -->
+        
+        <div id="Heading">
+      
+        </div>
+        <div id="HeadingMenu">
+          
+        </div>
+
+        <div class="expand-container"></div>
+            <div id="PageLayout">
+                <div class="form">
+                     <div class="legend">
+                         <span>&nbsp;</span>
+                         Unavailable
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+</html>

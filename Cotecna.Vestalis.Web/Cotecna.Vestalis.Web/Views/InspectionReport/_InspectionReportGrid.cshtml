@@ -1,0 +1,557 @@
+﻿@using Cotecna.Vestalis.Core;
+@model DynamicDataGrid
+@{
+    int totalNumberOfItemsWithoutPagination = Model.TotalNumberOfItemsWithoutPagination;
+    int numberOfPages = Model.NumberOfPages.GetValueOrDefault();
+    int currentPage = Model.Page.GetValueOrDefault();
+    int pageSize = Model.PageSize;
+    bool isClient = User.IsInRole("Client");
+    int totalWidth = 0;
+    int widhtAction = 0;
+
+    widhtAction = 25;
+    totalWidth = widhtAction + Model.Captions.Sum(data => data.Width);
+
+    if (totalWidth < 744)
+    {
+        int newWidhtAction = (int)Math.Ceiling(((double)744 * (double)widhtAction) / (double)totalWidth);
+        widhtAction = newWidhtAction;
+        foreach (var caption in Model.Captions)
+        {
+            int newWidth = 0;
+            newWidth = (int)Math.Ceiling(((double)744 * (double)caption.Width) / (double)totalWidth);
+            caption.Width = newWidth;
+        }
+        totalWidth = widhtAction + Model.Captions.Sum(data => data.Width);
+        if (totalWidth > 744)
+        {
+            totalWidth = 744;
+        }
+    }
+
+}
+<script type="text/javascript">
+
+    function UpdateResultsSearch(results) {
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+    $("#nextButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", currentPage + 1)';
+        var ajaxUrl = '@Url.Action("SearchInspectionReportPaginated", "InspectionReport")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#endButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", numberOfPages)';
+        var ajaxUrl = '@Url.Action("SearchInspectionReportPaginated", "InspectionReport")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#lastButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", currentPage - 1)';
+        var ajaxUrl = '@Url.Action("SearchInspectionReportPaginated", "InspectionReport")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#firtsButton").click(function () {
+
+        var parameter = '@string.Format("{0}={1}", "page", 1)';
+        var ajaxUrl = '@Url.Action("SearchInspectionReportPaginated", "InspectionReport")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+
+    $("#gotoButton").click(function () {
+
+        var parameter = 'page=' + $("#pageNumber").val().toString();
+        var ajaxUrl = '@Url.Action("SearchInspectionReportPaginated", "InspectionReport")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: parameter
+        });
+
+    });
+
+    $("#exportExcelbutton").click(function () {
+        ExportToExcel();
+    });
+
+    function LaunchEditInspectionReport(rowId) {
+        $("#inspectionReportItemId").val(rowId);
+        $("#viewEditInspectionReport").submit();
+    }
+
+    function LaunchViewInspectionReport(rowId,published) {
+        $("#inspectionReportItemIdView").val(rowId);
+        $("#isPublished").val(published);
+        $("#viewInspectionReport").submit();
+    }
+
+    $(document).ready(function () {
+        $("#tableInspectionReport").css("width", "@totalWidth");
+        $("#editInspectionReportSpan").hide();
+        $("#deleteInspectionReportSpan").hide();
+        $("#publishSelectedSpan").hide();
+        $("#validateSelectedSpan").hide();
+        $("#unpublishSpan").hide();
+    });
+
+    $("#newInspectionReportBtn").click(function () {
+        $("#newInspectionReportForm").submit();
+    });
+
+    function OnChkheaderChange(status) {
+        $("#tableInspectionReportBody input").each(function () {
+            this.checked = status;
+        });
+        var len = $("#tableInspectionReportBody input:checked").length;
+        if (len >= 1) {
+            $("#publishSelectedSpan").show();
+            $("#validateSelectedSpan").show();
+            $("#editInspectionReportSpan").hide();
+            $("#deleteInspectionReportSpan").show();
+            $("#unpublishSpan").hide();
+        }
+        else {
+            $("#publishSelectedSpan").hide();
+            $("#validateSelectedSpan").hide();
+            $("#editInspectionReportSpan").hide();
+            $("#deleteInspectionReportSpan").hide();
+            $("#unpublishSpan").hide();
+        }
+    }
+
+    function OnChkrowChanged(rowid,isClient,isPublished) {
+        var len = $("#tableInspectionReportBody input:checked").length;
+        var countElement = $("#tableInspectionReportBody input").length;
+        var isView = $("#IsView" + rowid).val();
+        if (len == 1) {
+            if (isView == "true") {
+                $("#editInspectionReportSpan").show();
+                $("#editInspectionReportBtn").prop('value', '@Resources.Common.View');
+                $("#deleteInspectionReportSpan").hide();
+
+                if (isPublished == "true" && isClient == "false") {
+                    $("#unpublishSpan").show();
+                }
+            }
+            else if (isClient == "true") {
+                $("#editInspectionReportSpan").show();
+                $("#editInspectionReportBtn").prop('value', '@Resources.Common.View');
+                $("#deleteInspectionReportSpan").hide();
+            }
+            else {
+                $("#editInspectionReportSpan").show();
+                $("#editInspectionReportBtn").prop('value', '@Resources.Common.Edit');
+                $("#deleteInspectionReportSpan").show();
+                $("#unpublishSpan").hide();
+            }
+        }
+        else {
+            $("#editInspectionReportSpan").hide();
+            $("#deleteInspectionReportSpan").hide();
+            $("#unpublishSpan").hide();
+        }
+
+        if (len >= 1) {
+            if (isView == "true") {
+                $("#publishSelectedSpan").hide();
+                $("#validateSelectedSpan").hide();
+            }
+            else {
+                $("#publishSelectedSpan").show();
+                $("#validateSelectedSpan").show();
+            }
+            
+        }
+        else {
+            $("#publishSelectedSpan").hide();
+            $("#validateSelectedSpan").hide();
+        }
+        if (len < countElement) {
+            $("#chkheader").prop('checked', false);
+        }
+        else {
+            $("#chkheader").prop('checked', true);
+        }
+    }
+
+    $("#editInspectionReportBtn").click(function () {
+        $("#tableInspectionReportBody input:checked").each(function () {
+            $("#inspectionReportItemIdEv").val(this.value);
+            $("#editViewInspectionReport").submit();
+        });
+    });
+
+    $("#deleteInspectionReportBtn").click(function () {
+        var chkIds = '';
+        $("#tableInspectionReportBody input:checked").each(function () {
+            chkIds+= this.value + '&';
+        });
+        ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+            var ajaxUrl = '@Url.Action("DeleteSelectedInspectionReport", "InspectionReport")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    window.location = '@Url.Action("ChangeReport")';
+                },
+                error: function () { alert('An error occurred') },
+                data: { selectedIds: chkIds }
+            });
+        }); 
+    });
+
+    $("#unpublishBtn").click(function () {
+        $("#tableInspectionReportBody input:checked").each(function () {
+            LaunchUnPublishInspectionReport(this.value);
+        });
+    });
+
+    $("#publishSelectedBtn").click(function () {
+        var ids='';
+        $("#tableInspectionReportBody input:checked").each(function () {
+            ids+=this.value+'&&&';
+        });
+        PublishValidateSelectedInspectionReport('@Resources.InspectionReports.PublishAllValidationMessage', '@Resources.InspectionReports.PublishConfirmation', 'publish', ids);
+    });
+
+    $("#validateSelectedBtn").click(function () {
+        var ids='';
+        $("#tableInspectionReportBody input:checked").each(function () {
+            ids += this.value + '&&&';
+        });
+        PublishValidateSelectedInspectionReport('@Resources.InspectionReports.ValidateAllValidationMessage', '@Resources.InspectionReports.ValidateConfimation', 'validate', ids);
+    });
+
+</script>
+
+@if (totalWidth <= 744)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#wrapTable").css('overflow-x', 'hidden');
+        });
+    </script>
+}
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+        @Resources.Common.NoResults 
+    </div>
+}
+else
+{
+<div class="table-legend">
+    <span class="bottom">&nbsp;</span>@Resources.Common.Results (&nbsp;<span class="count">@totalNumberOfItemsWithoutPagination</span>&nbsp;)
+</div>
+<div class="wrapper" id="wrapTable">
+<table id="tableInspectionReport"class="data" summary="search results" >
+    <thead>
+        <tr>
+        
+            <th colspan="1" width="@widhtAction">
+                <input type="checkbox" id="chkheader" onchange="OnChkheaderChange(this.checked);" />
+            </th>
+        
+        @foreach (var item in Model.Captions)
+        {
+            string width = "width='" + item.Width + "'";
+            <th @Html.Raw(width)>@Html.Raw(item.Caption)</th>
+        }            
+        </tr>
+    </thead>
+    <tbody id="tableInspectionReportBody">
+        @for (int i = 0; i < Model.DataRows.Count; i++)
+        {
+            string rowAlter = "ev";
+            DynamicDataRow actualDataRow = Model.DataRows[i];
+            Guid? rowIdentifier = actualDataRow.RowIdentifier;
+            string chkId = "chk" + i;
+            string strIsClient = isClient.ToString().ToLower();
+            string strIsPublished = actualDataRow.IsPublished.ToString().ToLower();
+            string hiddenId = "IsView" + rowIdentifier.GetValueOrDefault().ToString();
+            if (i % 2 == 0)
+            {
+                rowAlter = "od";
+            }
+            <tr class="@rowAlter">
+            <td width="@widhtAction">
+                <input type="checkbox" id="@chkId" value="@rowIdentifier" onchange="OnChkrowChanged('@rowIdentifier','@strIsClient','@strIsPublished');"/>
+                @Html.Hidden(hiddenId, actualDataRow.IsReadOnly.ToString().ToLower())
+            </td>
+            
+            @for (int rowValue = 0; rowValue < Model.DataRows[i].FieldValues.Count; rowValue++)
+            {
+                var item = Model.DataRows[i].FieldValues[rowValue];
+                if (rowValue == 0)
+                {
+                    if (isClient)
+                    {
+                        <td>
+                            <a style="cursor: pointer;" onclick="LaunchViewInspectionReport('@rowIdentifier','false');" title="@Resources.Common.View">
+                                <span>@item.FieldValue</span>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        if (actualDataRow.IsReadOnly && actualDataRow.ApprovalStatus == (int)ApprovalStatus.Completed)
+                        {
+                            <td>
+                                <a style="cursor: pointer;" onclick="LaunchViewInspectionReport('@rowIdentifier','true');" title="@Resources.Common.View">
+                                    <span>@item.FieldValue</span>
+                                </a>
+                            </td>
+                        }
+                        else if (actualDataRow.IsReadOnly && actualDataRow.ApprovalStatus != (int)ApprovalStatus.Completed)
+                        {
+                            <td>
+                                <a style="cursor: pointer;" onclick="LaunchViewInspectionReport('@rowIdentifier','false');" title="@Resources.Common.View">
+                                    <span>@item.FieldValue</span>
+                                </a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <a style="cursor: pointer;" onclick="LaunchEditInspectionReport('@rowIdentifier');" title="@Resources.Common.Edit">
+                                    <span>@item.FieldValue</span>
+                                </a>
+                            </td>
+                        }
+                    }
+                }
+                else
+                {
+                    if (item.FieldType != (int)FieldType.PictureField)
+                    {
+                    <td style="white-space:pre-wrap;">@item.FieldValue</td>
+                    }
+                    else
+                    {
+                    <td width="20%">
+                    @foreach (var image in item.Pictures.PictureList)
+                    {
+                        <a style="cursor: pointer;" href="@Url.Action("ViewImage", "Picture", new { pictureId = image.PictureId })" rel="lightbox[@Model.DataRows[i].RowIdentifier.Value];">
+                            <img  width="40" height="40" src="@Url.Action("GetImage", "Picture", new { pictureId = image.PictureId })" alt=""/>
+                        </a>
+                    }
+                    @if (item.Pictures.PictureCount > 3)
+                    {
+                        <text> ...</text>
+                    }
+                    </td>
+                    }
+                }
+            }       
+            </tr>                    
+        }       
+    </tbody>
+</table>
+</div>
+
+<!-- /search results table -->
+ 
+<div class="form">
+    <div class="pages">
+        <div style="float:left; padding-left:17px;">
+            <span class="btn" style="margin-right: 10px;" id="spanExportButton">
+                <input type="reset" value="@Resources.Common.ExportExcelButton" id="exportExcelbutton" />
+            </span>
+        </div>
+        <div>
+        
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}
+<div>
+@if (isClient)
+{
+    <form action="@Url.Action("ViewInspectionReport", "InspectionReport")" method="post" id="viewInspectionReport">
+        <input type="hidden" name="inspectionReportItemIdView" id="inspectionReportItemIdView" value="" />
+        <input type="hidden" name="isPublished" id="isPublished" value="" />
+    </form>
+    
+    <form id="editViewInspectionReport" action="@Url.Action("EditViewInspectionReport", "InspectionReport")" method="post">
+        <input type="hidden" name="inspectionReportItemIdEv" id="inspectionReportItemIdEv" value="" />
+    </form>
+    
+}
+else
+{
+    <form id="editViewInspectionReport" action="@Url.Action("EditViewInspectionReport", "InspectionReport")" method="post">
+        <input type="hidden" name="inspectionReportItemIdEv" id="inspectionReportItemIdEv" value="" />
+    </form>
+    
+    <form id="newInspectionReportForm" action="@Url.Action("NewInspectionReport", "InspectionReport")" method="post">
+    
+    </form>
+    
+    <form action="@Url.Action("ViewInspectionReport", "InspectionReport")" method="post" id="viewInspectionReport">
+        <input type="hidden" name="inspectionReportItemIdView" id="inspectionReportItemIdView" value="" />
+        <input type="hidden" name="isPublished" id="isPublished" value="" />
+    </form>
+    
+    <form action="@Url.Action("EditInspectionReport", "InspectionReport")" method="post" id="viewEditInspectionReport">
+        <input type="hidden" name="inspectionReportItemId" id="inspectionReportItemId" value="" />
+    </form>
+    <form action="@Url.Action("DeleteInspectionReport", "InspectionReport")" method="post" id="deleteInspectionReport">
+        <input type="hidden" name="inspectionReportItemIdToDelete" id="inspectionReportItemIdToDelete" value="" />
+    </form>
+}
+</div>
+
+@if (!isClient)
+{
+
+    <p class="btn">
+            
+        @if (Model.UserLevel == 1)
+        {
+            <span class="btn">
+                <input type="button" value="@Resources.Common.New" id="newInspectionReportBtn" />
+            </span>   
+
+            <span class="btn" style="margin-right: 10px;" id="editInspectionReportSpan">
+                <input type="button" value="@Resources.Common.Edit" id="editInspectionReportBtn" />
+            </span>
+            
+            
+        }
+        else
+        {
+            <span class="btn" id="editInspectionReportSpan">
+                <input type="button" value="@Resources.Common.Edit" id="editInspectionReportBtn" />
+            </span>
+            
+            
+        }
+
+
+
+        @if (Model.CanPublishAll)
+        {
+            <span class="btn" style="margin-right: 10px;" id="publishSelectedSpan">
+                <input type="button" value="@Resources.InspectionReports.PublishSelectedItems" id="publishSelectedBtn"/>
+            </span>
+        }
+
+        @if (Model.CanValidateAll)
+        {
+            <span class="btn" style="margin-right: 10px;" id="validateSelectedSpan">
+                <input type="button" value="@Resources.InspectionReports.ValidateSelectedItems" id ="validateSelectedBtn" />
+            </span>   
+        }
+
+         <span class="btn" style="margin-right: 10px;" id="unpublishSpan">
+                <input type="button" value="@Resources.InspectionReports.UnPublish" id="unpublishBtn" />
+        </span>
+
+        <span class="btn" style="margin-right: 10px;" id="deleteInspectionReportSpan">
+                <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deleteInspectionReportBtn" />
+        </span>
+    </p>   
+}
+else
+{
+    <p class="btn">
+        <span class="btn" id="editInspectionReportSpan">
+            <input type="button" value="@Resources.Common.View" id="editInspectionReportBtn" />
+        </span>
+    </p>
+}

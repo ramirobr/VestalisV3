@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Cotecna.Services.Monitoring.CommunicationObjects" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Cotecna.Services.Monitoring.CommunicationObjects" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/MonitoringService/MonitoringService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Cotecna.Services.Monitoring.Entity" />
+  <xs:complexType name="ParameterMonitoring">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Application" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Cotecna.Services.Monitoring.Entity" minOccurs="0" name="Category" type="q1:EnumCategory" />
+      <xs:element minOccurs="0" name="MessageException" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StackTrace" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Cotecna.Services.Monitoring.Entity" minOccurs="0" name="Type" type="q2:EnumTicketType" />
+      <xs:element minOccurs="0" name="UserEmail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserModule" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ParameterMonitoring" nillable="true" type="tns:ParameterMonitoring" />
+</xs:schema>

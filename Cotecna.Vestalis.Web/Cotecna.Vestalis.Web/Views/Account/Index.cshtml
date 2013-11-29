@@ -1,0 +1,183 @@
+﻿@using Cotecna.Vestalis.Entities;
+@using Cotecna.Vestalis.Core;
+@{
+    ViewBag.Title = "Vestalis";
+}
+@model UserManagementModel
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+    @*Used for radios and checks*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+}
+
+@section leftmenu {
+    @Html.Partial("_LeftMenuAdministration")            
+}
+
+@if (!User.IsInRole("GlobalAdministrator"))
+{
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection") 
+
+}
+    
+}
+@{
+    string principalForm = string.Empty;
+    if (Session["PrincipalFormName"] != null)
+    {
+        principalForm = Session["PrincipalFormName"].ToString();
+    }
+}
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    <ul>
+        <li class="last">@Resources.Administration.UserManagementTitle</li>
+    </ul>
+    <div class="cap-right">
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function UpdateResults(results) {
+
+        if (results.indexOf('gridArea') != -1) {
+            $(".gridArea").html(results);
+            $(".gridArea").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+
+    $(function () {
+        $("#searchButton").click(function () {
+            var ajaxUrl = '@Url.Action("SearchUsers", "Account")';
+
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'html',
+                success: UpdateResults,
+                error: function () { alert('An error occurred') },
+                data: { page: 1, businessApplicationId: $("#businessApplications").val() }
+            });
+
+        });
+
+        $("#resetButton").click(function () {
+            window.location = '@Url.Action("Index")';
+        });
+
+    });
+
+    function exportExcelGrid() {
+        var businessApplicationId = $("#businessApplications").val();
+
+        var ajaxUrl = '@Url.Action("SeachUsersExport", "Account")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            success: function () {
+                $("#exportToExcel").submit();
+            },
+            error: function () { alert('An error occurred') },
+            data: { businessAppId: businessApplicationId }
+        });
+    }
+
+
+    $("document").ready(function () {
+
+        $("#liCatalogueMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@principalForm");
+        var ajaxUrl = '@Url.Action("SearchUsers", "Account")';
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResults,
+            error: function () { alert('An error occurred') },
+            data: { page: 1, businessApplicationId: $("#businessApplications").val() }
+        });
+
+        $("#spanExportButton").hide();
+    });
+
+
+    
+</script>
+
+
+<h1>@Resources.Administration.UserManagementTitle</h1>
+
+@if (Model.BusinessApplications.Count > 1)
+{
+<p>@Resources.Administration.UserManagementInstruction</p>
+
+<div class="form">
+    <div class="legend">        
+        <span>&nbsp;</span>
+        @Resources.Common.SearchCriteria
+    </div>
+    <ol>
+        <li class="datehalf">
+            <label>
+                <span class="name">@Resources.Common.BusinessAppLabel</span>
+                @{
+                    if (Model.BusinessApplications != null)
+                    {
+                        List<SelectListItem> itemSource = Model.BusinessApplications.Select(data => new SelectListItem
+                        {
+                            Text = data.Text,
+                            Value = data.Value
+                        }).ToList();
+                        @Html.DropDownList("businessApplications", itemSource, Resources.Common.SelectOneOption);
+                    }
+        
+                } 
+            </label>
+        </li>
+    </ol>
+</div>
+<p class="btn">
+    <span class="btn">
+        <input type="submit" value=@Resources.Common.Search id="searchButton" name="searchButton" />
+    </span>
+    <span class="btn2">
+        <input type="reset" value=@Resources.Common.Reset id="resetButton" name ="resetButton"/>
+    </span>
+</p>
+}
+else
+{
+    string currentBusinessApp = Model.BusinessApplications.Count > 0 ? Model.BusinessApplications.First().Value: string.Empty;
+   <input type="hidden" id ="businessApplications" name="businessApplications" value="@currentBusinessApp" />
+}
+<div class="gridArea">
+    @Html.Partial("_UsersGrid", Model.SearchResult)
+</div>
+<div class="form">
+    <div class="error" id="errorDiv">
+            
+    </div>
+</div>
+
+
+
+<form action="@Url.Action("ExportExcelUsers", "Account")" method="post" id="exportToExcel">
+    <input type="hidden" id="businessAppId" name="businessAppId" value ="" />
+</form>
+
+
+

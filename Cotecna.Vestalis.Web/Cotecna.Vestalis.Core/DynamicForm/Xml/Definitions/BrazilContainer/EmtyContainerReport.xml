@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Form Name="Empty container inspection">
+  <Sections>
+    <Section Caption="Empty container inspection">
+      <FormElements>
+        <Element Identifier="Status" IsDataGridVisible="true" IsVisibleClient="false"/>
+        <Element Identifier="ContainerNumber" IsDataGridVisible="true" IsFilterVisible ="true" />
+        <Element Identifier="InspectionDate" IsDataGridVisible="true" IsFilterVisible ="true"/>
+        <Element Identifier="StartTime" IsDataGridVisible="true"/>
+        <Element Identifier="EndTime" IsDataGridVisible="true"/>
+        <Element Identifier="MaxGross"/>
+        <Element Identifier="Tare"/>
+        <Element Identifier="MaxCargo"/>
+        <Element Identifier="Size"/>
+        <Element Identifier="ContainerType"/>
+        <Element Identifier="Manufacture"/>
+        <Element Identifier="Seals"/>
+        <Element Identifier="Remark" IsDataGridVisible="true"/>
+        <Element Identifier="Rejected"/>
+      </FormElements>
+    </Section>
+  </Sections>
+</Form>

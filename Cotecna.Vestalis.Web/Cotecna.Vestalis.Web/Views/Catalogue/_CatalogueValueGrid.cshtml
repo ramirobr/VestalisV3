@@ -1,0 +1,354 @@
+﻿@using Cotecna.Vestalis.Core;
+@using Cotecna.Vestalis.Entities
+@using Cotecna.Vestalis.Web.Common
+
+@model PaginatedList<CatalogueValue>
+@{
+    int totalNumberOfItemsWithoutPagination = Model.TotalCount;
+    int numberOfPages = Model.NumberOfPages;
+    int currentPage = Model.Page;
+    int pageSize = Model.PageSize;
+
+    string sortedColumn = Model.SortedColumn;
+    int nextPage = currentPage + 1;
+    int lastPage = currentPage - 1;
+
+    //This function is localized in CustomScript.js file
+    string jqueryFunction = "UpdateResultsSearch";
+    //The action to be executed, returning the ajax partial view
+    string action = "SearchCatalogueValueListPaginated";
+}
+@Html.Partial("_ConfirmationMessage")
+<script type="text/javascript">
+
+    function UpdateResultsSearch(results) {
+        if (results.indexOf('catalogueValues') != -1) {
+            $("#catalogueValues").html(results);
+            $("#catalogueValues").fadeIn("slow");
+        }
+        else {
+            $("#formError").submit();
+        }
+    }
+
+    $("#nextButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@nextPage' }
+        });
+
+    });
+
+
+    $("#endButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@numberOfPages' }
+        });
+
+    });
+
+
+    $("#lastButton").click(function () {
+        
+        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '@lastPage' }
+        });
+
+    });
+
+
+    $("#firtsButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+        });
+
+    });
+
+
+    $("#gotoButton").click(function () {
+
+        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'html',
+            success: UpdateResultsSearch,
+            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: $("#pageNumber").val() }
+        });
+
+    });
+
+    function EditCatalogueValue(rowId,catalogValData,catalogValDesc) {
+        InitCatalogueValues();
+        $("#CatalogueValueData").val(catalogValData);
+        $("#CatalogueValueDescription").val(catalogValDesc);
+        $("#CatalogueValueId").val(rowId);
+        $("#spanDeleteCVButton").show();
+        InitDialog();
+        $('#formCatalogueValue').dialog('open');
+    }
+
+    $("#exportButton").click(function () {
+        exportExcelGrid();
+    });
+
+    $("#newCVButton").click(function () {
+        InitCatalogueValues();
+        InitDialog();
+        $('#formCatalogueValue').dialog('open');
+    });
+
+    $(document).ready(function () {
+        $("#wrapTable").css('overflow-x', 'hidden');
+        $("#editCVButtonSpan").hide();
+        $("#deleteCVGridButtonSpan").hide();
+    });
+
+    function CheckBoxChange(id, value,description) {
+        var len = $("#tableCatalogueValueBody input:checked").length;
+        if (len == 1) {
+            $("#editCVButtonSpan").show();
+            $("#deleteCVGridButtonSpan").show();
+
+            $("#editCVButton").click(function () {
+                EditCatalogueValue(id, value, description);
+            });
+
+        }
+        else if (len > 1) {
+            $("#editCVButtonSpan").hide();
+            $("#deleteCVGridButtonSpan").show();
+        }
+        else {
+            $("#editCVButtonSpan").hide();
+            $("#deleteCVGridButtonSpan").hide();
+        }
+    }
+
+    function CheckHeaderBoxChange(status) {
+        $("#tableCatalogueValueBody input").each(function () {
+            this.checked = status;
+        })
+        var len = $("#tableCatalogueValueBody input:checked").length;
+        if (len >= 1) {
+            $("#editCVButtonSpan").hide();
+            $("#deleteCVGridButtonSpan").show();
+        }
+        else {
+            $("#editCVButtonSpan").hide();
+            $("#deleteCVGridButtonSpan").hide();
+        }
+    }
+
+    $("#deleteCVGridButton").click(function () {
+        var businessApplicationId = $("#BusinessApplicationId").val();
+        var valueIds = '';
+        $("#tableCatalogueValueBody input:checked").each(function () {
+            valueIds += this.value + '&';
+        });
+
+        ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+            var ajaxUrl = '@Url.Action("DeleteSelectedValues", "Catalogue")';
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.length == 0) {
+                        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: UpdateResultsSearch,
+                            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+                        });
+                    }
+                    else {
+
+                        var ajaxUrl = '@Url.Action("SearchCatalogueValueListPaginated", "Catalogue")';
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            dataType: 'html',
+                            success: function (data) {
+                                UpdateResultsSearch(data);
+
+                                $("#errorDiv").show();
+                                var numErrors = result.length;
+                                var titleError = "";
+                                var errors = "";
+                                if (numErrors > 1) {
+                                    titleError = "<h5>There are " + numErrors.toString() + " errors</h5> <ul id ='errorUl'></ul>";
+                                } else {
+                                    titleError = "<h5>There is 1 error</h5> <ul id ='errorUl'></ul>";
+                                }
+                                $("#errorDiv").html("");
+                                $("#errorDiv").html(titleError);
+                                for (var i = 0; i < result.length; i++) {
+                                    errors += "<li>" + result[i] + "</li>";
+                                }
+                                $("#errorUl").html(errors);
+                            },
+                            error: function () { alert('@Resources.Common.CommonErrorMessageAjax') },
+                            data: { sortDirection: '@Model.SortDirection', sortedColumn: '@sortedColumn', page: '1' }
+                        });
+                    }
+                },
+                error: function () { alert('An error occurred') },
+                data: { selectedValues: valueIds, businessApplicationId: businessApplicationId }
+            }); 
+        });        
+    });
+
+</script>
+
+
+@if (totalNumberOfItemsWithoutPagination == 0)
+{
+    <div class="table-legend">
+        @Resources.Common.NoResults
+    </div>
+}
+else
+{
+<div class="table-legend">
+    <span class="bottom">&nbsp;</span>@Resources.Administration.CatalogueItems
+</div>
+<div class="wrapper" id="wrapTable">
+    <table class="data" summary="search results">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" id="chkHeader" onchange="CheckHeaderBoxChange(this.checked);" /></th>                
+                <th>@Ajax.SortActionLink(Resources.Administration.CatalogueValueGridColumnValue, action, "CatalogueValueData", Model, jqueryFunction, 1)</th>
+                <th>@Ajax.SortActionLink(Resources.Administration.CatalogueValueGridColumnDescription, action, "CatalogueValueDescription", Model, jqueryFunction, 1)</th>
+            </tr>
+        </thead>
+        <tbody id="tableCatalogueValueBody">
+            @for (int i = 0; i < Model.Collection.Count; i++)
+            {
+                string rowAlter = "ev";
+                CatalogueValue actualDataRow = Model.Collection[i];
+                Guid? rowIdentifier = actualDataRow.CatalogueValueId;
+                string chkId = "chk" + i;
+                if (i % 2 == 0)
+                {
+                    rowAlter = "od";
+                }
+                <tr class="@rowAlter">
+                    <td width="20"><input type="checkbox" id="@chkId" value="@rowIdentifier" onchange="CheckBoxChange('@actualDataRow.CatalogueValueId','@actualDataRow.CatalogueValueData','@actualDataRow.CatalogueValueDescription');" /></td>
+                    <td width="140">
+                        <a style="cursor: pointer;" onclick="EditCatalogueValue('@actualDataRow.CatalogueValueId','@actualDataRow.CatalogueValueData','@actualDataRow.CatalogueValueDescription')"  title="@Resources.Common.Edit">
+                            <span>@actualDataRow.CatalogueValueData</span>
+                        </a>
+                    </td>
+                    <td style="white-space:pre-wrap;">@actualDataRow.CatalogueValueDescription</td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+
+<div class="form">
+    <div class="pages">
+        <div style="float:left; padding-left:17px;">
+            <span class="btn" id="btnExportButton">
+                <input type="reset" value="@Resources.Common.ExportExcelButton" id="exportButton" />
+            </span>
+        </div>
+        <div>
+            @if (totalNumberOfItemsWithoutPagination > pageSize)
+            {
+                <label>
+                    <span class="name">@Resources.Common.GotoPage</span>
+                    <input type="text" class="txt w1"  id="pageNumber" name="pageNumber"/>
+                    <a id="gotoButton" class="btn">
+                        <span class="btn">@Resources.Common.Go</span>
+                    </a>
+                </label>
+            }
+
+            @if (currentPage != 1)
+            {
+                
+                <a class="btn" id="firtsButton">
+                     <span class="btn">&lt;&lt;</span>
+                </a>    
+                <a class="btn" id="lastButton">
+                     <span class="btn">&lt;</span>
+                </a>
+                
+            }
+
+            <span class="num">@string.Format(Resources.Common.PageCurrentPaginator, currentPage, numberOfPages)</span>
+
+            @if (currentPage < numberOfPages)
+            {
+            
+                <a id="nextButton" class="btn">
+                    <span class="btn">&gt;</span>
+                </a>
+                <a id="endButton" class="btn">
+                    <span class="btn">&gt;&gt;</span>
+                </a>
+            
+            }
+        </div>
+    </div>
+</div>
+}
+<div id="catalogueValuesButtons">
+    <p class="btn">
+        <span class="btn">
+            <input type="button" value="@Resources.Administration.NewItem" id="newCVButton" />
+        </span>
+        <span class="btn" id="editCVButtonSpan" style="margin-right:10px">
+            <input type="button" value="@Resources.Administration.EditItem" id="editCVButton" />
+        </span>
+        <span class="btn" id="deleteCVGridButtonSpan" style="margin-right:10px">
+            <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deleteCVGridButton" />
+        </span>
+    </p>
+</div>
+<form action="@Url.Action("EditCatalogueValue", "Catalogue")" method="post" id="editCatalogueValue">
+        <input type="hidden" name="catalogueValueId" id="catalogueValueId" value="" />
+</form>
+<form action="@Url.Action("ExportExcelValues", "Catalogue")" method="post" id="exportToExcel">
+
+</form>

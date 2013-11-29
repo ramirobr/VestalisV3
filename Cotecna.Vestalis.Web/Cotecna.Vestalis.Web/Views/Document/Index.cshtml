@@ -1,0 +1,135 @@
+﻿@model Cotecna.Vestalis.Core.DocumentSearchModel
+
+
+@{
+    ViewBag.Title = "Vestalis";
+    bool isClient = User.IsInRole("Client");
+}
+
+@section headerContent{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui.css")" media="screen,print" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.ui.selectmenu.css")" media="screen,print" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")"></script>    
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.selectmenu.js")"></script>
+    @*Used for comboboxes*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ezmark.min.js")"></script>
+}
+
+@section businessApplications{
+    @Html.Partial("_BusinessApplicationSelection") 
+
+}
+
+@Html.Partial("_ConfirmationMessage")
+ 
+<script type="text/javascript">
+
+    function CuteWebUI_AjaxUploader_OnPostback() {
+        document.uploadForm.submit();
+    }
+
+    $(function () {
+        $("#newDocumentButton").click(function () {
+            document.forms["newDocumentForm"].submit();
+        });
+
+        $("#editDocumentButton").click(function () {
+            $("#tableDocumentBody input:checked").each(function () {
+                $("#documentIdEdit").val(this.value);
+                $("#editDocument").submit();
+            });
+        });
+
+        $("#deleteDocumentButton").click(function () {
+            var selectedIds = '';
+            $("#tableDocumentBody input:checked").each(function () {
+                selectedIds += this.value + '&';
+            });
+            ShowMessage("@Resources.Common.DeleteAllMessage", "@Resources.Common.DeleteConfirmation", function () {
+                var ajaxUrl = '@Url.Action("DeleteSelectedDocuments", "Document")';
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    success: function () {
+                        window.location = '@Url.Action("Index")';
+                    },
+                    error: function () { alert('An error occurred') },
+                    data: { selectedIds: selectedIds }
+                });
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#liServicerOrderMenu").attr("class", "first current");
+        $("#serviceOrderLink").html("@Model.PrincipalFormName");
+        $("#editDocumentSpan").hide();
+        $("#deleteDocumentSpan").hide();
+    });
+    
+</script>
+
+@section leftmenu {
+@Html.Partial("_LeftMenuOrder", Model.Links)
+}
+@{
+    string orderNumber = Model.OrderIdentifier == null || String.IsNullOrEmpty(Model.OrderIdentifier.FieldValue)
+                                     ? Resources.Common.ServiceOrderUndefined
+                                     : Model.OrderIdentifier.FieldValue;
+
+    string serviceOrderNumber = string.Format(Model.CaptionBreadcrumbsPrincipal + " {0}", orderNumber);
+    string documentTitle = string.Format(Resources.Document.DocumentTitle, orderNumber);
+}
+<div id="Breadcrumbs">
+    <div class="cap-left">
+    </div>
+    
+    <ul>
+        <li>@Html.ActionLink(Model.CaptionTitlePrincipal, "Index", "ServiceOrder") &gt;</li>
+        @if (isClient)
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "ViewServiceOrder", "ServiceOrder") &gt;</li>
+        }
+        else
+        {
+                <li>@Html.ActionLink(serviceOrderNumber, "EditServiceOrder", "ServiceOrder") &gt;</li>
+        }
+        <li class="last">@documentTitle</li>
+    </ul>
+    
+    <div class="cap-right">
+    </div>
+</div>
+
+<h1>@documentTitle</h1>
+@Html.Partial("_InspectionReportHeader", Model.ServiceOrderHeader)
+
+<div class="gridArea">
+@Html.Partial("_DocumentGrid", Model)
+</div>
+@if (!isClient)
+{
+ 
+    <p class="btn">
+        <span class="btn">
+            <input type="button" value="@Resources.Common.New" id="newDocumentButton" />
+        </span>
+
+        <span class="btn" id="editDocumentSpan" style="margin-right:10px;">
+            <input type="button" value="@Resources.Common.Edit" id="editDocumentButton" />
+        </span>
+
+        <span class="btn" id="deleteDocumentSpan" style="margin-right:10px;">
+            <input type="button" value="@Resources.Common.DeleteSelectedItems" id="deleteDocumentButton" />
+        </span>
+
+    </p>
+    <form id="newDocumentForm" action="@Url.Action("NewDocument", "Document")" method="post">
+
+    </form>
+    
+    <form action="@Url.Action("EditDocument", "Document")" method="post" id="editDocument">
+        <input type="hidden" name="documentIdEdit" id="documentIdEdit" value="" />
+    </form>  
+}
